@@ -22,7 +22,7 @@ internal sealed partial class ModernWorkspace {
    Go(page);PreviewSized(Path.Combine(folder,page.Replace("’","").Replace(" ","-")+".png"),1040,720);
   }
   var original=Appearance.Clone(store.Value.settings.Appearance);try{store.Value.settings.Appearance=Appearance.Presets().First(t=>t.name=="Sable");Go("Aujourd’hui");Preview(Path.Combine(folder,"Accueil-clair.png"));}finally{store.Value.settings.Appearance=original;Refresh();}
-  VerifyDayDashboard(folder);VerifyProductivity(folder);
+  VerifyDayDashboard(folder);VerifyProductivity(folder);VerifyCompleteWorkspace(folder);
  }
 }
 internal sealed partial class MainForm {

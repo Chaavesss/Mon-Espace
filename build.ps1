@@ -110,6 +110,12 @@ $nativeArgs += (Join-Path $nativeProject 'src\TaskDependencies.cs')
 $nativeArgs += (Join-Path $nativeProject 'src\NotificationCenter.cs')
 $nativeArgs += (Join-Path $nativeProject 'src\UpdateInstaller.cs')
 $nativeArgs += (Join-Path $nativeProject 'src\ProductivityAcceptance.cs')
+$nativeArgs += (Join-Path $nativeProject 'src\WeeklyPlanning.cs')
+$nativeArgs += (Join-Path $nativeProject 'src\NaturalReminders.cs')
+$nativeArgs += (Join-Path $nativeProject 'src\NoteHistory.cs')
+$nativeArgs += (Join-Path $nativeProject 'src\WorkspaceSpaces.cs')
+$nativeArgs += (Join-Path $nativeProject 'src\AutomaticBackups.cs')
+$nativeArgs += (Join-Path $nativeProject 'src\CompleteWorkspaceAcceptance.cs')
 $responseFile = Join-Path $nativeProject 'release\compilation.rsp'
 [System.IO.File]::WriteAllLines($responseFile, [string[]]($nativeArgs | ForEach-Object { '"' + $_ + '"' }), (New-Object System.Text.UTF8Encoding($false)))
 $processInfo = New-Object System.Diagnostics.ProcessStartInfo

@@ -60,3 +60,7 @@ Trois priorités choisies pour la journée, reprise des notes/projets/documents 
 ## Nouveautés 1.5
 
 Cloche de notifications, reports et suivi de lecture ; prérequis entre tâches et protection contre les boucles ; installation des mises à jour et relance depuis l’application. Voir [le guide](docs/NOTIFICATIONS_ET_TACHES.md) et [la procédure de mise à jour](docs/MISES_A_JOUR.md).
+
+## Nouveautés 1.6
+
+Planning hebdomadaire, rappels en une phrase, espaces indépendants, historique des notes et sauvegardes complètes automatiques. [Mode d’emploi](docs/PLANNING_ESPACES_SAUVEGARDES.md).

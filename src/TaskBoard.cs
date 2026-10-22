@@ -25,6 +25,7 @@ internal sealed partial class ModernWorkspace {
   var tools=new WrapPanel{Margin=new Thickness(0,0,0,12)};
   tools.Children.Add(Btn("Tableau",delegate{boardList=false;Refresh();},!boardList));
   tools.Children.Add(Btn("Liste",delegate{boardList=true;Refresh();},boardList));
+  tools.Children.Add(Btn("Rappel en une phrase",NaturalReminderDialog,false,true));
   tools.Children.Add(Btn("+ Nouvelle tâche",delegate{owner.Edit(null);}));
   tools.Children.Add(Btn("Suppressions récentes",delegate{Go("Suppressions récentes");},false,true));
   root.Children.Add(tools);

@@ -1,9 +1,9 @@
-Mon espace 1.5
+Mon espace 1.6
 
-- Centre de notifications accessible par la cloche : tâches à échéance, rendez-vous locaux, budgets, découvert et incidents de sauvegarde.
-- Marquer comme lu, reporter de 15 minutes / 1 heure / 24 heures, ouvrir l’élément ou retirer un incident.
-- Prérequis entre tâches : recherche et sélection dans l’éditeur, badge « En attente », blocage des passages en cours / terminé, détection des boucles.
-- Les suggestions du jour privilégient les tâches sans blocage ; les priorités choisies restent modifiables.
-- Bouton « Mettre à jour et relancer » : téléchargement HTTPS, contrôle SHA-256, contrôle de version de l’exécutable, installation par version et conservation des données.
+- Planning hebdomadaire avec créneaux de tâches, déplacement par glisser-déposer ou dialogue, durée modifiable, rendez-vous locaux et Google déjà chargés, indicateurs de chevauchement et charge quotidienne.
+- Rappels en une phrase, avec prévisualisation avant création : demain à 14h30, chaque lundi, le 5 de chaque mois, dates numériques.
+- Espaces Perso / Travail / Gaming, plus création et renommage. Chaque espace possède ses données, réglages et connexions ; changement avec enregistrement et relance.
+- Historique automatique des notes : consultation et restauration, 15 versions par note, 100 versions / 2 Mo au total.
+- Sauvegardes complètes automatiques : dossier et fréquence au choix, rotation de 1 à 30 copies, dernière réussite et alertes d’échec. Actives lorsque l’espace est ouvert ; à activer après choix du dossier.
 
-Installer cette version une première fois avec le ZIP si votre ancienne version propose uniquement un téléchargement. Les mises à jour suivantes pourront utiliser le nouveau bouton. Les alertes bot Discord et les notifications Google ne sont pas reliées à ce centre. Les connexions Google/Spotify restent propres à chacun.
+Les données existantes restent dans Perso. Le changement d’espace ne ferme pas les applications externes. Les sauvegardes complètes sont locales et non chiffrées ; les connexions Google/Spotify ne sont pas exportées. Les événements Google affichés nécessitent leur chargement depuis Agenda.

@@ -23,7 +23,7 @@ internal sealed partial class ModernWorkspace {
   var title=new TextBox{MaxLength=180};Field(body,"Titre",title);
   var projects=owner.AllProjects();var project=Combo(projects,projects.Contains(projectFilter)?projectFilter:projects[0]);Field(body,"Projet",project);project.IsEnabled=kind.SelectedIndex!=2;kind.SelectionChanged+=delegate{project.IsEnabled=kind.SelectedIndex!=2;};
   var details=new TextBox{AcceptsReturn=true,TextWrapping=TextWrapping.Wrap,Height=86,MaxLength=10000,VerticalScrollBarVisibility=ScrollBarVisibility.Auto};Field(body,"Détails (facultatif)",details);
-  var hint=T("Ctrl + Entrée : enregistrer • Échap : annuler",11,Muted);body.Children.Add(hint);
+  var hint=T("Ctrl + Entrée : enregistrer • Échap : annuler",11,Muted);body.Children.Add(hint);body.Children.Add(Btn("Créer un rappel en une phrase",delegate{w.Close();NaturalReminderDialog();},false,true));
   bool accepted=false;
   Action save=delegate{
    if(accepted)return;
