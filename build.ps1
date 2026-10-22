@@ -116,6 +116,12 @@ $nativeArgs += (Join-Path $nativeProject 'src\NoteHistory.cs')
 $nativeArgs += (Join-Path $nativeProject 'src\WorkspaceSpaces.cs')
 $nativeArgs += (Join-Path $nativeProject 'src\AutomaticBackups.cs')
 $nativeArgs += (Join-Path $nativeProject 'src\CompleteWorkspaceAcceptance.cs')
+$nativeArgs += (Join-Path $nativeProject 'src\DofusCompanion.cs')
+$nativeArgs += (Join-Path $nativeProject 'src\TougliReader.cs')
+$nativeArgs += (Join-Path $nativeProject 'src\DofusWorkspace.cs')
+$nativeArgs += (Join-Path $nativeProject 'src\DofusOverlay.cs')
+$nativeArgs += (Join-Path $nativeProject 'src\DofusWidgetBridge.cs')
+$nativeArgs += (Join-Path $nativeProject 'src\DofusAcceptance.cs')
 $responseFile = Join-Path $nativeProject 'release\compilation.rsp'
 [System.IO.File]::WriteAllLines($responseFile, [string[]]($nativeArgs | ForEach-Object { '"' + $_ + '"' }), (New-Object System.Text.UTF8Encoding($false)))
 $processInfo = New-Object System.Diagnostics.ProcessStartInfo

@@ -1,9 +1,11 @@
-Mon espace 1.6
+Mon espace 1.7
 
-- Planning hebdomadaire avec créneaux de tâches, déplacement par glisser-déposer ou dialogue, durée modifiable, rendez-vous locaux et Google déjà chargés, indicateurs de chevauchement et charge quotidienne.
-- Rappels en une phrase, avec prévisualisation avant création : demain à 14h30, chaque lundi, le 5 de chaque mois, dates numériques.
-- Espaces Perso / Travail / Gaming, plus création et renommage. Chaque espace possède ses données, réglages et connexions ; changement avec enregistrement et relance.
-- Historique automatique des notes : consultation et restauration, 15 versions par note, 100 versions / 2 Mo au total.
-- Sauvegardes complètes automatiques : dossier et fréquence au choix, rotation de 1 à 30 copies, dernière réussite et alertes d’échec. Actives lorsque l’espace est ouvert ; à activer après choix du dossier.
+- Compagnon Dofus natif : catalogue Tougli et chargement à la demande des parcours, dont RSA – Rush Sylvestre Accéléré et Dofus Sylvestre.
+- Personnages locaux indépendants, choix de classe / alignement / ordre, progression par personnage et par guide.
+- Lecture de l’ordre des quêtes, notes, prérequis et quantités de ressources transmis par Tougli ; liens vers les guides détaillés.
+- Précédent, Suivant, Terminé, annulation d’une validation, sélection d’une étape et reprise après redémarrage.
+- Fenêtre compacte redimensionnable, déplaçable et épinglable au premier plan, avec commandes de progression et ressources de l’étape.
+- Ouverture depuis le mode Dofus et accès depuis le widget général. Configuration page / vue compacte / les deux / désactivé dans chaque mode.
+- Progression incluse dans les sauvegardes ; guide déjà chargé consultable hors ligne sur le même PC. Mode discret respecté.
 
-Les données existantes restent dans Perso. Le changement d’espace ne ferme pas les applications externes. Les sauvegardes complètes sont locales et non chiffrées ; les connexions Google/Spotify ne sont pas exportées. Les événements Google affichés nécessitent leur chargement depuis Agenda.
+Source : Tougli, par Toufloux et Gligo. Aucun compte Tougli ou Ganymède n’est connecté ; aucun guide tiers n’est embarqué dans le paquet. Les contenus publics sont chargés à la demande et mis en cache localement. Les guides détaillés s’ouvrent dans votre navigateur habituel. Aucun automatisme en jeu ni lecture de sa mémoire. L’affichage au-dessus de Dofus reste à vérifier sur le PC cible.

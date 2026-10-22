@@ -15,6 +15,7 @@ internal sealed partial class ModernWorkspace {
  Brush FaintLine{get{return new SolidColorBrush(Appearance.Mix(CurrentPalette.Card,CurrentPalette.Ink,.07));}}
  string PageDescription(){
   switch(selected){
+   case "Compagnon Dofus":return "Votre parcours Tougli, une étape à la fois.";
    case "Planning semaine":return "Donnez une place à vos tâches et gardez du temps disponible.";
    case "Mes espaces":return "Un espace pour chaque partie de votre quotidien.";
    case "Historique des notes":return "Retrouvez vos idées telles qu’elles étaient.";
@@ -66,7 +67,7 @@ internal sealed partial class ModernWorkspace {
   var search=NavigationButton("Recherche","Rechercher");search.ToolTip="Rechercher · Ctrl + K";search.Background=SurfaceBrush;search.Margin=new Thickness(0,0,0,14);nav.Children.Add(search);
   nav.Children.Add(T("VOTRE ESPACE",9,Muted,new Thickness(12,0,0,11)));
   foreach(var page in new[]{"Aujourd’hui","Mes tâches","Boîte de réception","Agenda","Planning semaine","Mes projets","Mes notes","Documents locaux","Google Drive","Mon budget","Ma musique"})nav.Children.Add(NavigationButton(page,ShortPage(page)));
-  var extras=new[]{"Concentration","Habitudes","Bilan de la semaine","Mes modes","Mes espaces","Historique des notes","Sauvegardes automatiques","Rappels","Mes services"};
+  var extras=new[]{"Concentration","Habitudes","Bilan de la semaine","Mes modes","Compagnon Dofus","Mes espaces","Historique des notes","Sauvegardes automatiques","Rappels","Mes services"};
   var more=Btn(showExtraTools?"Moins d’outils  −":"Tous mes outils  +",delegate{showExtraTools=!showExtraTools;Refresh();},false,true);more.HorizontalContentAlignment=HorizontalAlignment.Left;more.Foreground=Muted;more.Margin=new Thickness(0,13,0,8);nav.Children.Add(more);
   if(showExtraTools)foreach(string page in extras)nav.Children.Add(NavigationButton(page,page));else if(extras.Contains(selected))nav.Children.Add(NavigationButton(selected,selected));
   if(store.Value.favorites.Count>0)FavoriteSidebar();

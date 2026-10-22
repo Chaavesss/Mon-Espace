@@ -64,3 +64,7 @@ Cloche de notifications, reports et suivi de lecture ; prérequis entre tâches 
 ## Nouveautés 1.6
 
 Planning hebdomadaire, rappels en une phrase, espaces indépendants, historique des notes et sauvegardes complètes automatiques. [Mode d’emploi](docs/PLANNING_ESPACES_SAUVEGARDES.md).
+
+## Nouveautés 1.7
+
+Compagnon Dofus avec parcours Tougli à la demande, RSA / Sylvestre, progression locale par personnage, ressources et fenêtre compacte. [Guide d’utilisation](docs/COMPAGNON_DOFUS.md).
