@@ -14,7 +14,7 @@ internal static class TaskBoard {
   if(task==null||task.status==state)return false;
   var json=new JavaScriptSerializer{MaxJsonLength=8*1024*1024};
   string before=json.Serialize(store.Value);
-  try{if(state=="done")Schedule.Complete(store.Value,task);else task.status=state;store.Save();return true;}
+  try{TaskDependencies.Ensure(store.Value,task,state);if(state=="done")Schedule.Complete(store.Value,task);else task.status=state;store.Save();return true;}
   catch{store.Value=json.Deserialize<Data>(before);throw;}
  }
 }
@@ -55,7 +55,7 @@ internal sealed partial class ModernWorkspace {
  string BoardDragId(IDataObject data){if(!data.GetDataPresent(BoardFormat))return null;string value=data.GetData(BoardFormat) as string;string prefix=boardSession+"/";return value!=null&&value.StartsWith(prefix,StringComparison.Ordinal)?value.Substring(prefix.Length):null;}
  Border BoardCard(WorkTask task){
   var body=new StackPanel();var title=Btn(task.title,delegate{owner.Edit(task);},false,true);title.Padding=new Thickness(0,2,0,7);title.HorizontalContentAlignment=HorizontalAlignment.Left;title.Content=T(task.title,13,task.status=="done"?Muted:Ink);PinMenu(title,"task",task.id,task.title);body.Children.Add(title);
-  body.Children.Add(T(task.project,10,Muted,new Thickness(0,0,0,8)));
+  body.Children.Add(T(task.project,10,Muted,new Thickness(0,0,0,8)));DependencyBadge(body,task);
   if(task.priority=="Haute")body.Children.Add(T("Priorité haute",10,Accent,new Thickness(0,0,0,6)));
   if(!String.IsNullOrEmpty(task.due)){var date=Schedule.Day(task.due);body.Children.Add(T((date<DateTime.Today&&task.status!="done"?"En retard · ":"Échéance · ")+date.ToString("dd/MM")+(String.IsNullOrEmpty(task.dueTime)?"":" à "+task.dueTime),10,Muted,new Thickness(0,0,0,6)));}
   if(task.repeat!="none")body.Children.Add(T("Récurrente",10,Muted,new Thickness(0,0,0,6)));

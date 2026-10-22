@@ -15,6 +15,7 @@ internal sealed partial class ModernWorkspace {
  Brush FaintLine{get{return new SolidColorBrush(Appearance.Mix(CurrentPalette.Card,CurrentPalette.Ink,.07));}}
  string PageDescription(){
   switch(selected){
+   case "Notifications":return "Les échéances et alertes qui méritent votre attention.";
    case "Aujourd’hui":return "Le bon endroit pour commencer votre journée.";
    case "Mes tâches":return "Faites de la place à ce qui mérite votre attention.";
    case "Agenda":return "Une vue claire de votre temps et de vos engagements.";
@@ -30,6 +31,7 @@ internal sealed partial class ModernWorkspace {
  }
  string NavigationIcon(string page){
   switch(page){
+   case "Notifications":return "M5,14 L5,8 A5,5 0 0 1 15,8 L15,14 L17,16 L3,16 Z M8,18 L12,18";
    case "Aujourd’hui":return "M3,10 L10,4 L17,10 M5,9 L5,17 L15,17 L15,9 M9,17 L9,12 L12,12";
    case "Mes tâches":return "M3,6 L5,8 L8,4 M10,6 L17,6 M3,13 L5,15 L8,11 M10,13 L17,13";
    case "Agenda":return "M4,5 L16,5 L16,17 L4,17 Z M7,3 L7,7 M13,3 L13,7 M4,9 L16,9";

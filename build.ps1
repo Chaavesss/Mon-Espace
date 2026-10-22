@@ -106,6 +106,10 @@ $nativeArgs += (Join-Path $nativeProject 'src\HomeBlockEditing.cs')
 $nativeArgs += (Join-Path $nativeProject 'src\RoutineHomes.cs')
 $nativeArgs += (Join-Path $nativeProject 'src\DayDashboardAcceptance.cs')
 $nativeArgs += (Join-Path $nativeProject 'src\DayDashboardUiAcceptance.cs')
+$nativeArgs += (Join-Path $nativeProject 'src\TaskDependencies.cs')
+$nativeArgs += (Join-Path $nativeProject 'src\NotificationCenter.cs')
+$nativeArgs += (Join-Path $nativeProject 'src\UpdateInstaller.cs')
+$nativeArgs += (Join-Path $nativeProject 'src\ProductivityAcceptance.cs')
 $responseFile = Join-Path $nativeProject 'release\compilation.rsp'
 [System.IO.File]::WriteAllLines($responseFile, [string[]]($nativeArgs | ForEach-Object { '"' + $_ + '"' }), (New-Object System.Text.UTF8Encoding($false)))
 $processInfo = New-Object System.Diagnostics.ProcessStartInfo

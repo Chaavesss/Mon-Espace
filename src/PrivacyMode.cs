@@ -10,7 +10,7 @@ internal sealed partial class ModernWorkspace {
   sensitiveDialogs.Add(window);try{return ShowWindowCore(window);}finally{sensitiveDialogs.Remove(window);}
  }
  internal void HideSensitiveDialogs(){foreach(var window in sensitiveDialogs.ToList())try{window.DialogResult=false;}catch{try{window.Close();}catch{}}}
- bool RenderPrivacy(){
+ bool RenderPrivacy(){RefreshNoticeBadge(false);
   if(!store.Value.settings.PrivacyMode){if(privacyButton!=null)privacyButton.Content="Discret";if(themeFoot!=null)themeFoot.Visibility=Visibility.Visible;return false;}
   if(workspaceTabs!=null)workspaceTabs.Visibility=Visibility.Collapsed;UpdateMiniPlayer();ApplyAppearance();owner.Text="Mon espace · Mode discret";brand.Text="Mon espace";profile.Text="Mode discret";crumb.Text="Mon espace / Affichage masqué";track.Text="Mode discret";status.Text="Contenus personnels masqués";countdownBox.Visibility=Visibility.Collapsed;if(privacyButton!=null)privacyButton.Content="Afficher";
   if(themeFoot!=null)themeFoot.Visibility=Visibility.Collapsed;nav.Children.Clear();nav.Children.Add(T("MODE DISCRET",10,Muted));nav.Children.Add(T("Les informations personnelles sont masquées dans Mon espace.",12,Muted,new Thickness(0,16,0,20)));nav.Children.Add(Btn("Afficher mes données",delegate{owner.TogglePrivacyMode();},true));

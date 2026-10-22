@@ -56,3 +56,7 @@ Le moteur PDF natif présente un problème de fermeture sur les serveurs GitHub 
 ## Nouveautés 1.4
 
 Trois priorités choisies pour la journée, reprise des notes/projets/documents récents, réception des captures accessible depuis l’accueil, déplacement et redimensionnement des blocs, et accueils associés aux modes Travail/Dofus/Perso. [Guide d’utilisation](docs/MA_JOURNEE.md).
+
+## Nouveautés 1.5
+
+Cloche de notifications, reports et suivi de lecture ; prérequis entre tâches et protection contre les boucles ; installation des mises à jour et relance depuis l’application. Voir [le guide](docs/NOTIFICATIONS_ET_TACHES.md) et [la procédure de mise à jour](docs/MISES_A_JOUR.md).

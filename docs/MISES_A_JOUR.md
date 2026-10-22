@@ -41,7 +41,7 @@ Si la version installée est déjà la dernière, le message correspondant est n
 
 Les anciens réglages avec un champ de canal vide restent vides tant que l’adresse n’est pas enregistrée. Le canal est prérempli pour les nouvelles configurations de cette version. Chacun conserve son nom, ses couleurs, ses tâches, son budget, ses raccourcis et ses connexions. Le module bot reste désactivé par défaut et peut être activé uniquement sur ton PC.
 
-**Il n’est plus nécessaire de renvoyer le dossier à ton frère à chaque changement.** Il peut télécharger la version proposée dans son application. Il devra ensuite extraire le ZIP et lancer MonEspace.exe ; aucune installation silencieuse n’est effectuée.
+**Il n’est plus nécessaire de renvoyer le dossier à ton frère à chaque changement.** Il peut télécharger la version proposée dans son application. À partir de la version **1.5**, il peut cliquer sur **Mettre à jour et relancer** : le fichier est vérifié puis la nouvelle version est lancée. Sur une ancienne version, extraire le ZIP et lancer MonEspace.exe une dernière fois pour accéder à ce bouton.
 
 ## 4. Publier les versions suivantes
 
@@ -103,3 +103,11 @@ Le manifeste référence un ZIP attaché à une **version précise**, afin que s
 Compilation Windows x64 réussie et 12 suites réussies sur la machine de préparation. Contrôles supplémentaires : installation dans un dossier versionné, copie vérifiée, conservation d’un fichier de données, contenu du ZIP limité aux trois fichiers attendus, manifeste lié au bon numéro et SHA-256 calculé sur le ZIP final. Sur les runners Windows Server 2022 et 2025, les assertions de rendu PDF réussissent, mais la fermeture du processus échoue dans ntdll.dll avec le code 0xc000000d. Le workflow utilise donc explicitement **-SkipNativePdf** et conserve tous les autres contrôles de la suite. Le script local sans cette option conserve le test PDF intégral. Le résultat desktop complet est enregistré dans **desktop-validation.json**, avec une empreinte des sources, icônes, compilation et scripts ; **prepare-release.ps1** refuse de publier si ces fichiers ont changé depuis la validation. Les fins de processus en erreur ne sont jamais transformées en succès. Ce dépôt ne prétend pas prendre en charge Windows Server pour un usage normal de l’application.
 
 Références officielles : [liens permanents vers les assets](https://docs.github.com/en/repositories/releasing-projects-on-github/linking-to-releases), [création d’une release avec gh](https://cli.github.com/manual/gh_release_create).
+
+## Mise à jour depuis la version 1.5
+
+Le bouton **Mettre à jour et relancer** est proposé pour les paquets ZIP d’une version supérieure. Le téléchargement utilise HTTPS et l’empreinte SHA-256 du manifeste. L’archive doit contenir exactement un exécutable MonEspace.exe à sa racine ; son nom d’assembly et sa version sont contrôlés. Les autres entrées du ZIP ne sont pas extraites.
+
+La nouvelle application est copiée dans son propre dossier Versions. L’ancienne application reste présente ; les données ne sont pas remplacées. Les brouillons sont enregistrés ou soumis à votre choix avant fermeture. Une copie de fichiers ou une session de concentration active bloque la relance. La nouvelle instance attend la fin de l’ancienne, actualise le raccourci et conserve votre préférence de démarrage Windows. L’application doit rester ouverte pendant le téléchargement. Une fermeture annulée conserve les documents ouverts et permet de réessayer.
+
+L’action installe une version locale même si vous utilisiez le mode portable. Le téléchargement manuel reste disponible. Une restriction de sécurité de votre PC peut bloquer le lancement ; cette fonction ne la contourne pas.

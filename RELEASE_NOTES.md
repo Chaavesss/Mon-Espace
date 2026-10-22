@@ -1,10 +1,9 @@
-Mon espace 1.4
+Mon espace 1.5
 
-- Choisir jusqu’a trois priorites par jour ; conserver les taches terminees dans le plan du jour et renouveler la selection le lendemain.
-- Reprendre une note, un projet ou un document recent apres redemarrage.
-- Retrouver la boite de reception dans la navigation et trier les captures en taches, notes ou projets.
-- Deplacer les blocs de l’accueil, regler leur hauteur et leur largeur, et conserver leur disposition.
-- Associer un accueil et un filtre de projet a chaque mode. Exemples Travail, Dofus et Perso. Revenir a son accueil habituel sans fermer les applications.
-- Inclure les rendez-vous Google deja charges dans la synthese du jour.
+- Centre de notifications accessible par la cloche : tâches à échéance, rendez-vous locaux, budgets, découvert et incidents de sauvegarde.
+- Marquer comme lu, reporter de 15 minutes / 1 heure / 24 heures, ouvrir l’élément ou retirer un incident.
+- Prérequis entre tâches : recherche et sélection dans l’éditeur, badge « En attente », blocage des passages en cours / terminé, détection des boucles.
+- Les suggestions du jour privilégient les tâches sans blocage ; les priorités choisies restent modifiables.
+- Bouton « Mettre à jour et relancer » : téléchargement HTTPS, contrôle SHA-256, contrôle de version de l’exécutable, installation par version et conservation des données.
 
-Les connexions Google et Spotify restent propres a chaque utilisateur. Les ouvertures d’applications se configurent sur chaque PC.
+Installer cette version une première fois avec le ZIP si votre ancienne version propose uniquement un téléchargement. Les mises à jour suivantes pourront utiliser le nouveau bouton. Les alertes bot Discord et les notifications Google ne sont pas reliées à ce centre. Les connexions Google/Spotify restent propres à chacun.

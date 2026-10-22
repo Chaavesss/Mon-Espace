@@ -20,7 +20,7 @@ internal static class FocusClock {
   if(minutes<1||minutes>240)throw new InvalidDataException("Choisissez une durée de 1 à 240 minutes.");
   var task=String.IsNullOrEmpty(taskId)?null:store.Value.tasks.FirstOrDefault(t=>t.id==taskId&&t.status!="done");if(!String.IsNullOrEmpty(taskId)&&task==null)throw new InvalidDataException("La tâche n'est plus disponible.");
   if(!String.IsNullOrEmpty(modeId)&&!store.Value.modes.Any(m=>m.id==modeId))throw new InvalidDataException("Le mode de lancement n'est plus disponible.");
-  var now=utc.ToUniversalTime();Change(store,delegate{store.Value.focus=new FocusSessionData{id=Guid.NewGuid().ToString(),state="running",taskId=taskId??"",taskTitle=task==null?"Session libre":task.title,modeId=modeId??"",durationSeconds=minutes*60,remainingSeconds=minutes*60,startedUtcTicks=now.Ticks,endUtcTicks=now.AddMinutes(minutes).Ticks};if(task!=null)task.status="doing";});
+  if(task!=null)TaskDependencies.Ensure(store.Value,task,"doing");var now=utc.ToUniversalTime();Change(store,delegate{store.Value.focus=new FocusSessionData{id=Guid.NewGuid().ToString(),state="running",taskId=taskId??"",taskTitle=task==null?"Session libre":task.title,modeId=modeId??"",durationSeconds=minutes*60,remainingSeconds=minutes*60,startedUtcTicks=now.Ticks,endUtcTicks=now.AddMinutes(minutes).Ticks};if(task!=null)task.status="doing";});
  }
  internal static bool Tick(Store store,DateTime utc){
   if(store.Value.focus.state!="running"||Remaining(store.Value.focus,utc)>0)return false;

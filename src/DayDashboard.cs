@@ -26,7 +26,7 @@ internal static class DayDashboard {
  internal static List<WorkTask> Priorities(Data data,DateTime today){
   var d=data.settings.Day;string key=today.ToString("yyyy-MM-dd");
   if(d.date==key&&d.chosen)return d.priorityIds.Select(id=>Tasks(data).FirstOrDefault(t=>t.id==id)).Where(t=>t!=null).ToList();
-  return Tasks(data).Where(t=>t.status!="done").OrderBy(t=>!String.IsNullOrEmpty(t.due)&&String.CompareOrdinal(t.due,key)<0?0:t.due==key?1:t.priority=="Haute"?2:t.status=="doing"?3:4).ThenBy(t=>String.IsNullOrEmpty(t.due)?"9999":t.due).ThenBy(t=>t.title).Take(3).ToList();
+  return Tasks(data).Where(t=>t.status!="done"&&TaskDependencies.Blocking(data,t).Count==0).OrderBy(t=>!String.IsNullOrEmpty(t.due)&&String.CompareOrdinal(t.due,key)<0?0:t.due==key?1:t.priority=="Haute"?2:t.status=="doing"?3:4).ThenBy(t=>String.IsNullOrEmpty(t.due)?"9999":t.due).ThenBy(t=>t.title).Take(3).ToList();
  }
  internal static void Choose(Data data,IEnumerable<string> ids,DateTime today){var chosen=ids.Distinct().ToList();if(chosen.Count>3||chosen.Any(id=>!Tasks(data).Any(t=>t.id==id)))throw new InvalidDataException("Choisissez jusqu’à trois tâches existantes.");var d=data.settings.Day;d.date=today.ToString("yyyy-MM-dd");d.chosen=true;d.priorityIds=chosen;}
  internal static bool Exists(Data data,ResumeEntry entry){if(entry==null)return false;if(entry.kind=="note")return data.pages.Any(n=>n.id==entry.id&&!n.trashed);if(entry.kind=="project")return data.settings.Projects.Contains(entry.id)||data.projectData.Any(p=>p.name==entry.id)||data.tasks.Any(t=>t.project==entry.id)||data.pages.Any(n=>n.project==entry.id&&!n.trashed);if(entry.kind=="document"){try{return Path.IsPathRooted(entry.id)&&File.Exists(entry.id);}catch{return false;}}return false;}

@@ -1,7 +1,7 @@
 {
-    "sourceSha256":  "d8d59d54410f14e1be5cddd0071f8e6b1ceb0632eff36c25ac18118395c111ce",
-    "version":  "1.4.0.0",
+    "sourceSha256":  "1192746de304b454ec69d801ba03d80da5821686721b8ad9865ba25aa1f09629",
+    "version":  "1.5.0.0",
     "nativePdf":  true,
     "suites":  12,
-    "verifiedAt":  "2026-10-22T09:04:11.0964825Z"
+    "verifiedAt":  "2026-10-22T12:14:55.8838247Z"
 }

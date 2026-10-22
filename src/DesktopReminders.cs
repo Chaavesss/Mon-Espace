@@ -9,7 +9,7 @@ internal sealed partial class MainForm {
  void CheckSchedule(){
   if(!rendering&&Program.ActivationSignal!=null&&Program.ActivationSignal.WaitOne(0))RestoreWorkspace();
   if(rendering||closing||remindersIcon==null||DateTime.UtcNow-lastScheduleCheck<TimeSpan.FromSeconds(15))return;
-  lastScheduleCheck=DateTime.UtcNow;if(lastScheduleDay!=DateTime.Today&&Enabled){lastScheduleDay=DateTime.Today;modern.Refresh();}
+  lastScheduleCheck=DateTime.UtcNow;modern.RefreshNoticeBadge();if(lastScheduleDay!=DateTime.Today&&Enabled){lastScheduleDay=DateTime.Today;modern.Refresh();}
   if(!store.Value.settings.Notifications||store.Value.settings.PrivacyMode)return;
   var due=Schedule.Due(store.Value,DateTime.Now);var budgetDue=BudgetExtras.Due(store.Value.budget,DateTime.Now);int count=due.Count+budgetDue.Count;if(count==0)return;
   var labels=due.Select(r=>r.Title).Concat(budgetDue.Select(r=>r.Occurrence.Rule.title)).ToList();

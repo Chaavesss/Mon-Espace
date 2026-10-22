@@ -1,0 +1,26 @@
+using System;
+using System.IO;
+using System.Linq;
+using System.Collections.Generic;
+using System.Windows;
+using System.Windows.Controls;
+internal static class TaskDependencies {
+ internal static List<WorkTask> Blocking(Data d,WorkTask t){return d.tasks.Where(p=>(t.dependsOn??new List<string>()).Contains(p.id)&&p.status!="done").ToList();}
+ internal static void Ensure(Data d,WorkTask t,string state){if(state!="todo"&&Blocking(d,t).Count>0)throw new InvalidOperationException("Terminez d’abord : "+String.Join(", ",Blocking(d,t).Select(p=>p.title)));}
+ internal static void Validate(Data d){
+  foreach(var t in d.tasks){if(t.dependsOn==null)t.dependsOn=new List<string>();if(t.dependsOn.Count>100||t.dependsOn.Any(id=>String.IsNullOrWhiteSpace(id)||id.Length>100)||t.dependsOn.Contains(t.id))throw new InvalidDataException("Prérequis de tâche invalides.");t.dependsOn=t.dependsOn.Distinct().ToList();}
+  var colors=new Dictionary<string,int>();var map=d.tasks.ToDictionary(t=>t.id);foreach(var t in d.tasks){if(colors.ContainsKey(t.id))continue;var stack=new Stack<Tuple<string,bool>>();stack.Push(Tuple.Create(t.id,false));while(stack.Count>0){var item=stack.Pop();if(item.Item2){colors[item.Item1]=2;continue;}int color;if(colors.TryGetValue(item.Item1,out color)){if(color==1)throw new InvalidDataException("Ces prérequis créeraient une boucle entre les tâches.");continue;}colors[item.Item1]=1;stack.Push(Tuple.Create(item.Item1,true));foreach(var id in map[item.Item1].dependsOn.Where(map.ContainsKey))stack.Push(Tuple.Create(id,false));}}
+ }
+ internal static void CheckDraft(Data d,WorkTask draft){var list=d.tasks.Select(t=>new WorkTask{id=t.id,title=t.title,status=t.status,dependsOn=new List<string>(t.dependsOn??new List<string>())}).ToList();var previous=list.FindIndex(t=>t.id==draft.id);if(previous>=0)list[previous]=draft;else list.Add(draft);var sample=new Data{tasks=list};Validate(sample);Ensure(sample,draft,draft.status);}
+ internal static void Test(string folder){
+  var d=new Data();var a=new WorkTask{id="a",title="Préparer",project="Personnel",status="todo",priority="Normale"};var b=new WorkTask{id="b",title="Publier",project="Personnel",status="todo",priority="Normale",dependsOn=new List<string>{"a"}};d.tasks.Add(a);d.tasks.Add(b);Store.Validate(d);bool failed=false;try{Schedule.Complete(d,b);}catch(InvalidOperationException){failed=true;}if(!failed||b.status!="todo")throw new Exception("Blocage prérequis");a.dependsOn.Add("b");failed=false;try{Validate(d);}catch(InvalidDataException){failed=true;}a.dependsOn.Clear();if(!failed)throw new Exception("Cycle accepté");Schedule.Complete(d,a);Schedule.Complete(d,b);if(b.status!="done")throw new Exception("Déblocage");var st=new Store(Path.Combine(folder,"dependencies"));st.Value=d;st.Save();if(new Store(st.Root).Value.tasks[1].dependsOn.Single()!="a")throw new Exception("Persistance prérequis");d.tasks.Remove(a);Validate(d);if(Blocking(d,b).Count!=0||b.dependsOn.Count!=1)throw new Exception("Prérequis supprimé");a.status="todo";d.tasks.Add(a);Validate(d);if(Blocking(d,b).Count!=1)throw new Exception("Prérequis restauré perdu");b.status="todo";st.Value=d;st.Save();var record=DeletionHistory.Remove(d,"task",b.id);st.Save();DeletionHistory.Restore(d,record.id);st.Save();if(d.tasks.Single(t=>t.id=="b").dependsOn.Single()!="a")throw new Exception("Historique perd les prérequis");File.WriteAllText(Path.Combine(folder,"DEPENDENCIES_PASS.txt"),"PASS: cycle, blocked completion, unblock, persistence, removed prerequisite.");
+ }
+}
+internal sealed partial class ModernWorkspace {
+ Func<System.Collections.Generic.List<string>> DependencyPicker(StackPanel body,WorkTask task){
+  var chosen=new System.Collections.Generic.HashSet<string>(task==null?new string[0]:(task.dependsOn??new System.Collections.Generic.List<string>()).ToArray());
+  var search=new TextBox{MaxLength=180,ToolTip="Rechercher un prérequis"};Field(body,"Attendre la fin de… (facultatif)",search);var list=new StackPanel();var count=T("",11,Muted);body.Children.Add(count);body.Children.Add(new ScrollViewer{Content=list,MaxHeight=145,VerticalScrollBarVisibility=ScrollBarVisibility.Auto});
+  Action render=delegate{list.Children.Clear();count.Text=chosen.Count+" prérequis sélectionné(s) · recherchez pour retrouver une tâche";foreach(var p in store.Value.tasks.Where(t=>(task==null||t.id!=task.id)&&(String.IsNullOrWhiteSpace(search.Text)||(t.title+" "+t.project).IndexOf(search.Text,StringComparison.CurrentCultureIgnoreCase)>=0)).OrderByDescending(t=>chosen.Contains(t.id)).ThenBy(t=>t.title).Take(100)){string id=p.id;var check=new CheckBox{Content=p.title+" · "+p.project+(p.status=="done"?" · terminée":""),IsChecked=chosen.Contains(id),Margin=new Thickness(0,3,0,5)};check.Click+=delegate{if(check.IsChecked==true)chosen.Add(id);else chosen.Remove(id);count.Text=chosen.Count+" prérequis sélectionné(s)";};list.Children.Add(check);}};search.TextChanged+=delegate{render();};render();return ()=>chosen.ToList();
+ }
+ void DependencyBadge(StackPanel body,WorkTask task){var waiting=TaskDependencies.Blocking(store.Value,task);if(waiting.Count>0)body.Children.Add(T("En attente · "+String.Join(", ",waiting.Select(t=>t.title)),11,Accent,new Thickness(0,4,0,8)));}
+}
