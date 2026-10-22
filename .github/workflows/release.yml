@@ -24,7 +24,7 @@ jobs:
         run: ./build.ps1
       - name: Verifier les 12 suites
         shell: powershell
-        run: ./scripts/test.ps1
+        run: ./scripts/test.ps1 -SkipNativePdf
       - name: Preparer le ZIP et son manifeste SHA-256
         shell: powershell
         run: ./scripts/prepare-release.ps1 -Repository $env:GITHUB_REPOSITORY -SkipBuild

@@ -4,6 +4,11 @@ if ($Repository -notmatch '^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$') { throw 'Depot Gi
 if (!$SkipBuild) { & (Join-Path $ProjectRoot 'build.ps1') -ProjectRoot $ProjectRoot }
 $exe = Join-Path $ProjectRoot 'release\MonEspace.exe'
 $version = [Reflection.AssemblyName]::GetAssemblyName($exe).Version.ToString()
+$validationFile = Join-Path $ProjectRoot 'desktop-validation.json'
+if (!(Test-Path -LiteralPath $validationFile)) { throw 'Executer les 12 suites sur Windows desktop puis ajouter desktop-validation.json au commit.' }
+$validation = [IO.File]::ReadAllText($validationFile) | ConvertFrom-Json
+$fingerprint = & (Join-Path $ProjectRoot 'scripts/source-fingerprint.ps1') -ProjectRoot $ProjectRoot
+if ($validation.sourceSha256 -ne $fingerprint -or $validation.version -ne $version -or $validation.nativePdf -ne $true -or $validation.suites -ne 12) { throw 'Sources modifiees depuis la validation desktop. Relancer scripts/test.ps1 sur Windows 10/11 puis committer desktop-validation.json.' }
 $tag = 'v' + $version
 $out = Join-Path $ProjectRoot 'dist'
 New-Item -ItemType Directory -Path $out -Force | Out-Null

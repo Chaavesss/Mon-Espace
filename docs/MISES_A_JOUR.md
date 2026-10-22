@@ -13,7 +13,7 @@ Le canal devient utilisable dès la première release publiée avec ses deux fic
 
 ## 2. Première publication
 
-Le premier envoi sur main déclenche le workflow. Ouvrir l’onglet **Actions**, puis l’exécution la plus récente. Il faut attendre la fin des étapes **Compiler**, **Vérifier les 12 suites**, **Préparer le ZIP** et **Publier une nouvelle version**.
+Le premier envoi sur main déclenche le workflow. Ouvrir l’onglet **Actions**, puis l’exécution la plus récente. Il faut attendre la fin des étapes **Compiler**, **Vérifier les 12 suites** (le volet PDF natif est contrôlé sur desktop, voir la section 8), **Préparer le ZIP** et **Publier une nouvelle version**.
 
 Le workflow utilise le jeton temporaire **GITHUB_TOKEN** fourni par GitHub, avec **contents: write** uniquement pour ce job. Aucun jeton personnel à copier dans le code. Si les règles du compte bloquent Actions ou les écritures, consulter **Settings → Actions → General** et les messages de l’exécution. Ne pas ajouter de secret au hasard.
 
@@ -50,7 +50,7 @@ Les anciens réglages avec un champ de canal vide restent vides tant que l’adr
 1. Modifier les sources.
 2. Dans **src/ReleaseInfo.cs**, augmenter **AssemblyVersion** et **AssemblyFileVersion**, par exemple de **1.3.0.0** à **1.3.1.0**. Garder les deux valeurs identiques.
 3. Remplacer le contenu de **RELEASE_NOTES.md** par les changements de cette version, sans données personnelles. Maximum 10 000 caractères.
-4. Envoyer le commit sur **main**.
+4. Exécuter **scripts/test.ps1** sur Windows 10/11 pour lancer les 12 suites complètes, y compris le PDF natif. Ajouter le fichier **desktop-validation.json** généré au même commit que les sources, puis envoyer ce commit sur **main**.
 5. Suivre l’exécution dans **Actions**. Les tests doivent réussir avant publication.
 6. Vérifier les deux fichiers dans la nouvelle release.
 
@@ -100,6 +100,6 @@ Le manifeste référence un ZIP attaché à une **version précise**, afin que s
 
 ## 8. Validation de cette préparation
 
-Compilation Windows x64 réussie et 12 suites réussies sur la machine de préparation. Contrôles supplémentaires : installation dans un dossier versionné, copie vérifiée, conservation d’un fichier de données, contenu du ZIP limité aux trois fichiers attendus, manifeste lié au bon numéro et SHA-256 calculé sur le ZIP final. La première exécution sur un serveur GitHub est à contrôler dans Actions ; elle fournit la validation de cet environnement.
+Compilation Windows x64 réussie et 12 suites réussies sur la machine de préparation. Contrôles supplémentaires : installation dans un dossier versionné, copie vérifiée, conservation d’un fichier de données, contenu du ZIP limité aux trois fichiers attendus, manifeste lié au bon numéro et SHA-256 calculé sur le ZIP final. Sur les runners Windows Server 2022 et 2025, les assertions de rendu PDF réussissent, mais la fermeture du processus échoue dans ntdll.dll avec le code 0xc000000d. Le workflow utilise donc explicitement **-SkipNativePdf** et conserve tous les autres contrôles de la suite. Le script local sans cette option conserve le test PDF intégral. Le résultat desktop complet est enregistré dans **desktop-validation.json**, avec une empreinte des sources, icônes, compilation et scripts ; **prepare-release.ps1** refuse de publier si ces fichiers ont changé depuis la validation. Les fins de processus en erreur ne sont jamais transformées en succès. Ce dépôt ne prétend pas prendre en charge Windows Server pour un usage normal de l’application.
 
 Références officielles : [liens permanents vers les assets](https://docs.github.com/en/repositories/releasing-projects-on-github/linking-to-releases), [création d’une release avec gh](https://cli.github.com/manual/gh_release_create).

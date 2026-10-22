@@ -39,7 +39,7 @@ Dans Windows PowerShell, depuis la racine du dépôt :
 
 Le compilateur .NET Framework, les bibliothèques WPF/WinForms et les métadonnées WinRT de Windows sont nécessaires. Le script utilise les composants Windows installés. Résultat local : **release/MonEspace.exe**, puis **dist/MonEspace.zip** et **dist/version.json**.
 
-Le workflow **Compiler et publier Mon espace** compile, lance 12 suites, prépare le paquet et publie une nouvelle version si son numéro n’existe pas encore. Voir [le guide](docs/MISES_A_JOUR.md) pour les versions suivantes et les reprises après un échec.
+Le workflow **Compiler et publier Mon espace** compile, vérifie les suites compatibles avec Windows Server, prépare le paquet et publie une nouvelle version si son numéro n’existe pas encore. Le test PDF natif complet est exécuté sur Windows desktop : **desktop-validation.json** lie cette validation aux empreintes des sources et scripts. La publication est bloquée si cette validation manque ou ne correspond plus au code. Voir [le guide](docs/MISES_A_JOUR.md) pour les versions suivantes et les reprises après un échec.
 
 ## État et limites
 
@@ -50,3 +50,5 @@ Le workflow **Compiler et publier Mon espace** compile, lance 12 suites, prépar
 - Les contrôles de publication ne suppriment aucune donnée locale. Le SHA-256 vérifie l’intégrité du téléchargement ; il ne remplace pas une signature éditeur.
 
 Les marques et logos des services tiers appartiennent à leurs titulaires. Aucune licence de redistribution du code n’est accordée par défaut dans ce dépôt.
+
+Le moteur PDF natif présente un problème de fermeture sur les serveurs GitHub Windows Server 2022/2025 après un rendu réussi. Ce point est documenté dans le guide. Le test PDF complet reste actif par défaut sur Windows desktop.
