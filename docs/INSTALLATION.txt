@@ -1,0 +1,16 @@
+MON ESPACE - WINDOWS 10/11 x64
+
+1. Extraire tout le contenu de MonEspace.zip.
+2. Quitter Mon espace depuis son icone pres de l’horloge si une version tourne deja.
+3. Lancer MonEspace.exe puis suivre l’installation. Aucun compte administrateur requis.
+4. En cas de probleme, Mode_portable.cmd lance l’application sans copier son executable. Ce mode utilise aussi les donnees locales du compte Windows.
+
+Vos donnees restent dans %LOCALAPPDATA%\MonEspace\Data. Ne supprimez pas ce dossier pour mettre a jour. Chaque utilisateur Windows et chaque PC possedent leurs propres donnees.
+
+MISES A JOUR
+Preferences > Mises a jour. Le canal par defaut est :
+https://github.com/Chaavesss/Mon-Espace/releases/latest/download/version.json
+Pour les anciennes installations : enregistrer cette adresse si le champ est vide.
+Le telechargement est verifie par SHA-256. Extraire ensuite le ZIP et relancer MonEspace.exe pour installer. L’installation n’est pas automatique.
+
+Le programme n’est pas signe par un certificat editeur. La premiere installation peut declencher un avertissement Windows. Le probleme d’acces refuse rencontre sur un autre PC reste a verifier sur ce PC.

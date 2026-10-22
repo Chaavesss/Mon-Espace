@@ -1,0 +1,49 @@
+name: Compiler et publier Mon espace
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: release-main
+  cancel-in-progress: false
+jobs:
+  release:
+    if: github.ref == 'refs/heads/main'
+    runs-on: windows-2022
+    timeout-minutes: 25
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - name: Compiler
+        shell: powershell
+        run: ./build.ps1
+      - name: Verifier les 12 suites
+        shell: powershell
+        run: ./scripts/test.ps1
+      - name: Preparer le ZIP et son manifeste SHA-256
+        shell: powershell
+        run: ./scripts/prepare-release.ps1 -Repository $env:GITHUB_REPOSITORY -SkipBuild
+      - name: Publier une nouvelle version
+        shell: powershell
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $tag = [IO.File]::ReadAllText((Join-Path $pwd 'dist/tag.txt')).Trim()
+          $existing = gh release list --repo $env:GITHUB_REPOSITORY --limit 100 --json tagName,isDraft | ConvertFrom-Json
+          if ($LASTEXITCODE -ne 0) { throw 'Lecture des versions impossible.' }
+          $match = $existing | Where-Object tagName -eq $tag
+          if ($match) {
+            if ($match.isDraft) { throw 'Un brouillon existe deja pour cette version. Le supprimer ou le terminer avant de relancer.' }
+            Write-Output ('Version deja publiee : ' + $tag + '. Incrementer ReleaseInfo.cs pour une nouvelle version.')
+            exit 0
+          }
+          gh release create $tag dist/MonEspace.zip dist/version.json --repo $env:GITHUB_REPOSITORY --target $env:GITHUB_SHA --title ('Mon espace ' + $tag) --notes-file dist/RELEASE_NOTES.md --draft
+          if ($LASTEXITCODE -ne 0) { throw 'Creation du brouillon impossible.' }
+          gh release edit $tag --repo $env:GITHUB_REPOSITORY --draft=false --latest
+          if ($LASTEXITCODE -ne 0) { throw 'Publication impossible. Le brouillon conserve les fichiers.' }

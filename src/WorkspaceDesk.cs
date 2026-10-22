@@ -1,0 +1,27 @@
+using System;
+using System.IO;
+using System.Linq;
+using System.Collections.Generic;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
+using System.Windows.Media;
+public sealed class DeskOptions {public bool enabled=false;public string panel="Notes",noteId="";public double ratio=.35;}
+internal sealed partial class ModernWorkspace {
+ readonly Dictionary<string,string> deskDrafts=new Dictionary<string,string>();System.Windows.Threading.DispatcherTimer deskSaveTimer;TextBlock deskSaveStatus;
+ void SetDeskNote(string id,string text){deskDrafts[id]=text;if(deskSaveTimer==null){deskSaveTimer=new System.Windows.Threading.DispatcherTimer{Interval=TimeSpan.FromSeconds(1)};deskSaveTimer.Tick+=delegate{deskSaveTimer.Stop();FlushDeskNotes();};}deskSaveTimer.Stop();deskSaveTimer.Start();if(deskSaveStatus!=null)deskSaveStatus.Text="Enregistrement…";}
+ bool FlushDeskNotes(){foreach(var entry in deskDrafts.ToList()){var note=store.Value.pages.FirstOrDefault(n=>n.id==entry.Key&&!n.trashed);if(note==null){deskDrafts.Remove(entry.Key);continue;}string before=note.body,updated=note.updated;note.body=entry.Value;note.updated=DateTime.Now.ToString("o");if(owner.Save())deskDrafts.Remove(entry.Key);else{note.body=before;note.updated=updated;if(deskSaveStatus!=null)deskSaveStatus.Text="Échec : le brouillon est conservé. Réessayez.";return false;}}if(deskSaveStatus!=null)deskSaveStatus.Text="Enregistré sur ce PC";return true;}
+ UIElement WorkspaceView(StackPanel page){
+  var primary=new ScrollViewer{Content=page};if(!store.Value.settings.Desk.enabled)return primary;
+  var grid=new Grid();var right=store.Value.settings.Desk.ratio;grid.ColumnDefinitions.Add(new ColumnDefinition{Width=new GridLength(1-right,GridUnitType.Star),MinWidth=240});grid.ColumnDefinitions.Add(new ColumnDefinition{Width=new GridLength(12)});grid.ColumnDefinitions.Add(new ColumnDefinition{Width=new GridLength(right,GridUnitType.Star),MinWidth=230});grid.Children.Add(primary);
+  var splitter=new GridSplitter{Width=5,HorizontalAlignment=HorizontalAlignment.Center,VerticalAlignment=VerticalAlignment.Stretch,Background=FaintLine,ResizeDirection=GridResizeDirection.Columns,ResizeBehavior=GridResizeBehavior.PreviousAndNext};Grid.SetColumn(splitter,1);grid.Children.Add(splitter);splitter.DragCompleted+=delegate{double sum=grid.ColumnDefinitions[0].ActualWidth+grid.ColumnDefinitions[2].ActualWidth;if(sum>0){store.Value.settings.Desk.ratio=Math.Max(.2,Math.Min(.6,grid.ColumnDefinitions[2].ActualWidth/sum));owner.Save();}};
+  var body=new StackPanel();var tools=new DockPanel{Margin=new Thickness(0,0,0,18)};var close=Btn("×",delegate{if(!FlushDeskNotes())return;store.Value.settings.Desk.enabled=false;owner.Save();Refresh();},false,true);DockPanel.SetDock(close,Dock.Right);tools.Children.Add(close);var choice=Combo(new[]{"Notes","Agenda","Tâches","Document"},store.Value.settings.Desk.panel);choice.SelectionChanged+=delegate{if(!FlushDeskNotes())return;store.Value.settings.Desk.panel=Convert.ToString(choice.SelectedItem);owner.Save();Refresh();};tools.Children.Add(choice);body.Children.Add(tools);
+  string kind=store.Value.settings.Desk.panel;
+  if(kind=="Notes"){var notes=store.Value.pages.Where(n=>!n.trashed).OrderByDescending(n=>n.updated).ToList();if(notes.Count==0){body.Children.Add(T("Une note à portée de main.",20));body.Children.Add(Btn("+ Créer une note",delegate{EditNote(null,openProject);},true));}else{int index=notes.FindIndex(n=>n.id==store.Value.settings.Desk.noteId);if(index<0)index=0;var picker=new ComboBox{ItemsSource=notes.Select(n=>n.title).ToList(),SelectedIndex=index,Margin=new Thickness(0,0,0,15)};picker.SelectionChanged+=delegate{if(!FlushDeskNotes())return;if(picker.SelectedIndex<0)return;store.Value.settings.Desk.noteId=notes[picker.SelectedIndex].id;owner.Save();Refresh();};body.Children.Add(picker);var note=notes[index];string draft;var edit=new TextBox{Text=deskDrafts.TryGetValue(note.id,out draft)?draft:note.body,AcceptsReturn=true,AcceptsTab=true,TextWrapping=TextWrapping.Wrap,MinHeight=360,MaxLength=300000,VerticalScrollBarVisibility=ScrollBarVisibility.Auto};edit.TextChanged+=delegate{SetDeskNote(note.id,edit.Text);};body.Children.Add(edit);deskSaveStatus=T("Enregistré sur ce PC",10,Muted,new Thickness(0,10,0,10));body.Children.Add(deskSaveStatus);body.Children.Add(Btn("Enregistrer",delegate{FlushDeskNotes();},false,true));}}
+  else if(kind=="Agenda"){body.Children.Add(T(DateTime.Today.ToString("dddd d MMMM",System.Globalization.CultureInfo.GetCultureInfo("fr-FR")),19,Ink,new Thickness(0,0,0,15)));body.Children.Add(DaySchedule(DateTime.Today,true));body.Children.Add(Btn("+ Rendez-vous",delegate{EditAppointment(null,DateTime.Today);},false,true));}
+  else if(kind=="Tâches"){body.Children.Add(T("Mes priorités",20,Ink,new Thickness(0,0,0,15)));body.Children.Add(TaskList(store.Value.tasks.Where(t=>t.status!="done").OrderBy(t=>t.priority=="Haute"?0:1).ThenBy(t=>t.due),8));}
+  else{body.Children.Add(Btn("Choisir un document",delegate{ChooseLocalDocument(true);},true));if(!String.IsNullOrEmpty(sideDocument))body.Children.Add(DocumentView(sideDocument,400));else body.Children.Add(T("PDF, image ou texte à côté de votre travail.",12,Muted,new Thickness(0,20,0,0)));}
+  var border=Box(new ScrollViewer{Content=body},new Thickness(18));Grid.SetColumn(border,2);grid.Children.Add(border);return grid;
+ }
+ void ToggleDesk(){if(!FlushDeskNotes())return;store.Value.settings.Desk.enabled=!store.Value.settings.Desk.enabled;owner.Save();Refresh();}
+}

@@ -1,0 +1,40 @@
+using System;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Web.Script.Serialization;
+public sealed class UpdateOptions {public bool checkOnStartup=true;public string manifestUrl="https://github.com/Chaavesss/Mon-Espace/releases/latest/download/version.json";}
+internal sealed class UpdateManifest {public string version="",downloadUrl="",sha256="",notes="";}
+internal sealed class ApplicationUpdates {
+ readonly HttpClient http;internal ApplicationUpdates(HttpClient client){http=client;}
+ internal static Uri Https(string value){Uri uri;if(!Uri.TryCreate(value,UriKind.Absolute,out uri)||uri.Scheme!="https"||!String.IsNullOrEmpty(uri.UserInfo)||!String.IsNullOrEmpty(uri.Fragment))throw new InvalidDataException("Utilisez une adresse HTTPS sans identifiants ni fragment.");return uri;}
+ internal static UpdateManifest Parse(string json){var manifest=new JavaScriptSerializer{MaxJsonLength=65536}.Deserialize<UpdateManifest>(json);Version version;if(manifest==null||!Version.TryParse(manifest.version,out version)||version.Major<1||manifest.sha256==null||!Regex.IsMatch(manifest.sha256,"^[a-fA-F0-9]{64}$"))throw new InvalidDataException("Le fichier de mise à jour est incomplet (version et empreinte SHA-256 requises).");Https(manifest.downloadUrl);if((manifest.notes??"").Length>10000)throw new InvalidDataException("Description de version trop longue.");return manifest;}
+ internal async Task<byte[]> Read(string url,long limit,CancellationToken token){
+  var address=Https(url);for(int hop=0;hop<6;hop++){using(var response=await http.GetAsync(address,HttpCompletionOption.ResponseHeadersRead,token)){
+   int status=(int)response.StatusCode;if(status>=300&&status<400&&response.Headers.Location!=null){address=Https(new Uri(address,response.Headers.Location).AbsoluteUri);continue;}
+   if(!response.IsSuccessStatusCode)throw new InvalidOperationException("Le serveur de mise à jour répond avec le code "+status+".");if(response.Content.Headers.ContentLength>limit)throw new InvalidDataException("Le téléchargement dépasse la limite autorisée.");
+   using(var stream=await response.Content.ReadAsStreamAsync())using(var output=new MemoryStream()){var buffer=new byte[81920];int count;while((count=await stream.ReadAsync(buffer,0,buffer.Length,token))>0){if(output.Length+count>limit)throw new InvalidDataException("Le téléchargement dépasse la limite autorisée.");output.Write(buffer,0,count);}return output.ToArray();}
+  }}throw new InvalidOperationException("Le serveur de mise à jour redirige trop de fois le téléchargement.");
+ }
+ internal async Task<UpdateManifest> Check(string url,CancellationToken token){return Parse(Encoding.UTF8.GetString(await Read(url,65536,token)));}
+ internal async Task Download(UpdateManifest manifest,string destination,CancellationToken token){byte[] bytes=await Read(manifest.downloadUrl,100L*1024*1024,token);token.ThrowIfCancellationRequested();if(!String.Equals(WorkspaceNext.Hash(bytes),manifest.sha256,StringComparison.OrdinalIgnoreCase))throw new InvalidDataException("Le fichier reçu ne correspond pas à la version annoncée. Il n’a pas été enregistré.");string temp=destination+"."+Guid.NewGuid().ToString("N")+".tmp";try{File.WriteAllBytes(temp,bytes);if(File.Exists(destination))File.Replace(temp,destination,destination+".previous");else File.Move(temp,destination);}finally{if(File.Exists(temp))File.Delete(temp);}}
+}
+internal sealed partial class ModernWorkspace {
+ bool updateBusy;string updateMessage="",updateDownloaded="";UpdateManifest updateFound;CancellationTokenSource updateCancel;
+ void UpdatesPage(System.Windows.Controls.StackPanel body){
+  var config=new System.Windows.Controls.StackPanel();config.Children.Add(T("Version installée · "+System.Reflection.Assembly.GetExecutingAssembly().GetName().Version,16,Ink,new System.Windows.Thickness(0,0,0,15)));var url=new System.Windows.Controls.TextBox{Text=store.Value.settings.Updates.manifestUrl,MaxLength=2048};Field(config,"Adresse du canal de mises à jour",url);
+  config.Children.Add(T("Cette adresse doit être fournie avec le canal de diffusion de Mon espace. Chaque utilisateur garde ses propres réglages et données.",12,Muted,new System.Windows.Thickness(0,0,0,15)));
+  var tools=new System.Windows.Controls.WrapPanel();var save=Btn("Enregistrer l’adresse",delegate{try{if(url.Text.Trim()!="")ApplicationUpdates.Https(url.Text.Trim());store.Value.settings.Updates.manifestUrl=url.Text.Trim();updateFound=null;owner.Save();updateMessage="Adresse enregistrée.";Refresh();}catch(Exception ex){System.Windows.MessageBox.Show(ex.Message);}},false,true);save.IsEnabled=!updateBusy;tools.Children.Add(save);var check=Btn("Rechercher une mise à jour",delegate{CheckUpdate();},true);check.IsEnabled=!updateBusy&&!String.IsNullOrWhiteSpace(store.Value.settings.Updates.manifestUrl);tools.Children.Add(check);if(updateBusy)tools.Children.Add(Btn("Annuler",delegate{if(updateCancel!=null)updateCancel.Cancel();},false,true));config.Children.Add(tools);var automatic=new System.Windows.Controls.CheckBox{Content="Vérifier au démarrage",IsChecked=store.Value.settings.Updates.checkOnStartup};automatic.Click+=delegate{store.Value.settings.Updates.checkOnStartup=automatic.IsChecked==true;owner.Save();};config.Children.Add(automatic);body.Children.Add(Card("Mises à jour de Mon espace",config));
+  if(!String.IsNullOrEmpty(updateMessage))body.Children.Add(T(updateMessage,12,Muted,new System.Windows.Thickness(0,18,0,18)));
+  if(updateFound!=null){var version=new System.Windows.Controls.StackPanel();version.Children.Add(T(updateFound.notes,13,Muted,new System.Windows.Thickness(0,0,0,15)));version.Children.Add(T("Téléchargement depuis "+new Uri(updateFound.downloadUrl).Host,11,Muted,new System.Windows.Thickness(0,0,0,15)));var download=Btn("Télécharger la version vérifiée",delegate{DownloadUpdate();},true);download.IsEnabled=!updateBusy;version.Children.Add(download);body.Children.Add(Card("Version "+updateFound.version,version));}
+  if(!String.IsNullOrEmpty(updateDownloaded))body.Children.Add(Btn("Ouvrir le dossier du téléchargement",delegate{Open(Path.GetDirectoryName(updateDownloaded));},false,true));
+ }
+ async void UpdateOperation(Func<ApplicationUpdates,CancellationToken,Task> operation){if(updateBusy)return;updateBusy=true;updateCancel=new CancellationTokenSource();Refresh();ServicePointManager.SecurityProtocol|=SecurityProtocolType.Tls12;try{using(var http=new HttpClient(new HttpClientHandler{AllowAutoRedirect=false}){Timeout=TimeSpan.FromMinutes(3)})await operation(new ApplicationUpdates(http),updateCancel.Token);}catch(OperationCanceledException){updateMessage="Vérification ou téléchargement annulé.";}catch(Exception ex){updateMessage=ex.Message;}finally{updateBusy=false;updateCancel.Dispose();updateCancel=null;if(!owner.IsDisposed)Refresh();}}
+ void CheckUpdate(){string url=store.Value.settings.Updates.manifestUrl;UpdateOperation(async (client,token)=>{var manifest=await client.Check(url,token);if(new Version(manifest.version)>System.Reflection.Assembly.GetExecutingAssembly().GetName().Version){updateFound=manifest;updateMessage="Une nouvelle version est disponible.";}else{updateFound=null;updateMessage="Vous utilisez déjà la dernière version publiée sur ce canal.";}});}
+ void DownloadUpdate(){if(updateFound==null)return;var manifest=updateFound;string ext=Path.GetExtension(new Uri(manifest.downloadUrl).AbsolutePath);if(ext!=".zip"&&ext!=".exe")ext=".zip";using(var picker=new System.Windows.Forms.SaveFileDialog{Title="Télécharger Mon espace",FileName="MonEspace-"+manifest.version+ext,Filter=ext==".exe"?"Application Windows|*.exe":"Archive ZIP|*.zip"})if(picker.ShowDialog()==System.Windows.Forms.DialogResult.OK){string target=picker.FileName;UpdateOperation(async (client,token)=>{await client.Download(manifest,target,token);updateDownloaded=target;updateMessage="Téléchargement vérifié et enregistré. Vous pouvez l’installer lorsque vous le souhaitez.";});}}
+}

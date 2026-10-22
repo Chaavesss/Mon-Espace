@@ -1,0 +1,9 @@
+using System;
+using System.IO;
+using System.Linq;
+using System.Collections.Generic;
+internal sealed class FileBatchResult {internal List<ProjectFile> Files=new List<ProjectFile>();internal List<string> Errors=new List<string>();}
+internal static class ProjectFileBatch {
+ internal static FileBatchResult Copy(Store store,IEnumerable<string> paths){var result=new FileBatchResult();var items=paths.Distinct(StringComparer.OrdinalIgnoreCase).ToArray();if(items.Length>20)throw new InvalidDataException("Déposez au maximum 20 fichiers à la fois.");long total=0;foreach(string path in items)try{if(Directory.Exists(path))throw new InvalidDataException("Les dossiers ne sont pas pris en charge. Déposez leurs fichiers.");var info=new FileInfo(path);if(!info.Exists)throw new FileNotFoundException("Fichier introuvable.");if(info.Length>50L*1024*1024)throw new InvalidDataException("Limite : 50 Mo par fichier.");total+=info.Length;if(total>500L*1024*1024)throw new InvalidDataException("Limite : 500 Mo par dépôt.");result.Files.Add(ProjectData.Attach(store,path));}catch(Exception ex){result.Errors.Add(Path.GetFileName(path)+" : "+ex.Message);}return result;}
+ internal static void Test(string folder){var store=new Store(Path.Combine(folder,"batch"));string first=Path.Combine(store.Root,"premier.txt"),second=Path.Combine(store.Root,"second.txt");File.WriteAllText(first,"premier");File.WriteAllText(second,"second");var result=Copy(store,new[]{first,second,first,store.Root,Path.Combine(store.Root,"absent.txt")});if(result.Files.Count!=2||result.Errors.Count!=2||File.ReadAllText(ProjectData.PathFor(store,result.Files[0]))!="premier"||File.ReadAllText(first)!="premier")throw new Exception("Dépôt multiple / copies / sources / erreurs");bool rejected=false;try{Copy(store,Enumerable.Range(0,21).Select(i=>Path.Combine(store.Root,i+".txt")));}catch(InvalidDataException){rejected=true;}if(!rejected)throw new Exception("Limite dépôt acceptée");}
+}
