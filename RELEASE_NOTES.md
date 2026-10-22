@@ -1,10 +1,7 @@
-Mon espace 1.3.0
+Mon espace 1.3.1
 
-- Deux panneaux pour travailler avec une note, un agenda ou un document.
-- Documents locaux : PDF, images et textes.
-- Projets avec budget et mode de lancement.
-- Agenda Google : consultation, creation, modification et suppression.
-- Canal de mises a jour GitHub avec verification SHA-256.
-- Installation dans un dossier propre a chaque version.
+- Nouvelle icone orange et anthracite, avec deux panneaux de travail.
+- Remplacement du monogramme dans l’application, les fenetres, la zone de notification et les raccourcis crees par cette version.
+- Icone Windows fournie en neuf tailles, de 16 a 256 pixels.
 
-Documents Google exportes en PDF en lecture seule. Connexions Google et Spotify a configurer separement sur chaque PC.
+Les fonctionnalites et les donnees utilisateur sont conservees.
