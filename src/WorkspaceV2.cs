@@ -46,7 +46,7 @@ internal sealed partial class ModernWorkspace {
  UIElement LineIcon(string page,Brush color){
   return new Viewbox{Width=18,Height=18,Margin=new Thickness(0,0,11,0),Child=new System.Windows.Shapes.Path{Data=Geometry.Parse(NavigationIcon(page)),Stroke=color,StrokeThickness=1.45,StrokeStartLineCap=PenLineCap.Round,StrokeEndLineCap=PenLineCap.Round,StrokeLineJoin=PenLineJoin.Round,Width=20,Height=20}};
  }
- string ShortPage(string page){return page=="Documents locaux"?"Fichiers":page=="Aujourd’hui"?"Accueil":page=="Mes tâches"?"Tâches":page=="Mes projets"?"Projets":page=="Mes notes"?"Notes":page=="Mon budget"?"Budget":page=="Google Drive"?"Google Drive":page;}
+ string ShortPage(string page){return page=="Boîte de réception"?"Réception":page=="Documents locaux"?"Fichiers":page=="Aujourd’hui"?"Accueil":page=="Mes tâches"?"Tâches":page=="Mes projets"?"Projets":page=="Mes notes"?"Notes":page=="Mon budget"?"Budget":page=="Google Drive"?"Google Drive":page;}
  Button NavigationButton(string page,string label){
   bool active=selected==page;var button=Btn(label,delegate{Go(page);},false,true);
   var row=new DockPanel();row.Children.Add(LineIcon(page,active?AccentText:Muted));var text=T(label,12,active?Ink:Muted);text.VerticalAlignment=VerticalAlignment.Center;row.Children.Add(text);
@@ -58,8 +58,8 @@ internal sealed partial class ModernWorkspace {
   nav.Children.Clear();
   var search=NavigationButton("Recherche","Rechercher");search.ToolTip="Rechercher · Ctrl + K";search.Background=SurfaceBrush;search.Margin=new Thickness(0,0,0,14);nav.Children.Add(search);
   nav.Children.Add(T("VOTRE ESPACE",9,Muted,new Thickness(12,0,0,11)));
-  foreach(var page in new[]{"Aujourd’hui","Mes tâches","Agenda","Mes projets","Mes notes","Documents locaux","Google Drive","Mon budget","Ma musique"})nav.Children.Add(NavigationButton(page,ShortPage(page)));
-  var extras=new[]{"Boîte de réception","Concentration","Habitudes","Bilan de la semaine","Mes modes","Rappels","Mes services"};
+  foreach(var page in new[]{"Aujourd’hui","Mes tâches","Boîte de réception","Agenda","Mes projets","Mes notes","Documents locaux","Google Drive","Mon budget","Ma musique"})nav.Children.Add(NavigationButton(page,ShortPage(page)));
+  var extras=new[]{"Concentration","Habitudes","Bilan de la semaine","Mes modes","Rappels","Mes services"};
   var more=Btn(showExtraTools?"Moins d’outils  −":"Tous mes outils  +",delegate{showExtraTools=!showExtraTools;Refresh();},false,true);more.HorizontalContentAlignment=HorizontalAlignment.Left;more.Foreground=Muted;more.Margin=new Thickness(0,13,0,8);nav.Children.Add(more);
   if(showExtraTools)foreach(string page in extras)nav.Children.Add(NavigationButton(page,page));else if(extras.Contains(selected))nav.Children.Add(NavigationButton(selected,selected));
   if(store.Value.favorites.Count>0)FavoriteSidebar();
@@ -78,7 +78,7 @@ internal sealed partial class ModernWorkspace {
   foreach(var entry in openTabs.ToList()){
    var tab=entry;bool active=tab.Page==selected&&tab.Project==openProject&&tab.Document==(selected=="Documents locaux"?openDocument:"");
    var row=new StackPanel{Orientation=Orientation.Horizontal};
-   var select=Btn(!String.IsNullOrEmpty(tab.Document)?System.IO.Path.GetFileName(tab.Document):String.IsNullOrEmpty(tab.Project)?ShortPage(tab.Page):tab.Project,delegate{selected=tab.Page;openProject=tab.Project;openDocument=tab.Document??"";Refresh();},false,true);
+   var select=Btn(!String.IsNullOrEmpty(tab.Document)?System.IO.Path.GetFileName(tab.Document):String.IsNullOrEmpty(tab.Project)?ShortPage(tab.Page):tab.Project,delegate{selected=tab.Page;openProject=tab.Project;openDocument=tab.Document??"";RecordTabResume();Refresh();},false,true);
    select.Padding=new Thickness(12,8,7,8);select.Foreground=active?Ink:Muted;row.Children.Add(select);
    if(tab.Page!="Aujourd’hui"){var close=Btn("×",delegate{openTabs.Remove(tab);if(active){var last=openTabs.LastOrDefault();selected=last==null?"Aujourd’hui":last.Page;openProject=last==null?"":last.Project;openDocument=last==null?"":last.Document??"";}Refresh();},false,true);close.ToolTip="Fermer cet onglet";close.Padding=new Thickness(3,6,9,6);close.Margin=new Thickness(0);row.Children.Add(close);}
    var border=new Border{Child=row,CornerRadius=new CornerRadius(9),Background=active?SurfaceBrush:Brushes.Transparent,BorderBrush=active?FaintLine:Brushes.Transparent,BorderThickness=new Thickness(1),Margin=new Thickness(0,0,6,5)};workspaceTabs.Children.Add(border);
@@ -132,6 +132,7 @@ internal sealed partial class ModernWorkspace {
    var setup=new StackPanel();setup.Children.Add(T("Donnez un prénom à votre espace, choisissez vos couleurs et retrouvez vos outils.",13,Muted,new Thickness(0,0,0,14)));
    setup.Children.Add(Btn("Configurer mon espace",delegate{owner.SetupWorkspace();},true));var card=Card("Bienvenue chez vous.",setup);card.Margin=new Thickness(0,0,0,18);root.Children.Add(card);
   }
+  DayHomeBar(root);
   HomeOverviewV3(root);
   HomeWidgets(root);
  }

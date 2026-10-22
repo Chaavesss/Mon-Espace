@@ -100,6 +100,12 @@ $nativeArgs += (Join-Path $nativeProject 'src\GoogleCalendarWorkspace.cs')
 $nativeArgs += (Join-Path $nativeProject 'src\ApplicationUpdates.cs')
 $nativeArgs += ('/reference:' + (Join-Path $env:WINDIR 'System32\WinMetadata\Windows.Data.winmd'))
 $nativeArgs += (Join-Path $nativeProject 'src\WorkspaceNextAcceptance.cs')
+$nativeArgs += (Join-Path $nativeProject 'src\DayDashboard.cs')
+$nativeArgs += (Join-Path $nativeProject 'src\DayDashboardWorkspace.cs')
+$nativeArgs += (Join-Path $nativeProject 'src\HomeBlockEditing.cs')
+$nativeArgs += (Join-Path $nativeProject 'src\RoutineHomes.cs')
+$nativeArgs += (Join-Path $nativeProject 'src\DayDashboardAcceptance.cs')
+$nativeArgs += (Join-Path $nativeProject 'src\DayDashboardUiAcceptance.cs')
 $responseFile = Join-Path $nativeProject 'release\compilation.rsp'
 [System.IO.File]::WriteAllLines($responseFile, [string[]]($nativeArgs | ForEach-Object { '"' + $_ + '"' }), (New-Object System.Text.UTF8Encoding($false)))
 $processInfo = New-Object System.Diagnostics.ProcessStartInfo

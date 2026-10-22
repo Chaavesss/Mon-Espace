@@ -22,9 +22,9 @@ internal sealed partial class ModernWorkspace {
   actions.Children.Add(Btn(store.Value.settings.Desk.enabled?"Un panneau":"Deux panneaux",delegate{ToggleDesk();},false,true));actions.Children.Add(Btn("+  Capturer",delegate{owner.ShowQuickCapture();},true));if(store.Value.settings.Desk.enabled){header.RowDefinitions.Add(new RowDefinition{Height=GridLength.Auto});header.RowDefinitions.Add(new RowDefinition{Height=GridLength.Auto});Grid.SetColumnSpan(labels,2);Grid.SetRow(actions,1);actions.Margin=new Thickness(0,14,0,0);}else Grid.SetColumn(actions,1);header.Children.Add(actions);wrapper.Children.Add(header);
  }
  void HomeOverviewV3(StackPanel root){
-  var active=store.Value.tasks.Where(t=>t.status!="done").ToList();string today=DateTime.Today.ToString("yyyy-MM-dd");
-  var focus=active.OrderBy(t=>t.priority=="Haute"?0:1).ThenBy(t=>String.IsNullOrEmpty(t.due)?"9999":t.due).FirstOrDefault();
-  var next=store.Value.events.Where(e=>Schedule.At(e.date,e.time)>=DateTime.Now).OrderBy(e=>e.date).ThenBy(e=>e.time).FirstOrDefault();
+  var active=DayDashboard.Tasks(store.Value).Where(t=>t.status!="done").ToList();string today=DateTime.Today.ToString("yyyy-MM-dd");
+  var focus=DayDashboard.Priorities(store.Value,DateTime.Today).FirstOrDefault(t=>t.status!="done");
+  var next=NextDayAppointment(DateTime.Now);
   if(store.Value.settings.ShowBanner){
    var layout=new Grid{Margin=new Thickness(0,0,10,20)};layout.ColumnDefinitions.Add(new ColumnDefinition{Width=new GridLength(1.65,GridUnitType.Star)});layout.ColumnDefinitions.Add(new ColumnDefinition());
    var main=new Grid{MinHeight=150};main.ColumnDefinitions.Add(new ColumnDefinition());main.ColumnDefinitions.Add(new ColumnDefinition{Width=new GridLength(72)});
@@ -46,7 +46,7 @@ internal sealed partial class ModernWorkspace {
   }
   if(store.Value.settings.ShowStats){
    var stats=new UniformGrid{Columns=4,Margin=new Thickness(0,0,0,24)};
-   string[][] values={new[]{active.Count(t=>!String.IsNullOrEmpty(t.due)&&String.CompareOrdinal(t.due,today)<=0).ToString(),"À faire aujourd’hui","Mes tâches"},new[]{active.Count(t=>t.status=="doing").ToString(),"En cours","Mes tâches"},new[]{store.Value.events.Count(e=>e.date==today).ToString(),"Rendez-vous","Agenda"},new[]{owner.AllProjects().Count.ToString(),"Projets ouverts","Mes projets"}};
+   string[][] values={new[]{active.Count(t=>!String.IsNullOrEmpty(t.due)&&String.CompareOrdinal(t.due,today)<=0).ToString(),"À faire aujourd’hui","Mes tâches"},new[]{active.Count(t=>t.status=="doing").ToString(),"En cours","Mes tâches"},new[]{(store.Value.events.Count(e=>e.date==today)+GoogleTodayCount()).ToString(),"Rendez-vous","Agenda"},new[]{owner.AllProjects().Count.ToString(),"Projets ouverts","Mes projets"}};
    foreach(var value in values){string target=value[2];var grid=new DockPanel();var number=T(value[0],25,Ink,new Thickness(0,0,12,0));number.FontFamily=new FontFamily("Georgia");DockPanel.SetDock(number,Dock.Left);grid.Children.Add(number);var label=T(value[1],11,Muted);label.VerticalAlignment=VerticalAlignment.Center;grid.Children.Add(label);var button=Btn("",delegate{Go(target);},false,true);button.Content=grid;button.HorizontalContentAlignment=HorizontalAlignment.Stretch;button.Background=SurfaceBrush;button.Margin=new Thickness(0,0,10,0);button.Padding=new Thickness(16,13,12,13);stats.Children.Add(button);}root.Children.Add(stats);
   }
  }

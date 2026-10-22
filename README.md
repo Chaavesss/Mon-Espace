@@ -2,7 +2,7 @@
 
 Application Windows personnelle : accueil, tâches, notes, projets, planning, budget manuel, raccourcis, modes de lancement, musique et widget.
 
-**Windows 10/11 x64 · .NET Framework 4.8 · version 1.3.1.0**
+**Windows 10/11 x64 · .NET Framework 4.8 · version 1.4.0.0**
 
 ## Télécharger et installer
 
@@ -52,3 +52,7 @@ Le workflow **Compiler et publier Mon espace** compile, vérifie les suites comp
 Les marques et logos des services tiers appartiennent à leurs titulaires. Aucune licence de redistribution du code n’est accordée par défaut dans ce dépôt.
 
 Le moteur PDF natif présente un problème de fermeture sur les serveurs GitHub Windows Server 2022/2025 après un rendu réussi. Ce point est documenté dans le guide. Le test PDF complet reste actif par défaut sur Windows desktop.
+
+## Nouveautés 1.4
+
+Trois priorités choisies pour la journée, reprise des notes/projets/documents récents, réception des captures accessible depuis l’accueil, déplacement et redimensionnement des blocs, et accueils associés aux modes Travail/Dofus/Perso. [Guide d’utilisation](docs/MA_JOURNEE.md).
