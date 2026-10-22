@@ -1,10 +1,12 @@
-COMPAGNON DOFUS INDEPENDANT 1.0 — Windows 10/11 x64
+COMPAGNON DOFUS INDEPENDANT 1.1 — Windows 10/11 x64
 
 1. Extraire tout le ZIP.
 2. Double-cliquer sur Installer_Compagnon_Dofus.cmd pour installer et créer les raccourcis.
    Ou ouvrir CompagnonDofus.exe directement pour l'utiliser sans installation.
 3. Dans Personnage · Guides : renseigner le personnage, puis Enregistrer.
 4. Choisir Rush Sylvestre Accéléré ou Dofus Sylvestre et Charger / actualiser.
+   Guides Ganymède charge la liste des guides principaux français. Choisir puis Charger.
+   Ou coller un lien https://ganymede-app.com/guides/123 puis Charger ce guide Ganymède.
    Tous les guides permet de rechercher les autres parcours publics Tougli.
 5. Fermer les réglages : l'overlay reste ouvert, redimensionnable et épinglable.
 
@@ -21,7 +23,10 @@ Pour désinstaller, fermer l'application puis supprimer le dossier App et ses ra
 Conserver Data pour retrouver sa progression après réinstallation.
 
 Cette application n'installe pas Mon espace et n'accède pas à ses données.
-Pas de synchronisation automatique entre les deux applications ni avec un compte Tougli.
+Pas de synchronisation automatique entre les deux applications ni avec un compte Tougli / Ganymède.
+Les parcours Tougli et Ganymède conservent des validations distinctes. Les extraits associés enrichissent la quête Tougli sans valider un autre parcours.
+Ganymède : textes et coordonnées directement dans l’overlay. Illustrations et éléments interactifs dans le guide source.
+Les listes de ressources Ganymède restent dans les instructions, sans total calculé.
 Chaque utilisateur Windows possède ses propres données.
 Pas de lecture du jeu, d'automatisation de combat ou d'injection dans DOFUS.
 L'overlay fonctionne comme une fenêtre Windows ; le mode fenêtré sans bordure du jeu est conseillé.
@@ -29,7 +34,20 @@ Les instructions détaillées s'ouvrent dans le navigateur habituel.
 Les choix inconnus ne sont pas devinés : renseigner classe, alignement et ordre.
 Le compteur de ressources ne connaît pas l'inventaire.
 
-Source : Tougli — Toufloux et Gligo, https://tougli.barbofus.com/guides
+Source Ganymède : https://ganymede-app.com — attribution des auteurs dans le compagnon.
+Source Tougli : Tougli — Toufloux et Gligo, https://tougli.barbofus.com/guides
 Outil indépendant, non affilié à Ankama, Tougli ou Ganymède.
 Aucun guide Tougli n'est distribué dans le ZIP : chargement public à la demande.
 Windows peut afficher un avertissement pour cet exécutable non signé.
+
+INSTRUCTIONS GANYMEDE DANS LES QUETES TOUGLI
+- Ouvrir votre parcours Tougli habituel.
+- Cliquer Charger les instructions du parcours, ou Personnage · Guides puis Charger les instructions de tout le parcours.
+- Le premier chargement consulte les guides principaux français : plusieurs minutes possibles. Annuler conserve les guides déjà chargés.
+- Les extraits portant le même nom de quête apparaissent automatiquement dans la quête Tougli.
+- Si plusieurs guides correspondent, choisir la source proposée.
+- Instruction suivante change seulement le sous-détail. Quête terminée valide l'étape Tougli.
+- Personnage · Guides permet d'associer un guide précis par URL ou numéro sans quitter Tougli.
+- Les quêtes sans bloc Ganymède reconnu restent explicitement sans instruction associée.
+- Les trajets communs hors du bloc de quête, illustrations et interactions restent dans le guide source.
+- Aucun rapprochement approximatif des noms et aucune validation automatique depuis le jeu.

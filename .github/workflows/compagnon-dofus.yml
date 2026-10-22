@@ -33,6 +33,18 @@ jobs:
           if ($p.ExitCode -ne 0) { Get-Content (Join-Path $results 'FAIL.txt'); throw 'Companion tests failed' }
           if (!(Test-Path (Join-Path $results 'PASS.txt'))) { throw 'Missing test report' }
           Get-Content (Join-Path $results 'PASS.txt')
+      - name: Verifier le lecteur avec une page publique Ganymede
+        shell: powershell
+        run: |
+          $live = Join-Path $pwd 'dist-compagnon/live-reader'
+          New-Item -ItemType Directory -Force $live | Out-Null
+          Invoke-WebRequest -Uri 'https://ganymede-app.com/guides/2' -UseBasicParsing -TimeoutSec 50 -OutFile (Join-Path $live 'page.html')
+          $p = Start-Process (Join-Path $pwd 'dist-compagnon/CompagnonDofus.exe') -ArgumentList @('--ganymede-reader-test', ('"' + $live + '"')) -Wait -PassThru
+          if ($p.ExitCode -ne 0) { Get-Content (Join-Path $live 'GANYMEDE_FAIL.txt'); throw 'Public guide reader failed' }
+          $result = Get-Content (Join-Path $live 'ganymede-result.json') -Raw | ConvertFrom-Json
+          if ($result.steps -lt 100 -or $result.coordinates -lt 100 -or $result.instructionChars -lt 1000) { throw 'Public guide incomplete' }
+          Get-Content (Join-Path $live 'ganymede-result.json')
+          Copy-Item (Join-Path $live 'ganymede-result.json') 'test-results/compagnon/ganymede-public-result.json'
       - name: Archiver les controles
         if: always()
         uses: actions/upload-artifact@v4
@@ -53,11 +65,11 @@ jobs:
           Compress-Archive -Path "$stage/*" -DestinationPath $zip -Force
           $hash = (Get-FileHash $zip -Algorithm SHA256).Hash.ToLowerInvariant()
           [IO.File]::WriteAllText((Join-Path $pwd 'dist-compagnon/SHA256.txt'), ($hash + '  CompagnonDofus.zip'))
-          $tag = 'compagnon-dofus-v1.0.0'
+          $tag = 'compagnon-dofus-v1.1.0'
           $existing = gh release list --repo $env:GITHUB_REPOSITORY --limit 100 --json tagName | ConvertFrom-Json
           if ($LASTEXITCODE -ne 0) { throw 'Cannot inspect releases' }
           if ($existing | Where-Object tagName -eq $tag) { throw 'Companion version already exists; increment before publishing' }
-          gh release create $tag $zip dist-compagnon/SHA256.txt --repo $env:GITHUB_REPOSITORY --target $env:GITHUB_SHA --title 'Compagnon Dofus indépendant 1.0' --notes-file standalone/dofus/RELEASE_NOTES.md --draft
+          gh release create $tag $zip dist-compagnon/SHA256.txt --repo $env:GITHUB_REPOSITORY --target $env:GITHUB_SHA --title 'Compagnon Dofus indépendant 1.1' --notes-file standalone/dofus/RELEASE_NOTES.md --draft
           if ($LASTEXITCODE -ne 0) { throw 'Cannot create companion release' }
           gh release edit $tag --repo $env:GITHUB_REPOSITORY --draft=false --latest=false
           if ($LASTEXITCODE -ne 0) { throw 'Cannot publish companion release' }
