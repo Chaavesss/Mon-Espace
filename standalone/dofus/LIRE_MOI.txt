@@ -1,4 +1,4 @@
-COMPAGNON DOFUS INDEPENDANT 1.2 — Windows 10/11 x64
+COMPAGNON DOFUS INDEPENDANT 1.3 — Windows 10/11 x64
 
 1. Extraire tout le ZIP.
 2. Double-cliquer sur Installer_Compagnon_Dofus.cmd pour installer et créer les raccourcis.
@@ -54,3 +54,11 @@ INSTRUCTIONS GANYMEDE DANS LES QUETES TOUGLI
 
 POSITIONS CLIQUABLES
 Cliquer une position entre crochets copie /travel x,y. La coche temporaire confirme la copie. Aucun déplacement ni avancement de quête automatique.
+
+CHRONOMETRE SONGES
+Bouton Songes · 25 étages. Sélectionner votre fenêtre DOFUS, activer la détection et revenir dans le jeu. Le jeu doit rester au premier plan et les repères visibles.
+FIN DE TOUR = combat réel, sans compter le placement. Bandeau jaune VICTOIRE = arrêt du combat. Profondeur = salle, pas nombre de combats.
+Le chrono global démarre au premier combat et continue au marché / bonus. Une victoire en salle 25 ou le bouton Terminer clôt la run. Pause et corrections manuelles disponibles.
+Les images ne sont ni enregistrées ni envoyées. OCR Windows requis pour la lecture automatique ; chrono manuel utilisable sinon.
+Lecture expérimentale à vérifier sur votre interface. Délai de lecture d'environ une seconde ou plus selon le PC.
+Données : Data/songes-run.json. Une nouvelle run archive le précédent bilan. Après fermeture, la reprise est en pause pour ne pas compter le temps hors application.

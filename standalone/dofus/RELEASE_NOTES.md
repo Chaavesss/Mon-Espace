@@ -1,7 +1,16 @@
-Compagnon Dofus indépendant 1.2 — coordonnées cliquables.
+Compagnon Dofus indépendant 1.3 — chrono Songes sur 25 étages.
 
-Cliquer une position entre crochets, dans les en-têtes ou le texte des instructions, copie la commande `/travel x,y`. Une coche confirme la copie pendant un court instant. Plusieurs positions dans une même consigne sont indépendantes. Aucun avancement de quête n’est déclenché.
+Nouveau bouton **Songes · 25 étages** dans le compagnon.
 
-Fermer l’ancienne version, extraire le ZIP puis lancer **Installer_Compagnon_Dofus.cmd**. Personnages, guides chargés et progression conservés.
+- Affichage principal : temps total de run et temps de la salle actuelle, avec historique des temps par salle. Le temps par salle continue jusqu’au changement de profondeur, y compris aux marchés et bonus.
+- Chrono de combat affiché séparément.
+- Lecture locale de la fenêtre DOFUS sélectionnée : **FIN DE TOUR** démarre le combat après le placement ; le bandeau jaune **VICTOIRE** l’arrête. Les défaites reconnues sont séparées.
+- Lecture de **Profondeur** en haut à gauche pour le numéro de salle, distinct du nombre de combats : marchés et bonus ne sont pas comptés comme combats.
+- Le chrono global démarre au premier combat reconnu et continue entre les combats. Une victoire reconnue en salle 25 termine la run ; bouton manuel de fin disponible.
+- Compteurs, temps de combat et moyenne ; pause et corrections manuelles ; reprise de sauvegarde en pause après fermeture.
 
-Tests natifs Windows : lecture et association Ganymède/Tougli, interface, progression, liens de coordonnées, normalisation, retours de copie et échec du presse-papiers. Le fonctionnement au-dessus du jeu et le presse-papiers des logiciels tiers restent à vérifier sur votre PC.
+Sélectionner la fenêtre DOFUS, cliquer Activer la détection puis revenir dans le jeu. Celui-ci doit être visible et au premier plan. Les repères doivent rester visibles. La capture est locale, analysée en mémoire sans envoi ni conservation d’images. Un statut indique quand la détection est suspendue. La langue OCR Windows doit être disponible ; sinon le chrono manuel reste utilisable.
+
+Détection expérimentale : repères vérifiés sur des extraits fournis, à confirmer en vraie run sur votre PC. Une lecture manquée, un élément masqué ou une interface déplacée peut demander une correction. Précision de l’ordre de la seconde, dépendant du délai OCR. Aucun clic, aucune action ni lecture mémoire dans DOFUS.
+
+Fermer l’ancienne version puis lancer l’installateur du nouveau ZIP. Guides, personnages et progression conservés. La sauvegarde Songes est séparée dans le même dossier Data. Cette version concerne le compagnon indépendant, pas Mon espace.

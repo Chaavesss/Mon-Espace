@@ -9,6 +9,10 @@ foreach ($name in @('WindowsBase','PresentationCore','PresentationFramework','Sy
     if (!$found) { throw "Assembly missing: $name" }
     $refs += $found
 }
+$refs += (Join-Path $env:WINDIR 'Microsoft.NET/Framework64/v4.0.30319/System.Runtime.WindowsRuntime.dll')
+$runtime = Get-ChildItem (Join-Path $gac 'GAC_MSIL/System.Runtime') -Filter 'System.Runtime.dll' -Recurse | Select-Object -First 1 -ExpandProperty FullName
+$refs += $runtime
+foreach ($name in @('Windows.Media','Windows.Foundation','Windows.Globalization','Windows.Graphics','Windows.Storage')) { $refs += Join-Path $env:WINDIR ('System32/WinMetadata/' + $name + '.winmd') }
 $argsList = @('/nologo','/target:winexe','/platform:x64','/optimize+','/codepage:65001','/utf8output',('/out:' + (Join-Path $out 'CompagnonDofus.exe')),('/win32icon:' + (Join-Path $ProjectRoot 'assets/MonEspace.ico')),('/resource:' + (Join-Path $ProjectRoot 'assets/MonEspace.ico') + ',MonEspace.Icon'))
 $argsList += $refs | ForEach-Object { '/reference:' + $_ }
 $argsList += @('DofusCompanion.cs','TougliReader.cs','AppIdentity.cs') | ForEach-Object { Join-Path $ProjectRoot ('src/' + $_) }
