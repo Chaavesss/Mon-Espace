@@ -1,4 +1,4 @@
-COMPAGNON DOFUS INDEPENDANT 1.1 — Windows 10/11 x64
+COMPAGNON DOFUS INDEPENDANT 1.2 — Windows 10/11 x64
 
 1. Extraire tout le ZIP.
 2. Double-cliquer sur Installer_Compagnon_Dofus.cmd pour installer et créer les raccourcis.
@@ -51,3 +51,6 @@ INSTRUCTIONS GANYMEDE DANS LES QUETES TOUGLI
 - Les quêtes sans bloc Ganymède reconnu restent explicitement sans instruction associée.
 - Les trajets communs hors du bloc de quête, illustrations et interactions restent dans le guide source.
 - Aucun rapprochement approximatif des noms et aucune validation automatique depuis le jeu.
+
+POSITIONS CLIQUABLES
+Cliquer une position entre crochets copie /travel x,y. La coche temporaire confirme la copie. Aucun déplacement ni avancement de quête automatique.

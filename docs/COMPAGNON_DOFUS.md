@@ -72,3 +72,7 @@ La page et l’overlay présentent les extraits propres à la quête et partagen
 Les réglages et sous-étapes sont inclus dans l’import JSON et la sauvegarde complète de Mon espace. Les guides sources restent un cache séparé à recharger sur un autre PC. Aucun partage automatique avec le compagnon indépendant ni compte Ganymède.
 
 La version 1.8 est validée par les 12 suites sous Windows Server, qui excluent le moteur PDF natif. Le rapport CI porte `nativePdf: false`, une portée explicite et l’empreinte des sources. La préparation normale continue d’exiger une validation desktop avec PDF ; le workflow peut publier via `-UseCiValidation` après réussite des 12 suites et mention obligatoire de la limite dans les notes. Le fichier desktop-validation.json antérieur n’est pas présenté comme une validation de cette version.
+
+## Coordonnées cliquables (1.8.1 / compagnon indépendant 1.2)
+
+Les positions entre crochets des textes et en-têtes sont cliquables. Un clic copie `/travel x,y` et affiche une coche temporaire. Les espaces et signes sont normalisés. Les coordonnées invalides restent du texte. Cela ne change ni la quête ni l’instruction. La copie est bloquée en mode discret et dans les aperçus.
