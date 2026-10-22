@@ -12,6 +12,6 @@ foreach ($suite in @('self-test','ui-self-test','board-self-test','finance-self-
  $info.CreateNoWindow = $true
  $p = [Diagnostics.Process]::Start($info)
  if (!$p.WaitForExit(120000)) { $p.Kill(); throw ('Delai depasse : ' + $suite) }
- if ($p.ExitCode -ne 0) { throw ('Echec : ' + $suite + ', code ' + $p.ExitCode + '. Consulter ' + $folder) }
+ if ($p.ExitCode -ne 0) { Get-ChildItem -LiteralPath $folder -Recurse -File | Select-Object FullName,Length | Out-String | Write-Output; Get-ChildItem -LiteralPath $folder -Filter '*.txt' | ForEach-Object { Get-Content -LiteralPath $_.FullName -Encoding UTF8 | Write-Output }; throw ('Echec : ' + $suite + ', code ' + $p.ExitCode + '. Consulter ' + $folder) }
  Write-Output ('OK ' + $suite)
 }
