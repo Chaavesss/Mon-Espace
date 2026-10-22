@@ -64,3 +64,5 @@ Lecture expérimentale à vérifier sur votre interface. Délai de lecture d'env
 Données : Data/songes-run.json. Une nouvelle run archive le précédent bilan. Après fermeture, la reprise est en pause pour ne pas compter le temps hors application.
 
 Le marché final est en profondeur 25 et le combat à vagues en 26. Aucune coupure de chrono entre vagues ; arrêt sur la victoire finale.
+
+Bilan de run : la fenêtre Songe terminé fournit le temps officiel DOFUS (victoire ou défaite). Le compagnon le conserve séparément du temps mesuré, affiche leur écart et archive les runs lors de Nouvelle run. Lecture expérimentale : saisie de secours via Temps officiel. Le jeu doit rester au premier plan pour lire le bilan.

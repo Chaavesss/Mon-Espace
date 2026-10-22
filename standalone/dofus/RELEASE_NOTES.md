@@ -16,3 +16,5 @@ Détection expérimentale : repères vérifiés sur des extraits fournis, à con
 Fermer l’ancienne version puis lancer l’installateur du nouveau ZIP. Guides, personnages et progression conservés. La sauvegarde Songes est séparée dans le même dossier Data. Cette version concerne le compagnon indépendant, pas Mon espace.
 
 Le marché final est en salle 25 ; le combat à vagues est en salle 26. Les vagues restent un seul combat chronométré. Le chrono ne se réinitialise pas entre les vagues.
+
+Bilan de run : la fenêtre Songe terminé fournit le temps officiel DOFUS (victoire ou défaite). Le compagnon le conserve séparément du temps mesuré, affiche leur écart et archive les runs lors de Nouvelle run. Lecture expérimentale : saisie de secours via Temps officiel. Le jeu doit rester au premier plan pour lire le bilan.
