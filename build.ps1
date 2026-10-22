@@ -122,6 +122,10 @@ $nativeArgs += (Join-Path $nativeProject 'src\DofusWorkspace.cs')
 $nativeArgs += (Join-Path $nativeProject 'src\DofusOverlay.cs')
 $nativeArgs += (Join-Path $nativeProject 'src\DofusWidgetBridge.cs')
 $nativeArgs += (Join-Path $nativeProject 'src\DofusAcceptance.cs')
+$nativeArgs += (Join-Path $nativeProject 'standalone/dofus/GanymedeReader.cs')
+$nativeArgs += (Join-Path $nativeProject 'standalone/dofus/QuestInstructions.cs')
+$nativeArgs += (Join-Path $nativeProject 'src/DofusInstructionsWorkspace.cs')
+$nativeArgs += (Join-Path $nativeProject 'src/DofusInstructionsAcceptance.cs')
 $responseFile = Join-Path $nativeProject 'release\compilation.rsp'
 [System.IO.File]::WriteAllLines($responseFile, [string[]]($nativeArgs | ForEach-Object { '"' + $_ + '"' }), (New-Object System.Text.UTF8Encoding($false)))
 $processInfo = New-Object System.Diagnostics.ProcessStartInfo

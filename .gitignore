@@ -19,3 +19,5 @@ token*.json
 *.key
 
 /dist-compagnon/
+
+/ci-validation.json

@@ -24,3 +24,10 @@ if (!$SkipNativePdf) {
  [IO.File]::WriteAllText((Join-Path $ProjectRoot 'desktop-validation.json'), ($validation | ConvertTo-Json), (New-Object Text.UTF8Encoding($false)))
  Write-Output 'Validation desktop complete enregistree.'
 }
+
+else {
+ $fingerprint = & (Join-Path $ProjectRoot 'scripts/source-fingerprint.ps1') -ProjectRoot $ProjectRoot
+ $validation = [ordered]@{sourceSha256=$fingerprint;version=[Reflection.AssemblyName]::GetAssemblyName($exe).Version.ToString();nativePdf=$false;suites=12;scope='windows-server-native-pdf-excluded';verifiedAt=[DateTime]::UtcNow.ToString('o')}
+ [IO.File]::WriteAllText((Join-Path $ProjectRoot 'ci-validation.json'), ($validation | ConvertTo-Json), (New-Object Text.UTF8Encoding($false)))
+ Write-Warning 'Validation CI enregistree : les 12 suites sont passees, le moteur PDF natif reste non reteste sur cette version.'
+}

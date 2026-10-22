@@ -62,3 +62,13 @@ Les deux guides demandés ont été lus par l’exécutable Windows avec les don
 Pour un contrôle manuel facultatif : **MonEspace.exe --dofus-download-test DOSSIER_TEST** télécharge le RSA public et écrit un résultat technique dans ce dossier. **--dofus-reader-test DOSSIER_TEST** lit le fichier guide.json déjà présent. Ces commandes ne lancent pas le jeu et ne modifient pas l’espace utilisateur normal.
 
 Le placement avec la souris, le redimensionnement et l’affichage au-dessus du jeu, ainsi que les ouvertures des applications configurées, restent des vérifications sur le PC cible.
+
+## Instructions Ganymède (Mon espace 1.8)
+
+Dans un parcours Tougli chargé, **Charger les instructions Ganymède** consulte les guides principaux français publics. Le premier chargement peut durer plusieurs minutes ; annuler conserve les fichiers déjà chargés. **Associer un guide Ganymède** accepte son URL ou numéro sans changer le parcours Tougli. Les quêtes sont rapprochées par nom normalisé (accents, casse et ponctuation) et identifiant DOFUS quand il est disponible. Les identifiants internes Ganymède ne sont pas confondus avec ceux de DOFUS.
+
+La page et l’overlay présentent les extraits propres à la quête et partagent la sous-étape enregistrée. Le choix de source est explicite si plusieurs guides correspondent. Avancer d’une instruction ne valide pas la quête et n’avance pas le parcours Tougli. Les textes d’autres quêtes présentes sur une même page sont écartés. L’absence de correspondance est affichée. Les trajets communs hors des blocs, illustrations et composants interactifs restent dans la source complète.
+
+Les réglages et sous-étapes sont inclus dans l’import JSON et la sauvegarde complète de Mon espace. Les guides sources restent un cache séparé à recharger sur un autre PC. Aucun partage automatique avec le compagnon indépendant ni compte Ganymède.
+
+La version 1.8 est validée par les 12 suites sous Windows Server, qui excluent le moteur PDF natif. Le rapport CI porte `nativePdf: false`, une portée explicite et l’empreinte des sources. La préparation normale continue d’exiger une validation desktop avec PDF ; le workflow peut publier via `-UseCiValidation` après réussite des 12 suites et mention obligatoire de la limite dans les notes. Le fichier desktop-validation.json antérieur n’est pas présenté comme une validation de cette version.

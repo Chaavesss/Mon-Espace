@@ -25,9 +25,17 @@ jobs:
       - name: Verifier les 12 suites
         shell: powershell
         run: ./scripts/test.ps1 -SkipNativePdf
+      - name: Archiver les controles Windows
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: controles-mon-espace
+          path: |
+            test-results/
+            ci-validation.json
       - name: Preparer le ZIP et son manifeste SHA-256
         shell: powershell
-        run: ./scripts/prepare-release.ps1 -Repository $env:GITHUB_REPOSITORY -SkipBuild
+        run: ./scripts/prepare-release.ps1 -Repository $env:GITHUB_REPOSITORY -SkipBuild -UseCiValidation
       - name: Publier une nouvelle version
         shell: powershell
         env:

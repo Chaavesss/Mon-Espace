@@ -1,11 +1,16 @@
-Mon espace 1.7
+Mon espace 1.8 — instructions Ganymède dans le compagnon Dofus.
 
-- Compagnon Dofus natif : catalogue Tougli et chargement à la demande des parcours, dont RSA – Rush Sylvestre Accéléré et Dofus Sylvestre.
-- Personnages locaux indépendants, choix de classe / alignement / ordre, progression par personnage et par guide.
-- Lecture de l’ordre des quêtes, notes, prérequis et quantités de ressources transmis par Tougli ; liens vers les guides détaillés.
-- Précédent, Suivant, Terminé, annulation d’une validation, sélection d’une étape et reprise après redémarrage.
-- Fenêtre compacte redimensionnable, déplaçable et épinglable au premier plan, avec commandes de progression et ressources de l’étape.
-- Ouverture depuis le mode Dofus et accès depuis le widget général. Configuration page / vue compacte / les deux / désactivé dans chaque mode.
-- Progression incluse dans les sauvegardes ; guide déjà chargé consultable hors ligne sur le même PC. Mode discret respecté.
+Le parcours Tougli et les validations existantes sont conservés. Les extraits Ganymède correspondant à la quête sont affichés dans la page Compagnon Dofus et sa vue compacte.
 
-Source : Tougli, par Toufloux et Gligo. Aucun compte Tougli ou Ganymède n’est connecté ; aucun guide tiers n’est embarqué dans le paquet. Les contenus publics sont chargés à la demande et mis en cache localement. Les guides détaillés s’ouvrent dans votre navigateur habituel. Aucun automatisme en jeu ni lecture de sa mémoire. L’affichage au-dessus de Dofus reste à vérifier sur le PC cible.
+- Association par nom exact normalisé, avec vérification de l’identifiant du jeu quand il est disponible.
+- Choix explicite si plusieurs guides correspondent.
+- Navigation des sous-instructions partagée entre page et overlay, enregistrée par personnage sans avancer ni valider la quête Tougli.
+- Chargement des guides principaux français ou association d’un guide public précis par URL / numéro.
+- Coordonnées, copie /travel, attribution et lien vers l’étape source.
+- Mode discret et sauvegardes incluent le suivi ; les guides restent un cache local, non distribués dans les sauvegardes ou le paquet.
+
+Ouvrir **Tous mes outils → Compagnon Dofus**, charger le parcours Tougli puis **Charger les instructions Ganymède**. Le premier chargement peut prendre plusieurs minutes. Les quêtes sans extrait reconnu sont signalées. Illustrations et trajets communs hors des blocs de quête restent dans le guide source. Aucun compte Tougli / Ganymède n’est synchronisé. Les données du compagnon indépendant ne sont pas importées automatiquement.
+
+Validation : 12 suites Windows natives, avec tests réels des boutons sur la page et dans l’overlay. PDF natif non retesté sur cette version : Windows Server exclut ce seul moteur des tests ; la validation CI le déclare explicitement et ne remplace pas une validation desktop complète.
+
+Sources : Ganymède et auteurs des guides ; Tougli — Toufloux et Gligo. Aucun guide n’est inclus dans la distribution.
