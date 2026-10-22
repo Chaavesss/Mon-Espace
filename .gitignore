@@ -17,3 +17,5 @@ client_secret*.json
 token*.json
 *.pfx
 *.key
+
+/dist-compagnon/
