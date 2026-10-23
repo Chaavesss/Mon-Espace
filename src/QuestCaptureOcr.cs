@@ -1,0 +1,15 @@
+using System;
+using System.IO;
+using System.Linq;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.Runtime.InteropServices;
+using System.Threading;
+using System.Threading.Tasks;
+using Windows.Media.Ocr;
+using Windows.Graphics.Imaging;
+using Windows.Storage.Streams;
+internal static class QuestCaptureOcr {
+ static async Task<T> Await<T>(Windows.Foundation.IAsyncOperation<T> op,CancellationToken token){try{var until=DateTime.UtcNow.AddSeconds(25);while(op.Status==Windows.Foundation.AsyncStatus.Started){if(token.IsCancellationRequested||DateTime.UtcNow>until){op.Cancel();token.ThrowIfCancellationRequested();throw new TimeoutException("La lecture de cette capture a expiré.");}await Task.Delay(30);}token.ThrowIfCancellationRequested();if(op.Status!=Windows.Foundation.AsyncStatus.Completed)throw new InvalidOperationException("Windows n’a pas pu lire cette capture.");return op.GetResults();}finally{op.Close();}}
+ internal static async Task<string> Read(string file,CancellationToken token){if(new FileInfo(file).Length>25*1024*1024)throw new InvalidDataException("Capture trop lourde (25 Mo maximum).");var engine=OcrEngine.TryCreateFromLanguage(new Windows.Globalization.Language("fr-FR"));if(engine==null)throw new InvalidOperationException("Le composant OCR français de Windows est absent. Ajoutez la reconnaissance de texte française dans les options de langue Windows, ou collez les noms dans la zone de texte.");using(var source=new Bitmap(file)){if(source.Width<20||source.Height<20||(long)source.Width*source.Height>40000000)throw new InvalidDataException("Dimensions non prises en charge (40 millions de pixels maximum).");double scale=Math.Min(2,Math.Min((double)OcrEngine.MaxImageDimension/source.Width,(double)OcrEngine.MaxImageDimension/source.Height));int w=Math.Max(1,(int)(source.Width*scale)),h=Math.Max(1,(int)(source.Height*scale));using(var frame=new Bitmap(w,h,PixelFormat.Format32bppArgb)){using(var g=Graphics.FromImage(frame)){g.Clear(Color.White);g.InterpolationMode=System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;g.DrawImage(source,0,0,w,h);}var original=new byte[w*h*4];var bits=frame.LockBits(new Rectangle(0,0,w,h),ImageLockMode.ReadOnly,PixelFormat.Format32bppArgb);try{for(int y=0;y<h;y++)Marshal.Copy(IntPtr.Add(bits.Scan0,y*bits.Stride),original,y*w*4,w*4);}finally{frame.UnlockBits(bits);}var lines=new System.Collections.Generic.List<string>();foreach(bool contrast in new[]{false,true}){token.ThrowIfCancellationRequested();var pixels=(byte[])original.Clone();for(int i=0;i<pixels.Length;i+=4){if(contrast){byte v=pixels[i]>140&&pixels[i+1]>140&&pixels[i+2]>140?(byte)0:(byte)255;pixels[i]=pixels[i+1]=pixels[i+2]=v;}pixels[i+3]=255;}using(var writer=new DataWriter()){writer.WriteBytes(pixels);using(var bitmap=SoftwareBitmap.CreateCopyFromBuffer(writer.DetachBuffer(),BitmapPixelFormat.Bgra8,w,h,BitmapAlphaMode.Ignore)){var result=await Await(engine.RecognizeAsync(bitmap),token);lines.AddRange(result.Lines.Select(l=>l.Text));}}}return String.Join(Environment.NewLine,lines.Distinct());}}}
+}

@@ -96,3 +96,19 @@ Réglages de l’overlay ouvre les tailles du personnage et du Dofus, l’opacit
 Préparer cette quête / Mes notes enregistre un texte personnel et une liste cochable par personnage et étape. Les ressources et prérequis du guide restent distincts des préparatifs ajoutés manuellement. La liste ne vérifie pas votre inventaire. Actualiser ma liste tient compte des lignes personnelles ; Enregistrer mes notes conserve l’ensemble.
 
 Reprendre ma session Dofus retrouve le dernier personnage, guide et curseur enregistrés. Si le guide n’est pas disponible localement, chargez-le comme auparavant. Changer de guide ne valide pas ses étapes.
+
+
+## Import de quêtes terminées depuis des captures
+
+- Mon espace : Compagnon Dofus → **Importer des quêtes terminées**.
+- Compagnon autonome : bibliothèque → **Importer mes quêtes terminées**, ou actions de l’étape → **Importer mes quêtes**.
+
+Choisissez le personnage, puis ajoutez jusqu’à 20 captures PNG/JPG/BMP du journal des **quêtes terminées** (25 Mo et 40 millions de pixels maximum par image). Développez les catégories et préférez des captures nettes recadrées sur les noms. Les captures peuvent se chevaucher.
+
+La lecture OCR française reste sur le PC. Corrigez au besoin le texte, une quête par ligne, puis cliquez sur **Analyser les noms**. Les guides déjà téléchargés constituent le catalogue. Les noms exacts sont présélectionnés, les propositions approximatives demandent un choix et une inclusion explicites, les inconnues sont ignorées. Confirmez que les quêtes sélectionnées sont terminées, puis validez.
+
+Les étapes de quête Tougli correspondantes se valident, y compris dans les guides ouverts plus tard. Les autres personnages restent inchangés. Le compagnon autonome reflète également la validation dans les quêtes associées Ganymède ; une page Ganymède regroupant plusieurs quêtes et trajets n’est pas cochée en bloc. Aucun trajet, note ou objectif intermédiaire n’est déduit automatiquement.
+
+**Annuler le dernier import de ce personnage** retire les validations ajoutées par cet import et conserve les validations antérieures. Les 30 derniers imports sont annulables. Les captures ne sont ni conservées ni transmises ; les noms et l’historique sont inclus dans les données sauvegardées. Les deux applications restent indépendantes : un import dans l’une n’est pas synchronisé automatiquement dans l’autre.
+
+Le composant OCR français de Windows est nécessaire pour les images. S’il manque, coller ou saisir les noms reste possible. L’OCR ne garantit pas le statut terminé : la confirmation de l’utilisateur reste obligatoire.

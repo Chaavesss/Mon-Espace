@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 internal sealed partial class ModernWorkspace {
+ void ImportDofusCaptures(){if(store.Value.settings.PrivacyMode)return;QuestCaptureUi.Show(null,store,()=>{dofusDocumentKey="";Refresh();UpdateDofusOverlay();},Ink,Muted,SurfaceBrush,null,Resources,owner.Handle);}
  void EditDofusOverlay(){if(store.Value.settings.PrivacyMode)return;StackPanel body,actions;var w=Dialog("Personnaliser l’overlay Dofus",out body,out actions,610);DofusToolsUi.Options(body,actions,store,()=>w.Close(),()=>{Refresh();UpdateDofusOverlay();},Ink,Muted);ShowWindow(w);}
  void EditDofusStepNotes(TougliStep step){if(step==null||store.Value.settings.PrivacyMode)return;StackPanel body,actions;var w=Dialog("Notes et préparation de quête",out body,out actions,700);DofusToolsUi.Notes(body,actions,store,step,()=>w.Close(),()=>{Refresh();UpdateDofusOverlay();},Ink,Muted);ShowWindow(w);}
 

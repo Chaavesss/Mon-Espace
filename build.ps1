@@ -145,6 +145,8 @@ $nativeArgs += (Join-Path $nativeProject 'src/DofusToolsUi.cs')
 $nativeArgs += (Join-Path $nativeProject 'src/WorkspaceEnhancements.cs')
 $nativeArgs += (Join-Path $nativeProject 'src/WorkspaceEnhancementsUi.cs')
 $nativeArgs += (Join-Path $nativeProject 'src/WorkspaceEnhancementsAcceptance.cs')
+foreach ($captureFile in @('QuestCaptureImport.cs','QuestCaptureOcr.cs','QuestCaptureUi.cs','QuestCaptureAcceptance.cs')) { $nativeArgs += (Join-Path $nativeProject ('src/' + $captureFile)) }
+foreach ($captureMetadata in @('Windows.Globalization','Windows.Graphics')) { $nativeArgs += ('/reference:' + (Join-Path $env:WINDIR ('System32/WinMetadata/' + $captureMetadata + '.winmd'))) }
 $responseFile = Join-Path $nativeProject 'release\compilation.rsp'
 [System.IO.File]::WriteAllLines($responseFile, [string[]]($nativeArgs | ForEach-Object { '"' + $_ + '"' }), (New-Object System.Text.UTF8Encoding($false)))
 $processInfo = New-Object System.Diagnostics.ProcessStartInfo

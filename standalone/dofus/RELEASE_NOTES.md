@@ -1,3 +1,13 @@
+# Compagnon Dofus 1.7.0 — Import de quêtes terminées
+
+- Import local de captures PNG/JPG/BMP, sélection du personnage et lecture OCR française Windows.
+- Texte corrigeable, propositions par noms exacts ou proches, vérification et confirmation avant écriture.
+- Quêtes correspondantes partagées entre guides ; trajets, notes et pages composites Ganymède non cochés en bloc.
+- Doublons ignorés, autres personnages préservés, 30 derniers imports annulables. Les captures ne sont ni conservées ni transmises.
+- Catalogues déjà chargés nécessaires ; saisie/collage de noms possible sans OCR.
+
+Validation : tests du modèle, de la vraie interface WPF et de la sauvegarde. OCR testé sur capture synthétique Windows ; captures réelles du journal du joueur non fournies pour cette validation. PDF natif non retesté.
+
 # Compagnon Dofus 1.6.1
 
 - Reprendre la dernière session de personnage, parcours et étape depuis la bibliothèque. Les profils et progressions existants restent conservés.
