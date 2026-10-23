@@ -1,20 +1,16 @@
-Compagnon Dofus indépendant 1.3.1 — chrono Songes sur 26 salles.
+# Compagnon Dofus 1.4.0
 
-Nouveau bouton **Songes · run complète** dans le compagnon.
+Le compagnon s’ouvre sur une grande bibliothèque pour choisir son personnage et son parcours, puis bascule sur un overlay compact pour jouer.
 
-- Affichage principal : temps total de run et temps de la salle actuelle, avec historique des temps par salle. Le temps par salle continue jusqu’au changement de profondeur, y compris aux marchés et bonus.
-- Chrono de combat affiché séparément.
-- Lecture locale de la fenêtre DOFUS sélectionnée : **FIN DE TOUR** démarre le combat après le placement ; le bandeau jaune **VICTOIRE** l’arrête. Les défaites reconnues sont séparées.
-- Lecture de **Profondeur** en haut à gauche pour le numéro de salle, distinct du nombre de combats : marchés et bonus ne sont pas comptés comme combats.
-- Le chrono global démarre au premier combat reconnu et continue entre les combats. Une victoire reconnue en salle 26 termine la run ; bouton manuel de fin disponible.
-- Compteurs, temps de combat et moyenne ; pause et corrections manuelles ; reprise de sauvegarde en pause après fermeture.
+- Interface harmonisée : noir chaud, or et bronze ; police Bleach pour l’identité, textes et chronos lisibles.
+- Création de personnage avec portrait PNG, JPG ou WebP, aperçu et image propre à chaque personnage sur le compagnon.
+- Icônes des Dofus dans les guides correspondants, recherche et filtres Tougli / Ganymède.
+- Catalogues publics inclus dans l’application. Préparation initiale automatique des guides et instructions : une connexion est nécessaire pendant cette première étape, avec barre d’avancement, interruption et reprise. Les guides chargés restent ensuite disponibles localement.
+- Progression du parcours sur l’overlay : barre, pourcentage et étapes validées.
+- Quêtes reconnues partagées entre les parcours d’un même personnage, avec import des anciennes validations Tougli. Correspondance par identifiant du jeu lorsqu’il est disponible, sinon par nom exact de quête. Les instructions Ganymède et les trajets ne sont pas assimilés à des quêtes terminées : les quêtes associées peuvent être validées explicitement dans leur panneau.
+- Vérification des mises à jour au lancement et à la demande, indicateur dans la bibliothèque et sur l’overlay, téléchargement sur clic. Les releases de Mon espace sont exclues ; pas d’installation silencieuse.
+- Songes : chronos et lecture visuelle conservés, commandes et corrections réorganisées.
 
-Sélectionner la fenêtre DOFUS, cliquer Activer la détection puis revenir dans le jeu. Celui-ci doit être visible et au premier plan. Les repères doivent rester visibles. La capture est locale, analysée en mémoire sans envoi ni conservation d’images. Un statut indique quand la détection est suspendue. La langue OCR Windows doit être disponible ; sinon le chrono manuel reste utilisable.
+Extraire tout le ZIP, fermer l’ancienne version puis lancer Installer_Compagnon_Dofus.cmd. Les DLL incluses doivent rester avec l’exécutable. Les données existantes sont conservées. Cette version concerne uniquement le compagnon indépendant.
 
-Détection expérimentale : repères vérifiés sur des extraits fournis, à confirmer en vraie run sur votre PC. Une lecture manquée, un élément masqué ou une interface déplacée peut demander une correction. Précision de l’ordre de la seconde, dépendant du délai OCR. Aucun clic, aucune action ni lecture mémoire dans DOFUS.
-
-Fermer l’ancienne version puis lancer l’installateur du nouveau ZIP. Guides, personnages et progression conservés. La sauvegarde Songes est séparée dans le même dossier Data. Cette version concerne le compagnon indépendant, pas Mon espace.
-
-Le marché final est en salle 25 ; le combat à vagues est en salle 26. Les vagues restent un seul combat chronométré. Le chrono ne se réinitialise pas entre les vagues.
-
-Bilan de run : la fenêtre Songe terminé fournit le temps officiel DOFUS (victoire ou défaite). Le compagnon le conserve séparément du temps mesuré, affiche leur écart et archive les runs lors de Nouvelle run. Lecture expérimentale : saisie de secours via Temps officiel. Le jeu doit rester au premier plan pour lire le bilan.
+Les aperçus utilisent des données fictives. La reconnaissance Songes reste expérimentale et doit être vérifiée sur votre interface de jeu.

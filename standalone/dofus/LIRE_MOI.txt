@@ -1,68 +1,62 @@
-COMPAGNON DOFUS INDEPENDANT 1.3.1 — Windows 10/11 x64
+COMPAGNON DOFUS INDÉPENDANT 1.4.0 — WINDOWS 10/11 x64
 
-1. Extraire tout le ZIP.
-2. Double-cliquer sur Installer_Compagnon_Dofus.cmd pour installer et créer les raccourcis.
-   Ou ouvrir CompagnonDofus.exe directement pour l'utiliser sans installation.
-3. Dans Personnage · Guides : renseigner le personnage, puis Enregistrer.
-4. Choisir Rush Sylvestre Accéléré ou Dofus Sylvestre et Charger / actualiser.
-   Guides Ganymède charge la liste des guides principaux français. Choisir puis Charger.
-   Ou coller un lien https://ganymede-app.com/guides/123 puis Charger ce guide Ganymède.
-   Tous les guides permet de rechercher les autres parcours publics Tougli.
-5. Fermer les réglages : l'overlay reste ouvert, redimensionnable et épinglable.
+INSTALLATION
+Fermer l’ancienne version. Extraire tout le ZIP puis lancer Installer_Compagnon_Dofus.cmd.
+L’exécutable, les DLL et THIRD_PARTY_NOTICES.txt doivent rester ensemble.
+L’installation est propre à votre session Windows, sans droit administrateur.
+Version portable : lancer CompagnonDofus.exe dans le dossier complet extrait.
 
-Terminé valide l'étape et avance. Suivant avance sans valider. Annuler retire la validation.
-Reprendre à cette étape permet de rejoindre une progression existante manuellement.
-X ferme complètement le compagnon. Alt + Tab permet de le retrouver.
-Les guides chargés fonctionnent hors ligne ; le chargement et les liens nécessitent Internet.
+DÉMARRAGE
+L’application s’ouvre sur la grande bibliothèque.
+La préparation initiale télécharge automatiquement tous les guides publics Tougli / Ganymède des catalogues inclus : garder Internet pendant cette étape.
+Une barre indique les guides prêts ; interrompre conserve ce qui est déjà téléchargé. La prochaine ouverture reprend les guides manquants.
+Une source indisponible est annoncée : la préparation n’est pas déclarée complète s’il manque des guides.
+Configurer le personnage puis choisir son parcours. Charger le guide et ouvrir l’overlay démarre la vue compacte.
+Personnage · Guides revient à la bibliothèque. La recherche et les filtres servent à trouver les autres parcours.
+Les guides et instructions chargés sont conservés localement. Images et contenus interactifs restent consultables dans le guide source.
+Le bouton Actualiser le guide sélectionné récupère une nouvelle version sans supprimer vos validations.
 
-Installation par utilisateur, aucun droit administrateur demandé.
+PORTRAIT
+Choisir une image accepte PNG, JPG ou WebP jusqu’à 10 Mo / 40 millions de pixels.
+L’aperçu est conservé seulement après Enregistrer et choisir un parcours.
+Le portrait est converti localement en PNG de 384 × 384. Votre original n’est ni modifié ni envoyé.
+Retirer puis enregistrer supprime son association au personnage. Chaque personnage garde son propre portrait.
+
+PROGRESSION
+Terminé valide une étape ; les flèches changent d’étape sans valider.
+Les coordonnées entre crochets copient /travel x,y ; aucun déplacement automatique.
+La barre affiche la proportion des étapes validées pour le personnage et le parcours actifs.
+Les quêtes Tougli reconnues sont partagées entre parcours par identifiant de jeu. Les quêtes Ganymède associées peuvent être validées explicitement dans le panneau Quêtes associées.
+Un nom exact normalisé sert uniquement lorsque l’identifiant du jeu n’est pas disponible. Aucune correspondance approximative.
+Une instruction ou un trajet ne vaut pas validation d’une quête entière.
+Les personnages ont des validations séparées. Les anciennes quêtes Tougli validées sont reprises lorsque leurs guides locaux sont lisibles.
+Les cas ambigus ou choix de classe / alignement non renseignés ne sont pas devinés.
+
+SONGES
+Le bouton Songes ouvre le chrono dédié. Sélectionner la fenêtre DOFUS, activer la détection puis revenir dans le jeu au premier plan.
+FIN DE TOUR démarre le combat ; le résultat VICTOIRE / DÉFAITE l’arrête. La profondeur indique la salle, pas le nombre de combats.
+Temps total, temps par salle et temps de combat sont distincts. Marchés et bonus ne sont pas comptés comme combats.
+Le marché final est en 25, le combat à vagues en 26 ; le chrono continue entre les vagues.
+Le bilan Songe terminé fournit le temps officiel ; une saisie manuelle permet de corriger une lecture manquée.
+Les images sont analysées localement en mémoire, sans enregistrement ni envoi. Pas de lecture mémoire, d’injection ou d’action dans le jeu.
+Reconnaissance expérimentale : vos repères doivent être visibles. OCR Windows français requis ; commandes manuelles disponibles.
+
+MISES À JOUR
+Vérification au lancement et à la demande. Une nouvelle version affiche un indicateur dans la bibliothèque et sur le compagnon.
+Le bouton ouvre le téléchargement ; l’installation reste manuelle, sans mise à jour silencieuse.
+Cette version doit être installée une première fois pour bénéficier de ce contrôle.
+
+DONNÉES
 Application : %LOCALAPPDATA%\CompagnonDofus\App
-Personnages, progression et cache : %LOCALAPPDATA%\CompagnonDofus\Data
-Pour sauvegarder, fermer l'application puis copier ce dossier Data.
-Pour désinstaller, fermer l'application puis supprimer le dossier App et ses raccourcis.
-Conserver Data pour retrouver sa progression après réinstallation.
+Données : %LOCALAPPDATA%\CompagnonDofus\Data
+Sauvegarder tout le dossier Data après fermeture conserve personnages, portraits, guides et progression.
+Aucun accès aux données de Mon espace et aucune synchronisation avec les comptes Tougli / Ganymède.
+Chaque session Windows possède ses propres données.
+La préparation des guides se fait sur votre PC ; les textes des guides ne sont pas redistribués dans ce ZIP.
 
-Cette application n'installe pas Mon espace et n'accède pas à ses données.
-Pas de synchronisation automatique entre les deux applications ni avec un compte Tougli / Ganymède.
-Les parcours Tougli et Ganymède conservent des validations distinctes. Les extraits associés enrichissent la quête Tougli sans valider un autre parcours.
-Ganymède : textes et coordonnées directement dans l’overlay. Illustrations et éléments interactifs dans le guide source.
-Les listes de ressources Ganymède restent dans les instructions, sans total calculé.
-Chaque utilisateur Windows possède ses propres données.
-Pas de lecture du jeu, d'automatisation de combat ou d'injection dans DOFUS.
-L'overlay fonctionne comme une fenêtre Windows ; le mode fenêtré sans bordure du jeu est conseillé.
-Les instructions détaillées s'ouvrent dans le navigateur habituel.
-Les choix inconnus ne sont pas devinés : renseigner classe, alignement et ordre.
-Le compteur de ressources ne connaît pas l'inventaire.
-
-Source Ganymède : https://ganymede-app.com — attribution des auteurs dans le compagnon.
-Source Tougli : Tougli — Toufloux et Gligo, https://tougli.barbofus.com/guides
-Outil indépendant, non affilié à Ankama, Tougli ou Ganymède.
-Aucun guide Tougli n'est distribué dans le ZIP : chargement public à la demande.
+SOURCES ET LICENCES
+Tougli — Toufloux et Gligo : https://tougli.barbofus.com/guides
+Ganymède : https://ganymede-app.com — auteurs mentionnés dans les guides.
+Outil indépendant non affilié à Ankama, Tougli ou Ganymède.
+Décodeur des portraits et licences : THIRD_PARTY_NOTICES.txt.
 Windows peut afficher un avertissement pour cet exécutable non signé.
-
-INSTRUCTIONS GANYMEDE DANS LES QUETES TOUGLI
-- Ouvrir votre parcours Tougli habituel.
-- Cliquer Charger les instructions du parcours, ou Personnage · Guides puis Charger les instructions de tout le parcours.
-- Le premier chargement consulte les guides principaux français : plusieurs minutes possibles. Annuler conserve les guides déjà chargés.
-- Les extraits portant le même nom de quête apparaissent automatiquement dans la quête Tougli.
-- Si plusieurs guides correspondent, choisir la source proposée.
-- Instruction suivante change seulement le sous-détail. Quête terminée valide l'étape Tougli.
-- Personnage · Guides permet d'associer un guide précis par URL ou numéro sans quitter Tougli.
-- Les quêtes sans bloc Ganymède reconnu restent explicitement sans instruction associée.
-- Les trajets communs hors du bloc de quête, illustrations et interactions restent dans le guide source.
-- Aucun rapprochement approximatif des noms et aucune validation automatique depuis le jeu.
-
-POSITIONS CLIQUABLES
-Cliquer une position entre crochets copie /travel x,y. La coche temporaire confirme la copie. Aucun déplacement ni avancement de quête automatique.
-
-CHRONOMETRE SONGES
-Bouton Songes · run complète. Sélectionner votre fenêtre DOFUS, activer la détection et revenir dans le jeu. Le jeu doit rester au premier plan et les repères visibles.
-FIN DE TOUR = combat réel, sans compter le placement. Bandeau jaune VICTOIRE = arrêt du combat. Profondeur = salle, pas nombre de combats.
-Le chrono global démarre au premier combat et continue au marché / bonus. Une victoire en salle 26 ou le bouton Terminer clôt la run. Pause et corrections manuelles disponibles.
-Les images ne sont ni enregistrées ni envoyées. OCR Windows requis pour la lecture automatique ; chrono manuel utilisable sinon.
-Lecture expérimentale à vérifier sur votre interface. Délai de lecture d'environ une seconde ou plus selon le PC.
-Données : Data/songes-run.json. Une nouvelle run archive le précédent bilan. Après fermeture, la reprise est en pause pour ne pas compter le temps hors application.
-
-Le marché final est en profondeur 25 et le combat à vagues en 26. Aucune coupure de chrono entre vagues ; arrêt sur la victoire finale.
-
-Bilan de run : la fenêtre Songe terminé fournit le temps officiel DOFUS (victoire ou défaite). Le compagnon le conserve séparément du temps mesuré, affiche leur écart et archive les runs lors de Nouvelle run. Lecture expérimentale : saisie de secours via Temps officiel. Le jeu doit rester au premier plan pour lire le bilan.

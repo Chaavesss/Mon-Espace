@@ -1,0 +1,44 @@
+[
+  {
+    "id": "skiasharp",
+    "version": "4.153.1",
+    "entry": "lib/net48/SkiaSharp.dll",
+    "file": "SkiaSharp.dll",
+    "sha256": "9cf0fa681223d4956bfbd37995c9eaa8d259935ae3d195fac681ff9a4e9c4816"
+  },
+  {
+    "id": "skiasharp.nativeassets.win32",
+    "version": "4.153.1",
+    "entry": "runtimes/win-x64/native/libSkiaSharp.dll",
+    "file": "libSkiaSharp.dll",
+    "sha256": "c27b04338d1e4d400c20de534356310b9971e123e081c732af97e56f5572e1ae"
+  },
+  {
+    "id": "system.memory",
+    "version": "4.6.3",
+    "entry": "lib/net462/System.Memory.dll",
+    "file": "System.Memory.dll",
+    "sha256": "26078aeb758c9ae985e8bf851f973026061da6a5eb4837204d0c2d2204c72955"
+  },
+  {
+    "id": "system.buffers",
+    "version": "4.6.1",
+    "entry": "lib/net462/System.Buffers.dll",
+    "file": "System.Buffers.dll",
+    "sha256": "b00451e91d016fbec091ad1e361f3a7015e1d91d4047f7e48a74455b2a673d79"
+  },
+  {
+    "id": "system.runtime.compilerservices.unsafe",
+    "version": "6.1.2",
+    "entry": "lib/net462/System.Runtime.CompilerServices.Unsafe.dll",
+    "file": "System.Runtime.CompilerServices.Unsafe.dll",
+    "sha256": "5f6a7f53af3465f92beb6da873ebe0e496206c313313b98badee4355a6b25937"
+  },
+  {
+    "id": "system.numerics.vectors",
+    "version": "4.6.1",
+    "entry": "lib/net462/System.Numerics.Vectors.dll",
+    "file": "System.Numerics.Vectors.dll",
+    "sha256": "2bc500a86dcb02f2032d6d877f9e2d6e9e4a79080e57239b4198679d4031f2c7"
+  }
+]
