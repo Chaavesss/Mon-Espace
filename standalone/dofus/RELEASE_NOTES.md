@@ -1,4 +1,4 @@
-# Compagnon Dofus 1.4.0
+# Compagnon Dofus 1.4.1
 
 Le compagnon s’ouvre sur une grande bibliothèque pour choisir son personnage et son parcours, puis bascule sur un overlay compact pour jouer.
 

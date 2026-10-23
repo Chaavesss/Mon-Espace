@@ -1,4 +1,4 @@
-COMPAGNON DOFUS INDÉPENDANT 1.4.0 — WINDOWS 10/11 x64
+COMPAGNON DOFUS INDÉPENDANT 1.4.1 — WINDOWS 10/11 x64
 
 INSTALLATION
 Fermer l’ancienne version. Extraire tout le ZIP puis lancer Installer_Compagnon_Dofus.cmd.
