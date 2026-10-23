@@ -1,20 +1,14 @@
-# Compagnon Dofus 1.4.2
+# Compagnon Dofus 1.5.0
 
-- Overlay : personnage affiché entier sans recadrage, proportions conservées.
-- Dofus du parcours affiché en grand dans un bandeau fixe, visible pendant le défilement des instructions.
-- Hauteur initiale adaptée à ce bandeau, overlay toujours redimensionnable.
+Les instructions Ganymède disposent d’un mode compagnon : tutoiement, verbes d’action directs, repères de préparation et conditions visibles, avec le contexte du personnage actif.
 
-Le compagnon s’ouvre sur une grande bibliothèque pour choisir son personnage et son parcours, puis bascule sur un overlay compact pour jouer.
+- Disponible pour les guides Ganymède et les extraits Ganymède associés aux quêtes Tougli.
+- Boutons Style compagnon et Texte source ; préférence conservée et source complète toujours accessible.
+- Reformulation locale par règles prudentes, sans service IA, clé API ou frais supplémentaires. Les formulations non reconnues, conditions et dialogues entre guillemets restent conservés. Cette version ne réécrit pas librement tous les paragraphes et ne choisit pas de branche de quête à votre place.
+- Noms, quantités, coordonnées, négations, ordre des étapes et attribution des auteurs conservés. Coordonnées toujours cliquables.
+- Cache local par personnage, contexte et contenu source. Une instruction actualisée produit une nouvelle vue, sans changer les identifiants ni les validations des quêtes.
+- Portrait entier et Dofus du parcours restent visibles dans le bandeau fixe de l’overlay.
 
-- Interface harmonisée : noir chaud, or et bronze ; police Bleach pour l’identité, textes et chronos lisibles.
-- Création de personnage avec portrait PNG, JPG ou WebP, aperçu et image propre à chaque personnage sur le compagnon.
-- Icônes des Dofus dans les guides correspondants, recherche et filtres Tougli / Ganymède.
-- Catalogues publics inclus dans l’application. Préparation initiale automatique des guides et instructions : une connexion est nécessaire pendant cette première étape, avec barre d’avancement, interruption et reprise. Les guides chargés restent ensuite disponibles localement.
-- Progression du parcours sur l’overlay : barre, pourcentage et étapes validées.
-- Quêtes reconnues partagées entre les parcours d’un même personnage, avec import des anciennes validations Tougli. Correspondance par identifiant du jeu lorsqu’il est disponible, sinon par nom exact de quête. Les instructions Ganymède et les trajets ne sont pas assimilés à des quêtes terminées : les quêtes associées peuvent être validées explicitement dans leur panneau.
-- Vérification des mises à jour au lancement et à la demande, indicateur dans la bibliothèque et sur l’overlay, téléchargement sur clic. Les releases de Mon espace sont exclues ; pas d’installation silencieuse.
-- Songes : chronos et lecture visuelle conservés, commandes et corrections réorganisées.
+Extraire tout le ZIP, fermer l’ancienne version puis lancer Installer_Compagnon_Dofus.cmd. Conserver les DLL avec l’exécutable. Personnages, portraits, guides et progression existants sont conservés. Cette version concerne uniquement le compagnon indépendant.
 
-Extraire tout le ZIP, fermer l’ancienne version puis lancer Installer_Compagnon_Dofus.cmd. Les DLL incluses doivent rester avec l’exécutable. Les données existantes sont conservées. Cette version concerne uniquement le compagnon indépendant.
-
-Les aperçus utilisent des données fictives. La reconnaissance Songes reste expérimentale et doit être vérifiée sur votre interface de jeu.
+Les captures de validation utilisent des données fictives. La reconnaissance Songes reste expérimentale.

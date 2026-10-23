@@ -81,11 +81,11 @@ jobs:
           Compress-Archive -Path "$stage/*" -DestinationPath $zip -Force
           $hash = (Get-FileHash $zip -Algorithm SHA256).Hash.ToLowerInvariant()
           [IO.File]::WriteAllText((Join-Path $pwd 'dist-compagnon/SHA256.txt'), ($hash + '  CompagnonDofus.zip'))
-          $tag = 'compagnon-dofus-v1.4.2'
+          $tag = 'compagnon-dofus-v1.5.0'
           $existing = gh release list --repo $env:GITHUB_REPOSITORY --limit 100 --json tagName | ConvertFrom-Json
           if ($LASTEXITCODE -ne 0) { throw 'Cannot inspect releases' }
           if ($existing | Where-Object tagName -eq $tag) { throw 'Companion version already exists; increment before publishing' }
-          gh release create $tag $zip dist-compagnon/SHA256.txt test-results/compagnon/character-creation.png test-results/compagnon/guide-picker.png test-results/compagnon/overlay.png test-results/compagnon/songes-25-etages.png --repo $env:GITHUB_REPOSITORY --target $env:GITHUB_SHA --title 'Compagnon Dofus indépendant 1.4.2' --notes-file standalone/dofus/RELEASE_NOTES.md --draft
+          gh release create $tag $zip dist-compagnon/SHA256.txt test-results/compagnon/character-creation.png test-results/compagnon/guide-picker.png test-results/compagnon/overlay.png test-results/compagnon/songes-25-etages.png --repo $env:GITHUB_REPOSITORY --target $env:GITHUB_SHA --title 'Compagnon Dofus indépendant 1.5.0' --notes-file standalone/dofus/RELEASE_NOTES.md --draft
           if ($LASTEXITCODE -ne 0) { throw 'Cannot create companion release' }
           gh release edit $tag --repo $env:GITHUB_REPOSITORY --draft=false --latest=false
           if ($LASTEXITCODE -ne 0) { throw 'Cannot publish companion release' }

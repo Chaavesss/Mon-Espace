@@ -1,4 +1,4 @@
-COMPAGNON DOFUS INDÉPENDANT 1.4.2 — WINDOWS 10/11 x64
+COMPAGNON DOFUS INDÉPENDANT 1.5.0 — WINDOWS 10/11 x64
 
 INSTALLATION
 Fermer l’ancienne version. Extraire tout le ZIP puis lancer Installer_Compagnon_Dofus.cmd.
@@ -32,6 +32,14 @@ Un nom exact normalisé sert uniquement lorsque l’identifiant du jeu n’est p
 Une instruction ou un trajet ne vaut pas validation d’une quête entière.
 Les personnages ont des validations séparées. Les anciennes quêtes Tougli validées sont reprises lorsque leurs guides locaux sont lisibles.
 Les cas ambigus ou choix de classe / alignement non renseignés ne sont pas devinés.
+
+STYLE DES INSTRUCTIONS GANYMÈDE
+Style compagnon présente des consignes au tutoiement, des actions directes et des repères de préparation / conditions. Le profil du personnage actif est rappelé.
+Texte source revient au texte du guide ; Lire le texte source complet reste disponible dans la vue compagnon. Le choix est conservé.
+La reformulation fonctionne localement par règles prudentes, sans clé API et sans service IA payant. Les formulations non reconnues restent conservées ; il ne s’agit pas d’une réécriture libre de tous les paragraphes.
+Dialogues entre guillemets, conditions et informations du jeu sont conservés. Le logiciel ne devine pas la branche à suivre selon la classe ou l’alignement : les conditions du guide restent à vérifier.
+Les versions affichées sont mises en cache localement dans Data/InstructionViews, séparément des guides sources et de votre progression. Une source actualisée génère une nouvelle vue.
+Les coordonnées restent cliquables et les crédits des auteurs restent affichés. Ce mode s’applique aussi aux extraits Ganymède des parcours Tougli.
 
 SONGES
 Le bouton Songes ouvre le chrono dédié. Sélectionner la fenêtre DOFUS, activer la détection puis revenir dans le jeu au premier plan.

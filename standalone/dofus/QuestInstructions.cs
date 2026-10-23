@@ -7,7 +7,7 @@ using System.Net;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using System.Web.Script.Serialization;
-public sealed class InstructionData {public bool enabled=true;public Dictionary<string,string> sources=new Dictionary<string,string>();public Dictionary<string,string> cursors=new Dictionary<string,string>();}
+public sealed class InstructionData {public bool enabled=true;public bool companion=true;public Dictionary<string,string> sources=new Dictionary<string,string>();public Dictionary<string,string> cursors=new Dictionary<string,string>();}
 internal sealed class QuestInstruction {internal string GuideSlug,GuideTitle,QuestName,GameQuestId,StepId,Key,Details,Coordinates,Url,Map,Credit;internal int Order;}
 internal sealed class QuestInstructionIndex {
  internal readonly List<QuestInstruction> Items=new List<QuestInstruction>();internal int Guides,Unreadable;
