@@ -1,3 +1,13 @@
+# Compagnon Dofus 1.7.1 — Corriger la sélection du jeu pour le chrono
+
+- Le compagnon et les autres outils ne sont plus proposés comme fenêtres DOFUS. Le filtre identifie le processus du jeu et exclut explicitement son propre processus.
+- Le jeu sélectionné est revérifié à l’activation et avant chaque capture, y compris après fermeture ou remplacement d’une fenêtre.
+- Une seule fenêtre peut être présélectionnée ; en multi-compte, choix explicite du personnage. Actualiser conserve un choix encore valide.
+- Messages explicites lorsqu’aucun jeu n’est détecté ou que plusieurs fenêtres sont disponibles.
+- Tests Windows : exclusion du compagnon visible, refus d’une sélection périmée par le vrai bouton d’activation, multi-compte et contrôles existants du chrono/OCR.
+
+Après mise à jour : ouvrir DOFUS, actualiser la liste dans Songes, sélectionner le jeu, activer la détection puis revenir dans le jeu. Ne pas laisser l’overlay couvrir les repères du jeu.
+
 # Compagnon Dofus 1.7.0 — Import de quêtes terminées
 
 - Import local de captures PNG/JPG/BMP, sélection du personnage et lecture OCR française Windows.

@@ -1,7 +1,7 @@
-NOUVEAU 1.7.0 — Import de quêtes terminées
+NOUVEAU 1.7.1 — Import de quêtes terminées
 Dans la bibliothèque ou les actions de l’overlay : « Importer mes quêtes ». Ajoutez des captures PNG/JPG/BMP, vérifiez les noms reconnus, puis confirmez les quêtes terminées. Lecture OCR française locale. Guides déjà chargés nécessaires. Les 30 derniers imports peuvent être annulés.
 
-COMPAGNON DOFUS INDÉPENDANT 1.7.0 — WINDOWS 10/11 x64
+COMPAGNON DOFUS INDÉPENDANT 1.7.1 — WINDOWS 10/11 x64
 
 INSTALLATION
 Fermer l’ancienne version. Extraire tout le ZIP puis lancer Installer_Compagnon_Dofus.cmd.
