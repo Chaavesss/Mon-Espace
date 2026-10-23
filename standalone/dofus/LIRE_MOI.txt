@@ -1,4 +1,4 @@
-COMPAGNON DOFUS INDÉPENDANT 1.4.1 — WINDOWS 10/11 x64
+COMPAGNON DOFUS INDÉPENDANT 1.4.2 — WINDOWS 10/11 x64
 
 INSTALLATION
 Fermer l’ancienne version. Extraire tout le ZIP puis lancer Installer_Compagnon_Dofus.cmd.
@@ -19,6 +19,7 @@ Le bouton Actualiser le guide sélectionné récupère une nouvelle version sans
 PORTRAIT
 Choisir une image accepte PNG, JPG ou WebP jusqu’à 10 Mo / 40 millions de pixels.
 L’aperçu est conservé seulement après Enregistrer et choisir un parcours.
+L’overlay affiche le personnage entier sans recadrage, à côté du Dofus associé au parcours. Ce bandeau reste visible pendant le défilement.
 Le portrait est converti localement en PNG de 384 × 384. Votre original n’est ni modifié ni envoyé.
 Retirer puis enregistrer supprime son association au personnage. Chaque personnage garde son propre portrait.
 

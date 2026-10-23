@@ -1,4 +1,8 @@
-# Compagnon Dofus 1.4.1
+# Compagnon Dofus 1.4.2
+
+- Overlay : personnage affiché entier sans recadrage, proportions conservées.
+- Dofus du parcours affiché en grand dans un bandeau fixe, visible pendant le défilement des instructions.
+- Hauteur initiale adaptée à ce bandeau, overlay toujours redimensionnable.
 
 Le compagnon s’ouvre sur une grande bibliothèque pour choisir son personnage et son parcours, puis bascule sur un overlay compact pour jouer.
 
