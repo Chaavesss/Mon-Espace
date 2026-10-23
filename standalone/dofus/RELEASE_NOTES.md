@@ -1,3 +1,9 @@
+# Compagnon Dofus 1.7.2 — Temps par combat
+
+- Historique par combat : durée du combat uniquement, numéro de salle et résultat. Chaque tentative reste distincte.
+- Le cumul des combats remplace le compteur de temps passé dans la salle. Marchés et pauses entre combats sont exclus.
+- Le temps total de la run reste séparé et continue entre les combats.
+
 # Compagnon Dofus 1.7.1 — Corriger la sélection du jeu pour le chrono
 
 - Le compagnon et les autres outils ne sont plus proposés comme fenêtres DOFUS. Le filtre identifie le processus du jeu et exclut explicitement son propre processus.

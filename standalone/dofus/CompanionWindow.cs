@@ -58,7 +58,7 @@ internal sealed partial class CompanionWindow:Window {
  if(busy){body.Children.Add(Text("Chargement du guide…",12));footer.Children.Add(Button("Annuler le chargement",()=>{if(cancel!=null)cancel.Cancel();}));}
  var settings=Button("Personnage · Guides",()=>Configure());settings.HorizontalContentAlignment=HorizontalAlignment.Left;
  var pin=Button(store.Value.dofus.topmost?"Épinglé ✓":"Épingler",()=>Safe(()=>{PersonalWorkflows.Change(store,()=>store.Value.dofus.topmost=!store.Value.dofus.topmost);Topmost=store.Value.dofus.topmost;}));footer.Children.Add(CompanionTheme.Pair(settings,pin));
- if(!String.IsNullOrEmpty(updateUrl))footer.Children.Add(Button("Mise à jour "+updateVersion+" disponible",()=>System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(updateUrl){UseShellExecute=true})));footer.Children.Add(Text(GanymedeReader.Credit(doc)+"\nLOCAL  ·  COMPAGNON 1.7.1",9,true));
+ if(!String.IsNullOrEmpty(updateUrl))footer.Children.Add(Button("Mise à jour "+updateVersion+" disponible",()=>System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(updateUrl){UseShellExecute=true})));footer.Children.Add(Text(GanymedeReader.Credit(doc)+"\nLOCAL  ·  COMPAGNON 1.7.2",9,true));
  }
  static void Open(string url){var safe=TougliReader.SafeUrl(url);if(safe!="")System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(safe){UseShellExecute=true});}
  internal static void Field(Panel parent,string label,Control input){parent.Children.Add(Text(label,11,true));input.Margin=new Thickness(0,0,0,9);parent.Children.Add(input);}
