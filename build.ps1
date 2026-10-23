@@ -127,6 +127,19 @@ $nativeArgs += (Join-Path $nativeProject 'standalone/dofus/GanymedeReader.cs')
 $nativeArgs += (Join-Path $nativeProject 'standalone/dofus/QuestInstructions.cs')
 $nativeArgs += (Join-Path $nativeProject 'src/DofusInstructionsWorkspace.cs')
 $nativeArgs += (Join-Path $nativeProject 'src/DofusInstructionsAcceptance.cs')
+
+$portraitOutput = Join-Path $nativeProject 'release'
+& (Join-Path $nativeProject 'standalone/dofus/restore-portraits.ps1') -ProjectRoot $nativeProject -Out $portraitOutput
+foreach ($portraitDependency in @('SkiaSharp.dll','System.Memory.dll','System.Buffers.dll','System.Runtime.CompilerServices.Unsafe.dll','System.Numerics.Vectors.dll')) {
+ $nativeArgs += ('/reference:' + (Join-Path $portraitOutput $portraitDependency))
+ $nativeArgs += ('/resource:' + (Join-Path $portraitOutput $portraitDependency) + ',MonEspace.Runtime.' + $portraitDependency)
+}
+$nativeArgs += '/reference:System.Numerics.dll'
+$nativeArgs += ('/resource:' + (Join-Path $portraitOutput 'libSkiaSharp.dll') + ',MonEspace.Runtime.libSkiaSharp.dll')
+$nativeArgs += ('/resource:' + (Join-Path $portraitOutput 'THIRD_PARTY_NOTICES.txt') + ',MonEspace.Runtime.Licenses')
+foreach ($dofusIcon in (Get-ChildItem -LiteralPath (Join-Path $nativeProject 'assets/dofus') -Filter '*.png' -File)) { $nativeArgs += ('/resource:' + $dofusIcon.FullName + ',MonEspace.Dofus.' + $dofusIcon.Name) }
+foreach ($dofusFeature in @('CharacterPortraits.cs','DofusImageRuntime.cs','DofusVisuals.cs','CompanionInstructions.cs','DofusVisualAcceptance.cs')) { $nativeArgs += (Join-Path $nativeProject ('src/' + $dofusFeature)) }
+
 $responseFile = Join-Path $nativeProject 'release\compilation.rsp'
 [System.IO.File]::WriteAllLines($responseFile, [string[]]($nativeArgs | ForEach-Object { '"' + $_ + '"' }), (New-Object System.Text.UTF8Encoding($false)))
 $processInfo = New-Object System.Diagnostics.ProcessStartInfo

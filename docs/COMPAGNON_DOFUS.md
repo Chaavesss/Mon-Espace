@@ -76,3 +76,14 @@ La version 1.8 est validée par les 12 suites sous Windows Server, qui excluent 
 ## Coordonnées cliquables (1.8.1 / compagnon indépendant 1.2)
 
 Les positions entre crochets des textes et en-têtes sont cliquables. Un clic copie `/travel x,y` et affiche une coche temporaire. Les espaces et signes sont normalisés. Les coordonnées invalides restent du texte. Cela ne change ni la quête ni l’instruction. La copie est bloquée en mode discret et dans les aperçus.
+
+
+## Version 1.9 : portraits, Dofus et style compagnon
+
+Dans Ajouter mon personnage ou Modifier ce personnage, Choisir une image accepte PNG, JPG ou WebP jusqu’à 10 Mo et 40 millions de pixels. L’aperçu conserve les proportions ; Enregistrer valide l’association. Retirer l’image puis enregistrer enlève le portrait du personnage. Chaque personnage a son image indépendante.
+
+La page principale affiche un bandeau avec le personnage entier, le Dofus associé au parcours et la progression. L’overlay reprend ces informations dans une zone fixe ; les instructions défilent séparément. Les guides ne mentionnant aucun Dofus gardent un bandeau Parcours. Le sélecteur montre les icônes des guides correspondants.
+
+Les extraits Ganymède proposent Style compagnon et Texte source. Le premier emploie des règles locales prudentes pour le tutoiement et les verbes d’action ; les passages non reconnus, dialogues et conditions restent conservés. Aucun modèle IA n’est appelé et aucune branche de classe ou d’alignement n’est devinée. Les vues adaptées sont mises en cache dans Data/InstructionViews, séparément des textes sources. Le choix de style est conservé et partagé entre page et overlay.
+
+Les portraits sont conservés dans Data/Portraits. Les sauvegardes complètes .mespace incluent les images référencées et vérifient leurs empreintes lors de la restauration. Un simple export JSON garde les associations mais pas les fichiers image. Les caches de guides et de reformulation restent des caches locaux. Les données du compagnon indépendant ne sont pas importées automatiquement dans Mon espace.

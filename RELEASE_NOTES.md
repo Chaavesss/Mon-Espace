@@ -1,7 +1,10 @@
-Mon espace 1.8.1 — coordonnées cliquables dans le compagnon Dofus.
+Mon espace 1.9.0 — portraits et icônes Dofus dans le compagnon intégré.
 
-Les positions entre crochets, par exemple `[-3, 12]`, deviennent des liens dans les instructions et les en-têtes du compagnon et de son overlay. Un clic copie `/travel -3,12` et affiche une coche temporaire. Les coordonnées restent lisibles et plusieurs positions dans une même instruction sont copiées indépendamment.
+- Images PNG, JPG et WebP à la création ou modification du personnage, avec aperçu et conservation locale par personnage.
+- Portrait entier et Dofus du parcours dans la page principale et dans le bandeau fixe de l’overlay, avec barre de progression et pourcentage.
+- Icônes Dofus embarquées dans le sélecteur des guides correspondants. Guides sans Dofus affichés sans faux objectif.
+- Style compagnon pour les extraits Ganymède associés aux quêtes Tougli : tutoiement et verbes directs, profil du personnage, préférence mémorisée et bouton Texte source. Reformulation locale par règles prudentes, sans service IA ; conditions et dialogues conservés. Attribution des auteurs et coordonnées cliquables conservées.
+- Portraits inclus dans les sauvegardes complètes .mespace ; fichiers vérifiés à la restauration. L’import JSON conserve l’association mais ne contient pas l’image.
+- Décodeur WebP inclus dans l’exécutable pour rester compatible avec les installations et mises à jour existantes. Licences dans THIRD_PARTY_NOTICES.txt.
 
-La copie ne change ni la quête ni l’instruction courante. Le mode discret et les aperçus bloquent la copie. Le suivi Tougli et les instructions Ganymède existantes sont conservés.
-
-Validation : 12 suites Windows natives, tests de clic sur les liens (commande et retour visuel), coordonnées multiples, signes, format invalide, copie bloquée et presse-papiers occupé. PDF natif non retesté sur cette version, comme déclaré dans le rapport CI.
+Validation : 12 suites Windows ; vérification de l’exécutable seul sans DLL à distribuer, lecture WebP, icônes embarquées, sauvegarde et restauration des portraits, affichage page/overlay, boutons des instructions et confidentialité. PDF natif non retesté sur cette version, comme déclaré dans le rapport CI.

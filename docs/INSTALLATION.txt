@@ -14,3 +14,6 @@ Pour les anciennes installations : enregistrer cette adresse si le champ est vid
 Le telechargement est verifie par SHA-256. Extraire ensuite le ZIP et relancer MonEspace.exe pour installer. L’installation n’est pas automatique.
 
 Le programme n’est pas signe par un certificat editeur. La premiere installation peut declencher un avertissement Windows. Le probleme d’acces refuse rencontre sur un autre PC reste a verifier sur ce PC.
+
+PORTRAITS DOFUS
+Le decodeur PNG/JPG/WebP est inclus dans MonEspace.exe : aucune DLL a copier manuellement. Les licences sont dans THIRD_PARTY_NOTICES.txt. Les portraits font partie des sauvegardes completes .mespace.
