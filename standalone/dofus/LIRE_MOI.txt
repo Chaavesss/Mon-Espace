@@ -1,4 +1,4 @@
-COMPAGNON DOFUS INDÉPENDANT 1.5.0 — WINDOWS 10/11 x64
+COMPAGNON DOFUS INDÉPENDANT 1.6.0 — WINDOWS 10/11 x64
 
 INSTALLATION
 Fermer l’ancienne version. Extraire tout le ZIP puis lancer Installer_Compagnon_Dofus.cmd.
@@ -69,3 +69,12 @@ Ganymède : https://ganymede-app.com — auteurs mentionnés dans les guides.
 Outil indépendant non affilié à Ankama, Tougli ou Ganymède.
 Décodeur des portraits et licences : THIRD_PARTY_NOTICES.txt.
 Windows peut afficher un avertissement pour cet exécutable non signé.
+
+SESSION, NOTES ET PRÉPARATION
+Reprendre ma dernière session Dofus dans la bibliothèque retrouve personnage, parcours et étape. Notes · Préparer dans Actions de l’étape ouvre les notes et la liste de préparatifs. Les coches sont personnelles, sans lecture de l’inventaire. Ajouter un préparatif par ligne, actualiser la liste puis enregistrer.
+
+RÉGLAGES OVERLAY
+Actions de l’étape > Réglages overlay : tailles des images, opacité et éléments visibles. Enregistrer applique les changements ; annuler conserve les réglages précédents.
+
+RECORDS SONGES
+Records et comparaison des salles sépare temps officiels et mesurés. Les salles enregistrées sont comparées à la meilleure run victorieuse mesurée. Les archives restent locales ; Nouvelle run archive le bilan précédent. Les salles absentes ne sont pas inventées et les défaites ne deviennent pas des records.

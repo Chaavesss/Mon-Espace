@@ -1,14 +1,12 @@
-# Compagnon Dofus 1.5.0
+# Compagnon Dofus 1.6.0
 
-Les instructions Ganymède disposent d’un mode compagnon : tutoiement, verbes d’action directs, repères de préparation et conditions visibles, avec le contexte du personnage actif.
+- Reprendre la dernière session de personnage, parcours et étape depuis la bibliothèque. Les profils et progressions existants restent conservés.
+- Notes personnelles par personnage et étape, visibles dans l’overlay. Préparation cochable des ressources, prérequis et kamas explicitement indiqués par le guide ; ajouts personnels possibles. Aucun inventaire ni compte de jeu n’est lu.
+- Réglages de l’overlay : tailles du portrait/Dofus, opacité et éléments visibles. Modifications enregistrées localement.
+- Songes : records officiels séparés des records mesurés, comparaison des temps par salle avec la meilleure run mesurée, signalement d’un nouveau record officiel. Les défaites et archives incomplètes ne deviennent pas des records.
 
-- Disponible pour les guides Ganymède et les extraits Ganymède associés aux quêtes Tougli.
-- Boutons Style compagnon et Texte source ; préférence conservée et source complète toujours accessible.
-- Reformulation locale par règles prudentes, sans service IA, clé API ou frais supplémentaires. Les formulations non reconnues, conditions et dialogues entre guillemets restent conservés. Cette version ne réécrit pas librement tous les paragraphes et ne choisit pas de branche de quête à votre place.
-- Noms, quantités, coordonnées, négations, ordre des étapes et attribution des auteurs conservés. Coordonnées toujours cliquables.
-- Cache local par personnage, contexte et contenu source. Une instruction actualisée produit une nouvelle vue, sans changer les identifiants ni les validations des quêtes.
-- Portrait entier et Dofus du parcours restent visibles dans le bandeau fixe de l’overlay.
+Les archives de runs existantes sont réutilisées. Une run terminée reste dans son fichier courant ; Nouvelle run archive le bilan précédent. Les comparaisons par salle utilisent uniquement les profondeurs effectivement enregistrées, sans inventer les salles manquantes. Les archives illisibles sont ignorées et conservées.
 
-Extraire tout le ZIP, fermer l’ancienne version puis lancer Installer_Compagnon_Dofus.cmd. Conserver les DLL avec l’exécutable. Personnages, portraits, guides et progression existants sont conservés. Cette version concerne uniquement le compagnon indépendant.
+Extraire tout le ZIP, fermer l’ancienne version puis lancer Installer_Compagnon_Dofus.cmd. Conserver les DLL avec l’exécutable. Les données existantes sont conservées. Cette version concerne uniquement le compagnon indépendant.
 
-Les captures de validation utilisent des données fictives. La reconnaissance Songes reste expérimentale.
+Validation : modèles et boutons réels des notes/options, persistance, reprise et comparaison Songes. Les captures de validation sont fictives. La lecture visuelle Songes reste expérimentale et doit être vérifiée sur votre interface de jeu.

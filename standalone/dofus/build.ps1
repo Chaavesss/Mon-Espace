@@ -27,7 +27,7 @@ $catalogue = Join-Path $out 'catalogue-bootstrap.json'
 if(Test-Path $catalogue) { $argsList += '/resource:' + $catalogue + ',Compagnon.Catalogue' }
 $refs += @('SkiaSharp.dll','System.Memory.dll','System.Buffers.dll','System.Runtime.CompilerServices.Unsafe.dll','System.Numerics.Vectors.dll') | ForEach-Object { Join-Path $out $_ }
 $argsList += $refs | ForEach-Object { '/reference:' + $_ }
-$argsList += @('DofusCompanion.cs','TougliReader.cs','AppIdentity.cs') | ForEach-Object { Join-Path $ProjectRoot ('src/' + $_) }
+$argsList += @('DofusCompanion.cs','DofusTools.cs','DofusToolsUi.cs','TougliReader.cs','AppIdentity.cs') | ForEach-Object { Join-Path $ProjectRoot ('src/' + $_) }
 $argsList += Get-ChildItem (Join-Path $ProjectRoot 'standalone/dofus') -Filter '*.cs' | ForEach-Object FullName
 $rsp = Join-Path $out 'compilation.rsp'
 [IO.File]::WriteAllLines($rsp,[string[]]($argsList | ForEach-Object { '"' + $_ + '"' }), (New-Object Text.UTF8Encoding($false)))

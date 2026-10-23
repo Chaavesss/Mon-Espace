@@ -140,6 +140,11 @@ $nativeArgs += ('/resource:' + (Join-Path $portraitOutput 'THIRD_PARTY_NOTICES.t
 foreach ($dofusIcon in (Get-ChildItem -LiteralPath (Join-Path $nativeProject 'assets/dofus') -Filter '*.png' -File)) { $nativeArgs += ('/resource:' + $dofusIcon.FullName + ',MonEspace.Dofus.' + $dofusIcon.Name) }
 foreach ($dofusFeature in @('CharacterPortraits.cs','DofusImageRuntime.cs','DofusVisuals.cs','CompanionInstructions.cs','DofusVisualAcceptance.cs')) { $nativeArgs += (Join-Path $nativeProject ('src/' + $dofusFeature)) }
 
+$nativeArgs += (Join-Path $nativeProject 'src/DofusTools.cs')
+$nativeArgs += (Join-Path $nativeProject 'src/DofusToolsUi.cs')
+$nativeArgs += (Join-Path $nativeProject 'src/WorkspaceEnhancements.cs')
+$nativeArgs += (Join-Path $nativeProject 'src/WorkspaceEnhancementsUi.cs')
+$nativeArgs += (Join-Path $nativeProject 'src/WorkspaceEnhancementsAcceptance.cs')
 $responseFile = Join-Path $nativeProject 'release\compilation.rsp'
 [System.IO.File]::WriteAllLines($responseFile, [string[]]($nativeArgs | ForEach-Object { '"' + $_ + '"' }), (New-Object System.Text.UTF8Encoding($false)))
 $processInfo = New-Object System.Diagnostics.ProcessStartInfo

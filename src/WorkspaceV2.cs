@@ -82,7 +82,7 @@ internal sealed partial class ModernWorkspace {
   if(workspaceTabs==null)return;if(workspaceSettings!=null)workspaceSettings.Foreground=Ink;workspaceTabs.Visibility=Visibility.Visible;
   if(!openTabs.Any(t=>t.Page==selected&&t.Project==openProject&&t.Document==(selected=="Documents locaux"?openDocument:"")))openTabs.Add(new WorkspaceTab{Page=selected,Project=openProject,Document=selected=="Documents locaux"?openDocument:""});
   while(openTabs.Count>5)openTabs.RemoveAt(openTabs[0].Page=="Aujourd’hui"?1:0);
-  workspaceTabs.Visibility=openTabs.Count>1?Visibility.Visible:Visibility.Collapsed;workspaceTabs.Children.Clear();
+  CaptureWorkspaceSession();workspaceTabs.Visibility=openTabs.Count>1?Visibility.Visible:Visibility.Collapsed;workspaceTabs.Children.Clear();
   foreach(var entry in openTabs.ToList()){
    var tab=entry;bool active=tab.Page==selected&&tab.Project==openProject&&tab.Document==(selected=="Documents locaux"?openDocument:"");
    var row=new StackPanel{Orientation=Orientation.Horizontal};

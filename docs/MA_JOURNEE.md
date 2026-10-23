@@ -43,3 +43,14 @@ La synthèse affiche les rendez-vous locaux et ceux du calendrier Google chargé
 ## Vérifications
 
 Les suites couvrent la migration des anciennes données, la sélection et la conservation des priorités terminées, le changement de jour, les éléments récents supprimés ou renommés, la confidentialité, les dispositions indépendantes par mode, leur restauration, les vrais boutons WPF de sélection et de tri, et les événements du contrôle de redimensionnement. Le glisser-déposer physique, les raccourcis globaux et les connexions réelles restent à confirmer sur le PC d’utilisation.
+
+
+## Version 1.10 : dispositions, session et bilan
+
+Sur l’accueil, Dispositions permet de nommer jusqu’à douze configurations des blocs. Le déplacement par poignée et le redimensionnement par le coin des cartes restent disponibles dans Déplacer les blocs. Appliquer une disposition ne change pas les tâches ou notes.
+
+Reprendre ma session retrouve les onglets, documents locaux disponibles et panneau latéral. La restauration au démarrage est facultative dans Dispositions. Les documents réseau ou absents ne sont pas ouverts automatiquement. Les textes sont simplement rouverts, sans écrasement des fichiers. Les brouillons non enregistrés suivent toujours la confirmation à la fermeture.
+
+Bilan de la journée montre les tâches terminées et permet de choisir explicitement celles à reporter à demain. Une note prépare le lendemain. Les bilans sont conservés localement avec un historique borné ; les tâches non cochées restent inchangées.
+
+Connexions distingue une session enregistrée d’un accès testé. Le bouton Tester effectue des lectures sur Google Drive, Agenda et Spotify, ainsi que la détection du lecteur local. Le bot est affiché uniquement si son module est activé. Son point de santé HTTPS public ne doit contenir aucun identifiant ni jeton ; le logiciel distingue la réponse HTTP de l’état Discord lorsque le serveur le fournit. La configuration du bot côté serveur n’est pas modifiée par Mon espace.

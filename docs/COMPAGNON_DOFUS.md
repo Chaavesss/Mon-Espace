@@ -87,3 +87,12 @@ La page principale affiche un bandeau avec le personnage entier, le Dofus associ
 Les extraits Ganymède proposent Style compagnon et Texte source. Le premier emploie des règles locales prudentes pour le tutoiement et les verbes d’action ; les passages non reconnus, dialogues et conditions restent conservés. Aucun modèle IA n’est appelé et aucune branche de classe ou d’alignement n’est devinée. Les vues adaptées sont mises en cache dans Data/InstructionViews, séparément des textes sources. Le choix de style est conservé et partagé entre page et overlay.
 
 Les portraits sont conservés dans Data/Portraits. Les sauvegardes complètes .mespace incluent les images référencées et vérifient leurs empreintes lors de la restauration. Un simple export JSON garde les associations mais pas les fichiers image. Les caches de guides et de reformulation restent des caches locaux. Les données du compagnon indépendant ne sont pas importées automatiquement dans Mon espace.
+
+
+## Version 1.10 : session, notes et réglages
+
+Réglages de l’overlay ouvre les tailles du personnage et du Dofus, l’opacité de 55 à 100 % et les éléments à afficher. Enregistrer applique ces choix ; annuler conserve les réglages précédents. La vue compacte reste redimensionnable.
+
+Préparer cette quête / Mes notes enregistre un texte personnel et une liste cochable par personnage et étape. Les ressources et prérequis du guide restent distincts des préparatifs ajoutés manuellement. La liste ne vérifie pas votre inventaire. Actualiser ma liste tient compte des lignes personnelles ; Enregistrer mes notes conserve l’ensemble.
+
+Reprendre ma session Dofus retrouve le dernier personnage, guide et curseur enregistrés. Si le guide n’est pas disponible localement, chargez-le comme auparavant. Changer de guide ne valide pas ses étapes.
