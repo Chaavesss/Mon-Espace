@@ -1,7 +1,7 @@
 name: Compagnon Dofus indépendant
 on:
   push:
-    branches: [main, companion-1-8-updates-completion]
+    branches: [main, companion-1-8-updates-completion, companion-gold-icon]
     paths:
       - 'standalone/dofus/**'
       - '.github/workflows/compagnon-dofus.yml'
