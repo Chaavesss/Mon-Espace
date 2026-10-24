@@ -1,8 +1,5 @@
-# Compagnon Dofus 1.8.0
+# Compagnon Dofus 1.8.1
 
-- Notification intégrée lorsqu’une nouvelle version est disponible, téléchargement avec progression et vérification SHA-256, puis installation et redémarrage sur confirmation. Les données personnelles restent dans leur dossier séparé.
-- Guides terminés mis en évidence en vert avec le badge « Terminé · 100 % », pour le personnage sélectionné.
-- Overlay avec encadré de réussite et suggestions de prochains Dofus : parcours commencés en priorité, puis niveau indiqué dans le catalogue. Les prérequis restent à vérifier dans le guide.
-- Tests supplémentaires : progression séparée par personnage, annulation, cache absent, anciennes étapes, archive complète et contrôle de version.
+Les noms des ressources sont cliquables dans l’overlay et dans la liste des ressources restantes. Un clic copie uniquement le nom, sans quantité, pour le coller dans la recherche de l’HDV. Une confirmation « ✓ Copié » s’affiche brièvement.
 
-Installer cette version une première fois avec le ZIP complet et Installer_Compagnon_Dofus.cmd. Les versions suivantes pourront être téléchargées depuis le compagnon.
+Disponible via « Vérifier les mises à jour » depuis la version 1.8.0.
