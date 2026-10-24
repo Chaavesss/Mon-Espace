@@ -1,3 +1,9 @@
+# Compagnon Dofus 1.7.3 — Texte des champs visible
+
+- Correction de la marge appliquée deux fois au contenu des champs de saisie, qui pouvait masquer le texte.
+- Recherche des guides, création de personnage et autres champs conservent leur style sombre et leur texte clair.
+- Contrôle Windows du champ réel de recherche : hauteur disponible et position des caractères.
+
 # Compagnon Dofus 1.7.2 — Temps par combat
 
 - Historique par combat : durée du combat uniquement, numéro de salle et résultat. Chaque tentative reste distincte.
