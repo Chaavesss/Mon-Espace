@@ -7,8 +7,8 @@ using System.Diagnostics;
 using System.Windows;
 [assembly:AssemblyTitle("Compagnon Dofus")]
 [assembly:AssemblyProduct("Compagnon Dofus indépendant")]
-[assembly:AssemblyVersion("1.8.1.0")]
-[assembly:AssemblyFileVersion("1.8.1.0")]
+[assembly:AssemblyVersion("1.8.2.0")]
+[assembly:AssemblyFileVersion("1.8.2.0")]
 internal static class CompanionProgram {
  internal static readonly string Root=Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),"CompagnonDofus");
  internal static readonly string Installed=Path.Combine(Root,"App","CompagnonDofus.exe");
