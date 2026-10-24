@@ -1,0 +1,12 @@
+using System;
+using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
+internal static class GuideCompletion {
+ internal static bool IsComplete(Store store,DofusCharacter character,string slug){if(character==null)return false;try{var doc=QuestProgress.Read(store,character,slug);return doc!=null&&doc.Steps.Count>0&&QuestProgress.Count(store,character,slug)==doc.Steps.Count;}catch{return false;}}
+ internal static TougliGuideInfo[] Suggest(Store store,DofusCharacter character){return GuideLibrary.Read(store).Where(g=>g.Slug!=character.guide&&GuideAssets.Icon(g.Slug,g.Title)!=null&&!IsComplete(store,character,g.Slug)).OrderByDescending(g=>QuestProgress.Count(store,character,g.Slug)>0).ThenBy(g=>g.Level<=0?Int32.MaxValue:g.Level).ThenBy(g=>g.Title).GroupBy(g=>QuestInstructionIndex.NameKey(g.Title)).Select(g=>g.First()).Take(3).ToArray();}
+}
+internal sealed partial class CompanionWindow {
+ FrameworkElement CompletionPanel(DofusCharacter character,TougliDocument doc){var panel=new StackPanel();var title=Text("✓ "+doc.Title+" terminé · 100 %",17);title.Foreground=Brush("#79D6A0");panel.Children.Add(title);panel.Children.Add(Text("Et maintenant ? Reprenez un Dofus commencé ou choisissez un nouveau parcours. Suggestions par progression puis niveau indiqué par le guide ; prérequis à vérifier.",11,true));foreach(var suggestion in GuideCompletion.Suggest(store,character)){var item=suggestion;panel.Children.Add(Button("Continuer : "+item.Title,()=>LoadSuggestedGuide(character.id,item.Slug)));}panel.Children.Add(Button("Voir tous les guides",()=>{optionsSection="guides";Configure();}));return CompanionTheme.Card(panel);}
+ void LoadSuggestedGuide(string characterId,string slug){RunDownload(async token=>{var c=store.Value.dofus.characters.First(x=>x.id==characterId);var snapshot=new DofusCharacter{id=c.id,guide=slug,classCode=c.classCode,alignment=c.alignment,order=c.order};var raw=TougliReader.Cached(store,slug);if(raw==null)raw=GanymedeReader.IsGuide(slug)?GanymedeReader.Normalise(await DownloadAddress(GanymedeReader.Url(slug),token)):await Download("/api/guide/details/"+slug,token);var parsed=GanymedeReader.IsGuide(slug)?GanymedeReader.Parse(raw,slug):TougliReader.Parse(raw,snapshot);if(parsed.Slug!=slug)throw new System.IO.InvalidDataException("Guide différent de la suggestion.");token.ThrowIfCancellationRequested();TougliReader.Cache(store,slug,raw);PersonalWorkflows.Change(store,()=>c.guide=slug);documentKey="";questIndex=null;RefreshView();EnterOverlay();});}
+}

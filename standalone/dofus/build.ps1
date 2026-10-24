@@ -4,7 +4,7 @@ $out = Join-Path $ProjectRoot 'dist-compagnon'
 New-Item -ItemType Directory -Force -Path $out | Out-Null
 & (Join-Path $PSScriptRoot 'restore-portraits.ps1') -ProjectRoot $ProjectRoot -Out $out
 $gac = Join-Path $env:WINDIR 'Microsoft.NET/assembly'
-$refs = @('System.dll','System.Core.dll','System.Windows.Forms.dll','System.Drawing.dll','System.Web.Extensions.dll','System.Numerics.dll')
+$refs = @('System.dll','System.Core.dll','System.Windows.Forms.dll','System.Drawing.dll','System.Web.Extensions.dll','System.Numerics.dll','System.IO.Compression.dll','System.IO.Compression.FileSystem.dll')
 foreach ($name in @('WindowsBase','PresentationCore','PresentationFramework','System.Xaml','System.Net.Http')) {
     $found = Get-ChildItem $gac -Filter ($name + '.dll') -Recurse | Select-Object -First 1 -ExpandProperty FullName
     if (!$found) { throw "Assembly missing: $name" }
@@ -34,3 +34,4 @@ $rsp = Join-Path $out 'compilation.rsp'
 & (Join-Path $env:WINDIR 'Microsoft.NET/Framework64/v4.0.30319/csc.exe') ('@' + $rsp)
 if ($LASTEXITCODE -ne 0) { throw 'Standalone compilation failed' }
 Write-Output 'CompagnonDofus.exe compiled independently (no MonEspace.exe).'
+
