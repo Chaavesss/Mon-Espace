@@ -21,7 +21,7 @@ try {
  $writer.AddResource('assets/fonts/fontbleach.ttf', [IO.File]::OpenRead((Join-Path $ProjectRoot 'assets/fonts/FontBleach.ttf')), $true)
  $writer.Generate()
 } finally { $writer.Dispose() }
-$argsList = @('/nologo','/target:winexe','/platform:x64','/optimize+','/codepage:65001','/utf8output',('/out:' + (Join-Path $out 'CompagnonDofus.exe')),('/win32icon:' + (Join-Path $ProjectRoot 'assets/MonEspace.ico')),('/resource:' + (Join-Path $ProjectRoot 'assets/MonEspace.ico') + ',MonEspace.Icon'))
+$argsList = @('/nologo','/target:winexe','/platform:x64','/optimize+','/codepage:65001','/utf8output',('/out:' + (Join-Path $out 'CompagnonDofus.exe')),('/win32icon:' + (Join-Path $ProjectRoot 'assets/CompagnonDofus.ico')),('/resource:' + (Join-Path $ProjectRoot 'assets/CompagnonDofus.ico') + ',MonEspace.Icon'))
 $argsList += '/resource:' + $resources + ',CompagnonDofus.g.resources'
 $catalogue = Join-Path $out 'catalogue-bootstrap.json'
 if(Test-Path $catalogue) { $argsList += '/resource:' + $catalogue + ',Compagnon.Catalogue' }
