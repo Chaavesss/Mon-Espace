@@ -13,7 +13,7 @@ internal sealed class TreasureHuntPanel:StackPanel {
  internal readonly TextBlock Status=CompanionWindow.Text("Choisissez la position et la direction.",11,true),Destination=CompanionWindow.Text("Sélectionnez un indice.",18);
  internal readonly Button Copy;
  readonly Action<string> writeClipboard;
- readonly List<Button> arrows=new List<Button>();
+ internal readonly List<Button> arrows=new List<Button>();
  readonly Func<int,int,int,CancellationToken,Task<List<TreasureClue>>> fetch;
  List<TreasureClue> clues=new List<TreasureClue>();
  CancellationTokenSource pending;int generation,direction=-1;bool updating,filtering;
@@ -22,11 +22,14 @@ internal sealed class TreasureHuntPanel:StackPanel {
   Children.Add(CompanionTheme.Heading("Chasse au trésor",22));
   var inputs=new StackPanel();inputs.Children.Add(CompanionTheme.Label("POSITION ACTUELLE"));
   var left=new StackPanel{Margin=new Thickness(0,0,6,0)};var right=new StackPanel{Margin=new Thickness(6,0,0,0)};
-  CompanionWindow.Field(left,"X",X);CompanionWindow.Field(right,"Y",Y);inputs.Children.Add(CompanionTheme.Pair(left,right));
-  var directions=new System.Windows.Controls.Primitives.UniformGrid{Columns=4};
-  string[] labels={"← Ouest","↑ Nord","↓ Sud","→ Est"};int[] values={4,6,2,0};
-  for(int i=0;i<4;i++){int d=values[i];var b=CompanionWindow.Button(labels[i],async()=>await Load(d));b.Padding=new Thickness(4,8,4,8);arrows.Add(b);directions.Children.Add(b);}
-  inputs.Children.Add(directions);inputs.Children.Add(Status);Children.Add(CompanionTheme.Card(inputs,12));
+  CompanionWindow.Field(left,"X",X);CompanionWindow.Field(right,"Y",Y);
+  var coordinates=CompanionTheme.Pair(left,right);coordinates.VerticalAlignment=VerticalAlignment.Center;
+  var directions=new Grid{HorizontalAlignment=HorizontalAlignment.Right,Margin=new Thickness(8,0,0,0)};
+  for(int i=0;i<3;i++){directions.ColumnDefinitions.Add(new ColumnDefinition{Width=new GridLength(38)});directions.RowDefinitions.Add(new RowDefinition{Height=new GridLength(34)});}
+  string[] labels={"←","↑","↓","→"},names={"Gauche","Haut","Bas","Droite"};int[] values={4,6,2,0},rows={1,0,2,1},columns={0,1,1,2};
+  for(int i=0;i<4;i++){int d=values[i];var b=CompanionWindow.Button(labels[i],async()=>await Load(d));b.Padding=new Thickness(0);b.Margin=new Thickness(2);b.Width=34;b.Height=30;b.MinHeight=30;b.FontSize=22;b.ToolTip=names[i];System.Windows.Automation.AutomationProperties.SetName(b,names[i]);Grid.SetRow(b,rows[i]);Grid.SetColumn(b,columns[i]);arrows.Add(b);directions.Children.Add(b);}
+  var position=new Grid();position.ColumnDefinitions.Add(new ColumnDefinition());position.ColumnDefinitions.Add(new ColumnDefinition{Width=GridLength.Auto});position.Children.Add(coordinates);Grid.SetColumn(directions,1);position.Children.Add(directions);inputs.Children.Add(position);
+  inputs.Children.Add(Status);Children.Add(CompanionTheme.Card(inputs,12));
   var list=new StackPanel();CompanionWindow.Field(list,"Rechercher un indice",Search);list.Children.Add(Results);Children.Add(CompanionTheme.Card(list,12));
   var arrival=new StackPanel();arrival.Children.Add(CompanionTheme.Label("ARRIVÉE"));arrival.Children.Add(Destination);
   Copy=CompanionWindow.Button("Copier /travel",()=>{var clue=Results.SelectedItem as TreasureClue;if(clue==null)return;CopyClue(clue);},true);
