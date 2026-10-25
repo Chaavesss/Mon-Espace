@@ -18,10 +18,10 @@ internal static class TreasureHuntTests {
   var pending=new TaskCompletionSource<System.Collections.Generic.List<TreasureClue>>();var stale=new TreasureHuntPanel((x,y,d,ct)=>pending.Task);var operation=stale.Load(0);stale.X.Text="2";pending.SetResult(found);
   System.Windows.Threading.Dispatcher.CurrentDispatcher.Invoke(new Action(()=>{}),System.Windows.Threading.DispatcherPriority.ApplicationIdle);
   Check(stale.Results.Items.Count==0&&!stale.Copy.IsEnabled,"réponse ancienne ignorée");
-  var window=new CompanionWindow(new Store(Path.Combine(folder,"treasure-isolated")),true);window.ShowTreasure();
+  var window=new CompanionWindow(new Store(Path.Combine(folder,"treasure-isolated")),true);window.treasurePanel=new TreasureHuntPanel((x,y,d,ct)=>Task.FromResult(found));window.ShowTreasure();
   // Inject deterministic fixture data; screenshots never depend on network availability.
   window.treasurePanel.X.Text="-25";window.treasurePanel.Y.Text="-36";
-  window.Render(Path.Combine(folder,"treasure-hunt.png"));window.Close();
+  window.treasurePanel.Load(0).GetAwaiter().GetResult();window.treasurePanel.Results.SelectedIndex=0;window.RefreshView();Check(window.treasurePanel.Copy.IsEnabled,"état conservé après rafraîchissement");window.Render(Path.Combine(folder,"treasure-hunt.png"));window.Close();
   File.WriteAllText(Path.Combine(folder,"TREASURE_PASS.txt"),"PASS: directions, closest clue, JSON, accent search, next position, stale response and overlay rendering.");
  }
 }
