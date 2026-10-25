@@ -1,4 +1,4 @@
-# Compagnon Dofus 1.8.5
+# Compagnon Dofus 1.8.6
 
 - Nouvel onglet Chasse au trésor dans l’overlay, dans le thème anthracite et doré.
 - Coordonnées de départ, quatre directions, liste d’indices filtrable sans distinction d’accents, coordonnées d’arrivée et copie de /travel.
