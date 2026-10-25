@@ -47,7 +47,7 @@ internal sealed class TreasureHuntPanel:StackPanel {
   if(!Int32.TryParse(X.Text,out x)||!Int32.TryParse(Y.Text,out y)||!TreasureHunt.Valid(x,y,d)){Status.Text="Saisissez X et Y entre -200 et 200.";return;}
   direction=d;PaintArrows();Status.Text="Recherche des indices…";
   var cts=new CancellationTokenSource();cts.CancelAfter(TimeSpan.FromSeconds(20));pending=cts;
-  try{var found=await fetch(x,y,d,cts.Token);if(request!=generation)return;clues=found;Filter();Status.Text=clues.Count==0?"Aucun indice trouvé. Vérifiez la position et la direction.":clues.Count+" indices · choisissez celui indiqué en jeu.";}
+  try{var found=await fetch(x,y,d,cts.Token);if(request!=generation)return;clues=found.ToList();Filter();Status.Text=clues.Count==0?"Aucun indice trouvé. Vérifiez la position et la direction.":clues.Count+" indices · choisissez celui indiqué en jeu.";}
   catch(OperationCanceledException){if(request==generation)Status.Text="Recherche trop longue. Réessayez.";}
   catch(Exception ex){if(request==generation)Status.Text=ex is IOException?ex.Message:"DofusDB est inaccessible. Réessayez ou ouvrez le site.";}
   finally{if(pending==cts)pending=null;cts.Dispose();}
