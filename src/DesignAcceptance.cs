@@ -22,7 +22,7 @@ internal sealed partial class ModernWorkspace {
    Go(page);PreviewSized(Path.Combine(folder,page.Replace("’","").Replace(" ","-")+".png"),1040,720);
   }
   var original=Appearance.Clone(store.Value.settings.Appearance);try{store.Value.settings.Appearance=Appearance.Presets().First(t=>t.name=="Sable");Go("Aujourd’hui");Preview(Path.Combine(folder,"Accueil-clair.png"));}finally{store.Value.settings.Appearance=original;Refresh();}
-  VerifyDayDashboard(folder);VerifyProductivity(folder);VerifyCompleteWorkspace(folder);VerifyDofus(folder);
+  VerifyDayDashboard(folder);VerifyProductivity(folder);VerifyCompleteWorkspace(folder);
  }
 }
 internal sealed partial class MainForm {
@@ -37,3 +37,4 @@ internal static partial class Program {
   try{using(var form=new MainForm(false))form.VerifyDesignV2(Root);File.WriteAllText(Path.Combine(Root,"DESIGN_PASS.txt"),"PASS: project tab context and navigation, close-tab interaction, music heading retained, footer widget button, privacy masks tab strip and mini-player, eight pages rendered at 1040x720, light theme rendered. Real Google/Spotify connection and physical resize remain target-PC checks.");return 0;}catch(Exception ex){File.WriteAllText(Path.Combine(Root,"DESIGN_FAIL.txt"),ex.ToString());return 1;}
  }
 }
+

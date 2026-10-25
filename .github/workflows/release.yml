@@ -1,16 +1,15 @@
 name: Compiler et publier Mon espace
 on:
   push:
-    branches: [main]
+    branches: [main, mon-espace-without-companion]
   workflow_dispatch:
 permissions:
   contents: read
 concurrency:
-  group: release-main
+  group: release-mon-espace-${{ github.ref }}
   cancel-in-progress: false
 jobs:
   release:
-    if: github.ref == 'refs/heads/main'
     runs-on: windows-2025
     timeout-minutes: 25
     permissions:
@@ -22,16 +21,6 @@ jobs:
       - name: Compiler
         shell: powershell
         run: ./build.ps1
-      - name: Verifier le decodeur dans l executable seul
-        shell: powershell
-        run: |
-          $isolated = Join-Path $pwd 'single-exe-validation'
-          New-Item -ItemType Directory -Force $isolated | Out-Null
-          Copy-Item release/MonEspace.exe (Join-Path $isolated 'MonEspace.exe')
-          $results = Join-Path $pwd 'test-results/dofus-single-exe'
-          $p = Start-Process (Join-Path $isolated 'MonEspace.exe') -ArgumentList @('--dofus-visual-test', ('"' + $results + '"')) -WindowStyle Hidden -Wait -PassThru
-          if ($p.ExitCode -ne 0) { Get-Content (Join-Path $results 'DOFUS_VISUAL_FAIL.txt'); throw 'Single executable image support failed' }
-          Get-Content (Join-Path $results 'DOFUS_VISUAL_PASS.txt')
       - name: Verifier les 12 suites
         shell: powershell
         run: ./scripts/test.ps1 -SkipNativePdf
@@ -47,6 +36,7 @@ jobs:
         shell: powershell
         run: ./scripts/prepare-release.ps1 -Repository $env:GITHUB_REPOSITORY -SkipBuild -UseCiValidation
       - name: Publier une nouvelle version
+        if: github.ref == 'refs/heads/main'
         shell: powershell
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -65,3 +55,4 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Creation du brouillon impossible.' }
           gh release edit $tag --repo $env:GITHUB_REPOSITORY --draft=false --latest
           if ($LASTEXITCODE -ne 0) { throw 'Publication impossible. Le brouillon conserve les fichiers.' }
+

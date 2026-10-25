@@ -42,7 +42,7 @@ internal sealed partial class DesktopWidget:Window {
  }
  internal void RefreshView(){
   if(stopping)return;var json=new System.Web.Script.Serialization.JavaScriptSerializer();
-  string current=store.Value.settings.PrivacyMode.ToString()+store.Value.dofus.active+json.Serialize(store.Value.focus)+json.Serialize(WidgetModel.Tasks(store.Value))+json.Serialize(store.Value.settings.Appearance)+json.Serialize(store.Value.settings.Widget)+store.Value.settings.AppTitle+DateTime.Today.ToString("yyyy-MM-dd");
+  string current=store.Value.settings.PrivacyMode.ToString()+json.Serialize(store.Value.focus)+json.Serialize(WidgetModel.Tasks(store.Value))+json.Serialize(store.Value.settings.Appearance)+json.Serialize(store.Value.settings.Widget)+store.Value.settings.AppTitle+DateTime.Today.ToString("yyyy-MM-dd");
   Topmost=store.Value.settings.Widget.topmost;if(current==signature)return;signature=current;
   palette=Appearance.Palette(store.Value.settings.Appearance);host.StyleDesktopWidget(this);if(DrawPrivateWidget())return;Title="Widget · "+store.Value.settings.AppTitle;
   var frame=new Border{Background=Brush(palette.Card),BorderBrush=Brush(palette.Border),BorderThickness=new Thickness(1),CornerRadius=new CornerRadius(16),Padding=new Thickness(18)};Content=frame;
@@ -58,7 +58,7 @@ internal sealed partial class DesktopWidget:Window {
    var info=new StackPanel();Grid.SetColumn(info,1);var edit=Button(item.title,delegate{host.OpenWidgetTask(id);});edit.Padding=new Thickness(0,3,0,5);edit.Background=Brushes.Transparent;edit.HorizontalContentAlignment=HorizontalAlignment.Left;edit.Content=Text(item.title,12);info.Children.Add(edit);
    string detail=item.project+(String.IsNullOrEmpty(item.due)?"":" · "+Schedule.Day(item.due).ToString("dd/MM")+(Schedule.Day(item.due)<DateTime.Today?" · En retard":""))+(item.status=="doing"?" · En cours":"");info.Children.Add(Text(detail,10,true));row.Children.Add(info);body.Children.Add(row);
   }
-  var actions=new WrapPanel{Margin=new Thickness(0,20,0,18)};actions.Children.Add(Button("+ Capture rapide",delegate{host.ShowQuickCapture();},true));actions.Children.Add(Button("Ouvrir l'espace",delegate{host.ShowWorkspaceFromWidget();}));if(store.Value.dofus.characters.Count>0)actions.Children.Add(Button("Compagnon Dofus",delegate{host.OpenDofusFromWidget();}));body.Children.Add(actions);
+  var actions=new WrapPanel{Margin=new Thickness(0,20,0,18)};actions.Children.Add(Button("+ Capture rapide",delegate{host.ShowQuickCapture();},true));actions.Children.Add(Button("Ouvrir l'espace",delegate{host.ShowWorkspaceFromWidget();}));body.Children.Add(actions);
   var musicPanel=new StackPanel();musicPanel.Children.Add(Text("SPOTIFY",10,true));var nowPlaying=new DockPanel{Margin=new Thickness(0,10,0,0)};widgetArtwork=new AlbumArtwork(58,Brush(palette.Surface),Brush(palette.Muted)){Margin=new Thickness(0,0,12,0)};DockPanel.SetDock(widgetArtwork,Dock.Left);nowPlaying.Children.Add(widgetArtwork);var metadata=new StackPanel{VerticalAlignment=VerticalAlignment.Center};song=Text("",13);song.MaxHeight=38;song.TextTrimming=TextTrimming.CharacterEllipsis;metadata.Children.Add(song);artist=Text("",10,true);artist.Margin=new Thickness(0,4,0,0);metadata.Children.Add(artist);nowPlaying.Children.Add(metadata);musicPanel.Children.Add(nowPlaying);
   var transport=new WrapPanel{Margin=new Thickness(0,12,0,0)};previous=Button("Précédent",delegate{SendCommand("previous");});toggle=Button("Lecture",delegate{SendCommand("toggle");},true);next=Button("Suivant",delegate{SendCommand("next");});PolishedControls.Media(previous,"previous");PolishedControls.Media(toggle,"play",true);PolishedControls.Media(next,"next");transport.Children.Add(previous);transport.Children.Add(toggle);transport.Children.Add(next);musicPanel.Children.Add(transport);body.Children.Add(musicPanel);
   message=Text("",10,true);message.Margin=new Thickness(0,12,0,10);body.Children.Add(message);UpdatePlayback();
@@ -98,3 +98,4 @@ internal sealed partial class MainForm {
 internal sealed partial class ModernWorkspace {
  internal void StyleDesktopWidget(Window window){window.Resources=(ResourceDictionary)XamlReader.Parse(ResourcesText());}
 }
+

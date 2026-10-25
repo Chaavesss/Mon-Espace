@@ -1,4 +1,4 @@
-﻿param([string]$ProjectRoot = $PSScriptRoot)
+param([string]$ProjectRoot = $PSScriptRoot)
 $ErrorActionPreference = 'Stop'
 $nativeProject = $ProjectRoot
 $nativeCompiler = Join-Path $env:WINDIR 'Microsoft.NET\Framework64\v4.0.30319\csc.exe'
@@ -116,37 +116,11 @@ $nativeArgs += (Join-Path $nativeProject 'src\NoteHistory.cs')
 $nativeArgs += (Join-Path $nativeProject 'src\WorkspaceSpaces.cs')
 $nativeArgs += (Join-Path $nativeProject 'src\AutomaticBackups.cs')
 $nativeArgs += (Join-Path $nativeProject 'src\CompleteWorkspaceAcceptance.cs')
-$nativeArgs += (Join-Path $nativeProject 'src\DofusCompanion.cs')
-$nativeArgs += (Join-Path $nativeProject 'src\TougliReader.cs')
-$nativeArgs += (Join-Path $nativeProject 'src\DofusWorkspace.cs')
-$nativeArgs += (Join-Path $nativeProject 'src\DofusOverlay.cs')
-$nativeArgs += (Join-Path $nativeProject 'src\DofusWidgetBridge.cs')
-$nativeArgs += (Join-Path $nativeProject 'src\DofusAcceptance.cs')
-$nativeArgs += (Join-Path $nativeProject 'standalone/dofus/CoordinateLinks.cs')
-$nativeArgs += (Join-Path $nativeProject 'standalone/dofus/GanymedeReader.cs')
-$nativeArgs += (Join-Path $nativeProject 'standalone/dofus/QuestInstructions.cs')
-$nativeArgs += (Join-Path $nativeProject 'src/DofusInstructionsWorkspace.cs')
-$nativeArgs += (Join-Path $nativeProject 'src/DofusInstructionsAcceptance.cs')
 
-$portraitOutput = Join-Path $nativeProject 'release'
-& (Join-Path $nativeProject 'standalone/dofus/restore-portraits.ps1') -ProjectRoot $nativeProject -Out $portraitOutput
-foreach ($portraitDependency in @('SkiaSharp.dll','System.Memory.dll','System.Buffers.dll','System.Runtime.CompilerServices.Unsafe.dll','System.Numerics.Vectors.dll')) {
- $nativeArgs += ('/reference:' + (Join-Path $portraitOutput $portraitDependency))
- $nativeArgs += ('/resource:' + (Join-Path $portraitOutput $portraitDependency) + ',MonEspace.Runtime.' + $portraitDependency)
-}
-$nativeArgs += '/reference:System.Numerics.dll'
-$nativeArgs += ('/resource:' + (Join-Path $portraitOutput 'libSkiaSharp.dll') + ',MonEspace.Runtime.libSkiaSharp.dll')
-$nativeArgs += ('/resource:' + (Join-Path $portraitOutput 'THIRD_PARTY_NOTICES.txt') + ',MonEspace.Runtime.Licenses')
-foreach ($dofusIcon in (Get-ChildItem -LiteralPath (Join-Path $nativeProject 'assets/dofus') -Filter '*.png' -File)) { $nativeArgs += ('/resource:' + $dofusIcon.FullName + ',MonEspace.Dofus.' + $dofusIcon.Name) }
-foreach ($dofusFeature in @('CharacterPortraits.cs','DofusImageRuntime.cs','DofusVisuals.cs','CompanionInstructions.cs','DofusVisualAcceptance.cs')) { $nativeArgs += (Join-Path $nativeProject ('src/' + $dofusFeature)) }
-
-$nativeArgs += (Join-Path $nativeProject 'src/DofusTools.cs')
-$nativeArgs += (Join-Path $nativeProject 'src/DofusToolsUi.cs')
 $nativeArgs += (Join-Path $nativeProject 'src/WorkspaceEnhancements.cs')
 $nativeArgs += (Join-Path $nativeProject 'src/WorkspaceEnhancementsUi.cs')
 $nativeArgs += (Join-Path $nativeProject 'src/WorkspaceEnhancementsAcceptance.cs')
-foreach ($captureFile in @('QuestCaptureImport.cs','QuestCaptureOcr.cs','QuestCaptureUi.cs','QuestCaptureAcceptance.cs')) { $nativeArgs += (Join-Path $nativeProject ('src/' + $captureFile)) }
-foreach ($captureMetadata in @('Windows.Globalization','Windows.Graphics')) { $nativeArgs += ('/reference:' + (Join-Path $env:WINDIR ('System32/WinMetadata/' + $captureMetadata + '.winmd'))) }
+$nativeArgs += (Join-Path $nativeProject 'src/RetiredCompanionData.cs')
 $responseFile = Join-Path $nativeProject 'release\compilation.rsp'
 [System.IO.File]::WriteAllLines($responseFile, [string[]]($nativeArgs | ForEach-Object { '"' + $_ + '"' }), (New-Object System.Text.UTF8Encoding($false)))
 $processInfo = New-Object System.Diagnostics.ProcessStartInfo
@@ -166,3 +140,4 @@ $compileOutput = $stdoutTask.Result + $stderrTask.Result
 Write-Output $compileOutput
 if ($buildProcess.ExitCode -ne 0) { throw 'Compilation échouée : voir release/compilation.log.' }
 Write-Output 'MonEspace.exe compilé (Windows x64).'
+
