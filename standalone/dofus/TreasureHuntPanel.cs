@@ -9,7 +9,7 @@ using System.Windows.Controls;
 
 internal sealed class TreasureHuntPanel:StackPanel {
  internal readonly TextBox X=new TextBox{Text="0",MaxLength=4},Y=new TextBox{Text="0",MaxLength=4},Search=new TextBox{MaxLength=100};
- internal readonly ListBox Results=new ListBox{Height=165,DisplayMemberPath="Display"};
+ internal readonly ComboBox Results=new ComboBox{MinHeight=36,MaxDropDownHeight=220,DisplayMemberPath="Display"};
  internal readonly TextBlock Status=CompanionWindow.Text("Choisissez la position et la direction.",11,true),Destination=CompanionWindow.Text("Sélectionnez un indice.",18);
  internal readonly Button Copy,Next;
  readonly List<Button> arrows=new List<Button>();
@@ -18,19 +18,19 @@ internal sealed class TreasureHuntPanel:StackPanel {
  CancellationTokenSource pending;int generation,direction=-1;bool updating;
  internal TreasureHuntPanel(Func<int,int,int,CancellationToken,Task<List<TreasureClue>>> loader=null){
   fetch=loader??TreasureHunt.Fetch;
-  Children.Add(CompanionTheme.Heading("Chasse au trésor",25));
+  Children.Add(CompanionTheme.Heading("Chasse au trésor",22));
   var inputs=new StackPanel();inputs.Children.Add(CompanionTheme.Label("POSITION DE DÉPART"));
   var left=new StackPanel{Margin=new Thickness(0,0,6,0)};var right=new StackPanel{Margin=new Thickness(6,0,0,0)};
   CompanionWindow.Field(left,"X",X);CompanionWindow.Field(right,"Y",Y);inputs.Children.Add(CompanionTheme.Pair(left,right));
   var directions=new System.Windows.Controls.Primitives.UniformGrid{Columns=4};
   string[] labels={"← Ouest","↑ Nord","↓ Sud","→ Est"};int[] values={4,6,2,0};
   for(int i=0;i<4;i++){int d=values[i];var b=CompanionWindow.Button(labels[i],async()=>await Load(d));b.Padding=new Thickness(4,8,4,8);arrows.Add(b);directions.Children.Add(b);}
-  inputs.Children.Add(directions);inputs.Children.Add(Status);Children.Add(CompanionTheme.Card(inputs));
-  var list=new StackPanel();CompanionWindow.Field(list,"Rechercher un indice",Search);list.Children.Add(Results);Children.Add(CompanionTheme.Card(list));
+  inputs.Children.Add(directions);inputs.Children.Add(Status);Children.Add(CompanionTheme.Card(inputs,12));
+  var list=new StackPanel();CompanionWindow.Field(list,"Rechercher un indice",Search);list.Children.Add(Results);Children.Add(CompanionTheme.Card(list,12));
   var arrival=new StackPanel();arrival.Children.Add(CompanionTheme.Label("ARRIVÉE"));arrival.Children.Add(Destination);
   Copy=CompanionWindow.Button("Copier /travel",()=>{var clue=Results.SelectedItem as TreasureClue;if(clue==null)return;try{Clipboard.SetText(clue.Travel);Status.Text="Commande copiée : "+clue.Travel;}catch(System.Runtime.InteropServices.ExternalException){Status.Text="Copie indisponible. Réessayez.";}},true);
   Next=CompanionWindow.Button("Repartir d’ici →",Advance);Copy.IsEnabled=Next.IsEnabled=false;
-  arrival.Children.Add(Copy);arrival.Children.Add(Next);Children.Add(CompanionTheme.Card(arrival));
+  arrival.Children.Add(CompanionTheme.Pair(Copy,Next));Children.Add(CompanionTheme.Card(arrival,12));
   Children.Add(CompanionWindow.Text("Phorreur : repérez-le en jeu puis saisissez sa position pour continuer.",11,true));
   Children.Add(CompanionWindow.Button("Données : DofusDB ↗",()=>System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo("https://dofusdb.fr/fr/tools/treasure-hunt"){UseShellExecute=true})));
   X.TextChanged+=delegate{if(!updating)Invalidate();};Y.TextChanged+=delegate{if(!updating)Invalidate();};
