@@ -1,8 +1,6 @@
-# Compagnon Dofus 1.8.7
+# Compagnon Dofus 1.8.8
 
-- Chasse au trésor : la sélection d’un indice actualise immédiatement X et Y avec sa destination.
-- La prochaine direction recherche automatiquement depuis cette position et efface l’ancien filtre.
-- Suppression du bouton Repartir d’ici ; la commande /travel reste copiable après sélection.
-- La correction manuelle des coordonnées reste possible et invalide les anciens résultats.
-
-Validation Windows : mise à jour immédiate, départ de la recherche suivante, copie conservée, filtre réinitialisé et correction manuelle.
+- Sélectionner un indice copie automatiquement sa commande /travel X Y et actualise la position.
+- Le bouton Copier /travel reste disponible pour recopier la destination.
+- Le filtrage de la liste ne remplace pas le presse-papiers. Une copie indisponible affiche un message et laisse la position accessible.
+- Tests Windows : copie automatique exacte, absence de copie au filtrage, recopie manuelle et presse-papiers occupé.

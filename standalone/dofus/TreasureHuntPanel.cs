@@ -12,12 +12,13 @@ internal sealed class TreasureHuntPanel:StackPanel {
  internal readonly ComboBox Results=new ComboBox{MinHeight=36,MaxDropDownHeight=220,DisplayMemberPath="Display"};
  internal readonly TextBlock Status=CompanionWindow.Text("Choisissez la position et la direction.",11,true),Destination=CompanionWindow.Text("Sélectionnez un indice.",18);
  internal readonly Button Copy;
+ readonly Action<string> writeClipboard;
  readonly List<Button> arrows=new List<Button>();
  readonly Func<int,int,int,CancellationToken,Task<List<TreasureClue>>> fetch;
  List<TreasureClue> clues=new List<TreasureClue>();
- CancellationTokenSource pending;int generation,direction=-1;bool updating;
- internal TreasureHuntPanel(Func<int,int,int,CancellationToken,Task<List<TreasureClue>>> loader=null){
-  fetch=loader??TreasureHunt.Fetch;
+ CancellationTokenSource pending;int generation,direction=-1;bool updating,filtering;
+ internal TreasureHuntPanel(Func<int,int,int,CancellationToken,Task<List<TreasureClue>>> loader=null,Action<string> clipboard=null){
+  fetch=loader??TreasureHunt.Fetch;writeClipboard=clipboard??new Action<string>(Clipboard.SetText);
   Children.Add(CompanionTheme.Heading("Chasse au trésor",22));
   var inputs=new StackPanel();inputs.Children.Add(CompanionTheme.Label("POSITION ACTUELLE"));
   var left=new StackPanel{Margin=new Thickness(0,0,6,0)};var right=new StackPanel{Margin=new Thickness(6,0,0,0)};
@@ -28,18 +29,19 @@ internal sealed class TreasureHuntPanel:StackPanel {
   inputs.Children.Add(directions);inputs.Children.Add(Status);Children.Add(CompanionTheme.Card(inputs,12));
   var list=new StackPanel();CompanionWindow.Field(list,"Rechercher un indice",Search);list.Children.Add(Results);Children.Add(CompanionTheme.Card(list,12));
   var arrival=new StackPanel();arrival.Children.Add(CompanionTheme.Label("ARRIVÉE"));arrival.Children.Add(Destination);
-  Copy=CompanionWindow.Button("Copier /travel",()=>{var clue=Results.SelectedItem as TreasureClue;if(clue==null)return;try{Clipboard.SetText(clue.Travel);Status.Text="Commande copiée : "+clue.Travel;}catch(System.Runtime.InteropServices.ExternalException){Status.Text="Copie indisponible. Réessayez.";}},true);
+  Copy=CompanionWindow.Button("Copier /travel",()=>{var clue=Results.SelectedItem as TreasureClue;if(clue==null)return;CopyClue(clue);},true);
   Copy.IsEnabled=false;
   arrival.Children.Add(Copy);Children.Add(CompanionTheme.Card(arrival,12));
   Children.Add(CompanionWindow.Text("Phorreur : repérez-le en jeu puis saisissez sa position pour continuer.",11,true));
   Children.Add(CompanionWindow.Button("Données : DofusDB ↗",()=>System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo("https://dofusdb.fr/fr/tools/treasure-hunt"){UseShellExecute=true})));
   X.TextChanged+=delegate{if(!updating)Invalidate();};Y.TextChanged+=delegate{if(!updating)Invalidate();};
-  Search.TextChanged+=delegate{Filter();};Results.SelectionChanged+=delegate{var clue=Results.SelectedItem as TreasureClue;Copy.IsEnabled=clue!=null;Destination.Text=clue==null?"Sélectionnez un indice.":"["+clue.X+", "+clue.Y+"] · "+clue.Distance+" carte(s)";if(clue!=null){updating=true;try{X.Text=clue.X.ToString();Y.Text=clue.Y.ToString();}finally{updating=false;}Status.Text="Position actualisée · choisissez la prochaine direction.";}};
+  Search.TextChanged+=delegate{Filter();};Results.SelectionChanged+=delegate{var clue=Results.SelectedItem as TreasureClue;Copy.IsEnabled=clue!=null;Destination.Text=clue==null?"Sélectionnez un indice.":"["+clue.X+", "+clue.Y+"] · "+clue.Distance+" carte(s)";if(clue!=null&&!filtering){updating=true;try{X.Text=clue.X.ToString();Y.Text=clue.Y.ToString();}finally{updating=false;}CopyClue(clue);}};
  }
+ void CopyClue(TreasureClue clue){try{writeClipboard(clue.Travel);Status.Text="Commande copiée : "+clue.Travel;}catch(System.Runtime.InteropServices.ExternalException){Status.Text="Position actualisée · copie indisponible. Cliquez sur Copier /travel pour réessayer.";}}
  internal void Cancel(){generation++;if(pending!=null)pending.Cancel();}
  void Invalidate(){Cancel();clues.Clear();Filter();direction=-1;PaintArrows();Status.Text="Choisissez une direction pour cette position.";}
  void PaintArrows(){int[] values={4,6,2,0};for(int i=0;i<4;i++){arrows[i].BorderBrush=values[i]==direction?CompanionTheme.Gold:CompanionTheme.Line;arrows[i].Foreground=values[i]==direction?CompanionTheme.Gold:CompanionTheme.Ink;}}
- void Filter(){var selected=Results.SelectedItem as TreasureClue;Results.ItemsSource=clues.Where(c=>TreasureHunt.Matches(c.Name,Search.Text)).ToList();if(selected!=null&&((List<TreasureClue>)Results.ItemsSource).Contains(selected))Results.SelectedItem=selected;}
+ void Filter(){filtering=true;try{var selected=Results.SelectedItem as TreasureClue;Results.ItemsSource=clues.Where(c=>TreasureHunt.Matches(c.Name,Search.Text)).ToList();if(selected!=null&&((List<TreasureClue>)Results.ItemsSource).Contains(selected))Results.SelectedItem=selected;}finally{filtering=false;}}
  internal async Task Load(int d){
   Cancel();int request=generation;int x,y;
   clues.Clear();Search.Text="";Filter();

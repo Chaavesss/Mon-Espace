@@ -44,7 +44,7 @@ internal static class TreasureHunt {
   if(!Valid(x,y,direction))throw new InvalidDataException("Coordonnées ou direction invalides.");
   ServicePointManager.SecurityProtocol|=SecurityProtocolType.Tls12;
   using(var http=new HttpClient(new HttpClientHandler{AllowAutoRedirect=false}){Timeout=TimeSpan.FromSeconds(15)}){
-   http.DefaultRequestHeaders.UserAgent.ParseAdd("CompagnonDofus/1.8.7");
+   http.DefaultRequestHeaders.UserAgent.ParseAdd("CompagnonDofus/1.8.8");
    var maps=new List<Map>();int skip=0;
    for(int attempt=0;attempt<10;attempt++){
     string url="https://api.dofusdb.fr/treasure-hunt?x="+x+"&y="+y+"&direction="+direction+"&$limit=50&$skip="+skip;
