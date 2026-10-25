@@ -1,4 +1,4 @@
-param([string]$Repository = 'Chaavesss/Mon-Espace', [string]$ProjectRoot = (Split-Path $PSScriptRoot -Parent), [switch]$SkipBuild, [switch]$UseCiValidation)
+﻿param([string]$Repository = 'Chaavesss/Mon-Espace', [string]$ProjectRoot = (Split-Path $PSScriptRoot -Parent), [switch]$SkipBuild, [switch]$UseCiValidation)
 $ErrorActionPreference = 'Stop'
 if ($Repository -notmatch '^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$') { throw 'Depot GitHub invalide : utiliser compte/depot.' }
 if (!$SkipBuild) { & (Join-Path $ProjectRoot 'build.ps1') -ProjectRoot $ProjectRoot }

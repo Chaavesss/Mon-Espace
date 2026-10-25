@@ -1,4 +1,4 @@
-param([string]$ProjectRoot = $PSScriptRoot)
+﻿param([string]$ProjectRoot = $PSScriptRoot)
 $ErrorActionPreference = 'Stop'
 $nativeProject = $ProjectRoot
 $nativeCompiler = Join-Path $env:WINDIR 'Microsoft.NET\Framework64\v4.0.30319\csc.exe'
