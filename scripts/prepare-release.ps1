@@ -41,7 +41,7 @@ try {
  [IO.File]::WriteAllText((Join-Path $out 'RELEASE_NOTES.md'), $notes, (New-Object Text.UTF8Encoding($false)))
  Add-Type -AssemblyName System.IO.Compression.FileSystem
  $archive = [IO.Compression.ZipFile]::OpenRead($zip)
- try { if (($archive.Entries | Where-Object FullName -eq 'MonEspace.exe').Count -ne 1 -or $archive.Entries.Count -ne 4) { throw 'Contenu du paquet inattendu.' } } finally { $archive.Dispose() }
+ try { if (($archive.Entries | Where-Object FullName -eq 'MonEspace.exe').Count -ne 1 -or $archive.Entries.Count -ne 3) { throw 'Contenu du paquet inattendu.' } } finally { $archive.Dispose() }
  Write-Output ('Paquet valide : ' + $zip + ' / ' + $version + ' / SHA256 ' + $hash)
 } finally {
  $resolvedStage = [IO.Path]::GetFullPath($stage)
