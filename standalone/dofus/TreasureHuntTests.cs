@@ -12,6 +12,7 @@ internal static class TreasureHuntTests {
   var found=TreasureHunt.Select(maps,-25,-36,0);Check(found.Count==1&&found[0].X==-23&&found[0].Distance==2,"indice le plus proche à l’est");
   Check(TreasureHunt.Select(maps,-25,-36,4).Single().X==-26,"ouest");Check(TreasureHunt.Select(maps,-25,-36,6).Single().Y==-37,"nord");Check(TreasureHunt.Select(maps,-25,-36,2).Single().Y==-35,"sud");
   Check(TreasureHunt.Matches(found[0].Name,"theiere")&&found[0].Travel=="/travel -23 -36","accents et commande");
+  Check(found[0].ToString()==found[0].Name,"libellé du sélecteur");
   var page=TreasureHunt.Parse("{\"total\":1,\"skip\":0,\"data\":[{\"posX\":-23,\"posY\":-36,\"pois\":[{\"id\":1,\"name\":{\"fr\":\"Théière\"}}]}]}");Check(TreasureHunt.Select(page.data,-25,-36,0).Count==1,"réponse JSON réelle");
   Check(!TreasureHunt.Valid(Int32.MinValue,0,0),"coordonnées invalides");
   var panel=new TreasureHuntPanel((x,y,d,ct)=>Task.FromResult(found));panel.X.Text="-25";panel.Y.Text="-36";panel.Load(0).GetAwaiter().GetResult();panel.Search.Text="theiere";Check(panel.Results.Items.Count==1,"filtre interface");panel.Results.SelectedIndex=0;Check(panel.Copy.IsEnabled&&panel.Destination.Text.Contains("-23"),"destination sélectionnée");panel.Advance();Check(panel.X.Text=="-23"&&!panel.Copy.IsEnabled&&panel.Results.Items.Count==0,"étape suivante efface destination obsolète");
