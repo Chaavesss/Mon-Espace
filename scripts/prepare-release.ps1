@@ -25,7 +25,6 @@ $stage = Join-Path $out ('package-' + [Guid]::NewGuid().ToString('N'))
 New-Item -ItemType Directory -Path $stage | Out-Null
 try {
  Copy-Item -LiteralPath $exe -Destination (Join-Path $stage 'MonEspace.exe')
- Copy-Item -LiteralPath (Join-Path $ProjectRoot 'release/THIRD_PARTY_NOTICES.txt') -Destination (Join-Path $stage 'THIRD_PARTY_NOTICES.txt')
  $cmd = @('@echo off', 'start "" "%~dp0MonEspace.exe" --portable', '') -join [Environment]::NewLine
  [IO.File]::WriteAllText((Join-Path $stage 'Mode_portable.cmd'), $cmd, [Text.Encoding]::ASCII)
  Copy-Item -LiteralPath (Join-Path $ProjectRoot 'docs\INSTALLATION.txt') -Destination (Join-Path $stage 'LIRE_MOI.txt')
@@ -49,3 +48,4 @@ try {
  $resolvedOut = [IO.Path]::GetFullPath($out) + [IO.Path]::DirectorySeparatorChar
  if ($resolvedStage.StartsWith($resolvedOut, [StringComparison]::OrdinalIgnoreCase) -and (Test-Path -LiteralPath $resolvedStage)) { Remove-Item -LiteralPath $resolvedStage -Recurse -Force }
 }
+
