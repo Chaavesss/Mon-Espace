@@ -33,7 +33,7 @@ try {
  Compress-Archive -Path (Join-Path $stage '*') -DestinationPath $zip -CompressionLevel Optimal
  $hash = (Get-FileHash -LiteralPath $zip -Algorithm SHA256).Hash.ToLowerInvariant()
  $notes = [IO.File]::ReadAllText((Join-Path $ProjectRoot 'RELEASE_NOTES.md'))
- if ($UseCiValidation -and $notes -notmatch 'PDF natif non retesté') { throw 'Les notes doivent mentionner : PDF natif non retesté.' }
+ if ($UseCiValidation -and $notes -notmatch 'PDF natif non retest') { throw 'Les notes doivent mentionner : PDF natif non retesté.' }
  if ($notes.Length -gt 10000) { throw 'Notes de version trop longues.' }
  $manifest = [ordered]@{version=$version; downloadUrl=('https://github.com/' + $Repository + '/releases/download/' + $tag + '/MonEspace.zip'); sha256=$hash; notes=$notes}
  [IO.File]::WriteAllText((Join-Path $out 'version.json'), ($manifest | ConvertTo-Json), (New-Object Text.UTF8Encoding($false)))
