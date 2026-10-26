@@ -1,13 +1,12 @@
-# Mon espace 1.13.0 — Sport & Nutrition
+# Mon espace 1.14.0 — Recettes et menus
 
-- Nouvelle section Sport & Nutrition dans le thème actuel.
-- Musculation : séances personnalisables, séries, répétitions, charges, minuteur de repos et historique de progression.
-- Bibliothèque de 876 exercices et 1 746 photos utilisables hors connexion ; recherche et filtres par muscle, matériel, difficulté et catégorie.
-- Fiches françaises, avec traduction automatique signalée et original anglais consultable. Cinq exercices sans consignes dans la source l'indiquent.
-- Journal alimentaire, calories et macros, objectifs personnalisables, aliments et recettes modifiables.
-- Menus adaptés, préférence sans lactose, batch cooking et courses cochables regroupées par ingrédient et quantité.
-- Données intégrées aux profils, exports et sauvegardes. Les données existantes sont conservées.
+- Bibliothèque de 32 recettes gratuites adaptées en français : 6 petits-déjeuners et 26 plats, avec quantités et ingrédients modifiables.
+- Dans Recettes & aliments, ouvrir « Recettes gratuites · 32 idées », consulter les fiches et importer une sélection. Les imports répétés conservent les recettes et valeurs alimentaires déjà personnalisées.
+- Dans Menus, ouvrir « Menus prêts à adapter » : sélections Varié, Végétarien et Batch cooking, avec portions ajustées aux objectifs et aperçu des macros avant confirmation.
+- Possibilité de remplacer explicitement les repas prévus sur la période choisie. Les autres dates et le journal consommé sont conservés.
+- Courses regroupées automatiquement à partir des ingrédients planifiés. Variété favorisée entre les blocs de batch cooking.
+- Sources Wikibooks, révisions, crédits et licence CC BY-SA 4.0 conservés dans les recettes.
 
-Les visuels sont des photos, pas des animations. Les séries restent suivies en répétitions et charges ; le suivi de durée/distance n'est pas inclus. Les suggestions de menus approchent les objectifs sans garantir une correspondance exacte. Les photos ajoutent environ 99 Mo à l'application.
+Les valeurs nutritionnelles initiales sont indicatives et doivent être ajustées aux emballages. Vérifier les ingrédients des recettes personnalisées, notamment pour le sans lactose et le végétarien. Les menus approchent les objectifs sans garantir une égalité exacte. La période du planning n'est pas une durée de conservation.
 
-Validation : compilation Windows x64 et 13 suites Windows Server, dont les contrôles WPF et les ressources embarquées. PDF natif non retesté.
+Validation : compilation Windows x64 et 13 suites Windows Server, dont import, calculs, sauvegardes, courses et contrôles WPF. PDF natif non retesté.
