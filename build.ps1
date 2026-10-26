@@ -121,6 +121,9 @@ $nativeArgs += (Join-Path $nativeProject 'src/WorkspaceEnhancements.cs')
 $nativeArgs += (Join-Path $nativeProject 'src/WorkspaceEnhancementsUi.cs')
 $nativeArgs += (Join-Path $nativeProject 'src/WorkspaceEnhancementsAcceptance.cs')
 $nativeArgs += (Join-Path $nativeProject 'src/RetiredCompanionData.cs')
+$nativeArgs += (Join-Path $nativeProject 'src/SportNutrition.cs')
+$nativeArgs += (Join-Path $nativeProject 'src/SportNutritionWorkspace.cs')
+$nativeArgs += (Join-Path $nativeProject 'src/SportNutritionAcceptance.cs')
 $responseFile = Join-Path $nativeProject 'release\compilation.rsp'
 [System.IO.File]::WriteAllLines($responseFile, [string[]]($nativeArgs | ForEach-Object { '"' + $_ + '"' }), (New-Object System.Text.UTF8Encoding($false)))
 $processInfo = New-Object System.Diagnostics.ProcessStartInfo

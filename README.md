@@ -68,3 +68,7 @@ Planning hebdomadaire, rappels en une phrase, espaces indépendants, historique 
 ## Nouveautés 1.7
 
 Compagnon Dofus avec parcours Tougli à la demande, RSA / Sylvestre, progression locale par personnage, ressources et fenêtre compacte. [Guide d’utilisation](docs/COMPAGNON_DOFUS.md).
+
+## Sport & Nutrition
+
+Séances de musculation, progression, journal alimentaire, recettes, menus adaptés et courses cochables : [guide du module](docs/SPORT_NUTRITION.md).

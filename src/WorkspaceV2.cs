@@ -15,6 +15,7 @@ internal sealed partial class ModernWorkspace {
  Brush FaintLine{get{return new SolidColorBrush(Appearance.Mix(CurrentPalette.Card,CurrentPalette.Ink,.07));}}
  string PageDescription(){
   switch(selected){
+   case "Sport & Nutrition":return "Vos séances, vos progrès et vos repas, au même endroit.";
    case "Planning semaine":return "Donnez une place à vos tâches et gardez du temps disponible.";
    case "Mes espaces":return "Un espace pour chaque partie de votre quotidien.";
    case "Historique des notes":return "Retrouvez vos idées telles qu’elles étaient.";
@@ -35,6 +36,7 @@ internal sealed partial class ModernWorkspace {
  }
  string NavigationIcon(string page){
   switch(page){
+   case "Sport & Nutrition":return "M2,7 L5,7 L5,13 L2,13 Z M5,10 L15,10 M15,7 L18,7 L18,13 L15,13 Z";
    case "Planning semaine":return "M3,4 L17,4 L17,17 L3,17 Z M3,8 L17,8 M8,8 L8,17 M13,8 L13,17";
    case "Notifications":return "M5,14 L5,8 A5,5 0 0 1 15,8 L15,14 L17,16 L3,16 Z M8,18 L12,18";
    case "Aujourd’hui":return "M3,10 L10,4 L17,10 M5,9 L5,17 L15,17 L15,9 M9,17 L9,12 L12,12";
@@ -65,7 +67,7 @@ internal sealed partial class ModernWorkspace {
   nav.Children.Clear();
   var search=NavigationButton("Recherche","Rechercher");search.ToolTip="Rechercher · Ctrl + K";search.Background=SurfaceBrush;search.Margin=new Thickness(0,0,0,14);nav.Children.Add(search);
   nav.Children.Add(T("VOTRE ESPACE",9,Muted,new Thickness(12,0,0,11)));
-  foreach(var page in new[]{"Aujourd’hui","Mes tâches","Boîte de réception","Agenda","Planning semaine","Mes projets","Mes notes","Documents locaux","Google Drive","Mon budget","Ma musique"})nav.Children.Add(NavigationButton(page,ShortPage(page)));
+  foreach(var page in new[]{"Aujourd’hui","Mes tâches","Boîte de réception","Agenda","Planning semaine","Mes projets","Mes notes","Documents locaux","Google Drive","Mon budget","Sport & Nutrition","Ma musique"})nav.Children.Add(NavigationButton(page,ShortPage(page)));
   var extras=new[]{"Concentration","Habitudes","Bilan de la semaine","Mes modes","Mes espaces","Historique des notes","Sauvegardes automatiques","Rappels","Mes services"};
   var more=Btn(showExtraTools?"Moins d’outils  −":"Tous mes outils  +",delegate{showExtraTools=!showExtraTools;Refresh();},false,true);more.HorizontalContentAlignment=HorizontalAlignment.Left;more.Foreground=Muted;more.Margin=new Thickness(0,13,0,8);nav.Children.Add(more);
   if(showExtraTools)foreach(string page in extras)nav.Children.Add(NavigationButton(page,page));else if(extras.Contains(selected))nav.Children.Add(NavigationButton(selected,selected));

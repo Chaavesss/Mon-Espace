@@ -10,10 +10,10 @@ if ($UseCiValidation) {
  $validationName = 'ci-validation.json'
 }
 $validationFile = Join-Path $ProjectRoot $validationName
-if (!(Test-Path -LiteralPath $validationFile)) { throw 'Executer les 12 suites sur Windows desktop puis ajouter desktop-validation.json au commit.' }
+if (!(Test-Path -LiteralPath $validationFile)) { throw 'Executer les 13 suites sur Windows desktop puis ajouter desktop-validation.json au commit.' }
 $validation = [IO.File]::ReadAllText($validationFile) | ConvertFrom-Json
 $fingerprint = & (Join-Path $ProjectRoot 'scripts/source-fingerprint.ps1') -ProjectRoot $ProjectRoot
-if ($validation.sourceSha256 -ne $fingerprint -or $validation.version -ne $version -or $validation.suites -ne 12) { throw 'Validation absente ou sources modifiees depuis les tests. Relancer les 12 suites pour ces sources.' }
+if ($validation.sourceSha256 -ne $fingerprint -or $validation.version -ne $version -or $validation.suites -ne 13) { throw 'Validation absente ou sources modifiees depuis les tests. Relancer les 13 suites pour ces sources.' }
 if ($UseCiValidation) {
  if ($validation.nativePdf -ne $false -or $validation.scope -ne 'windows-server-native-pdf-excluded') { throw 'Rapport CI incoherent.' }
  Write-Warning 'Publication avec validation Windows Server : PDF natif non reteste. Cette limite doit figurer dans les notes de version.'

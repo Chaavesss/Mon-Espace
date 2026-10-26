@@ -1,0 +1,35 @@
+name: Vérifier Sport et Nutrition
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'src/**'
+      - 'build.ps1'
+      - 'scripts/**'
+      - '.github/workflows/sport-nutrition.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  windows:
+    runs-on: windows-2025
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - name: Compiler Mon Espace
+        shell: powershell
+        run: ./build.ps1
+      - name: Vérifier les 13 suites
+        shell: powershell
+        run: ./scripts/test.ps1 -SkipNativePdf
+      - name: Conserver les rapports et aperçus
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sport-nutrition-validation
+          path: |
+            test-results/
+            ci-validation.json
+            release/compilation.log
