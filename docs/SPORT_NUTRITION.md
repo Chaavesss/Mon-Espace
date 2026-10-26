@@ -36,6 +36,12 @@ Le catalogue et toutes les photos sont embarqués dans l'exécutable : aucune co
 
 ## Recettes et préférences
 
+**Recettes & aliments → Recettes gratuites · 32 idées** ouvre une sélection de 32 adaptations françaises de Wikibooks : 6 petits-déjeuners et 26 plats. Filtrer par repas, végétarien ou batch cooking, lire la recette et sa source, puis sélectionner les recettes à importer. **Tout sélectionner** sélectionne les 32 recettes, même si un filtre est actif. L'import est volontaire, disponible pour les profils existants, et peut être répété sans dupliquer les recettes ni écraser vos modifications. Les ingrédients identiques sont réutilisés pour regrouper les courses. Sources, révisions et licence CC BY-SA 4.0 sont conservées dans les instructions et dans [la provenance](../assets/recipes/PROVENANCE.md).
+
+**Menus → Menus prêts à adapter** propose trois sélections : Varié, Végétarien et Batch cooking. La proposition utilise la période affichée, vos objectifs et vos préférences ; elle affiche chaque journée et ses macros avant confirmation. Elle signale les repas déjà prévus. Par défaut, elle importe les recettes nécessaires et ajoute les repas au planning. Cocher **Remplacer les repas prévus sur cette période** remplace uniquement ces repas, en conservant les autres dates et le journal consommé. Si une recette déjà importée a été modifiée, ses valeurs personnelles sont conservées : relire les ingrédients, notamment si vous avez changé son caractère végétarien ou sans lactose.
+
+Les macros sont calculées à partir des aliments, dont les valeurs initiales sont indicatives et doivent être adaptées aux emballages. Ces sélections de menus sont composées par Mon Espace, pas des prescriptions ou des menus officiels Wikibooks. Pour le batch cooking, prévoir le refroidissement rapide, le stockage au froid et la congélation des portions des jours éloignés ; la période du planning n'est pas une durée de conservation.
+
 La base initiale comprend quelques aliments et trois recettes éditables : œufs et pain complet, poulet coco avec riz et courgettes, chili avec riz.
 
 Les valeurs sont indicatives et doivent être adaptées aux emballages. Les viandes et féculents de la base sont pesés crus. Les ingrédients correspondent à la recette complète ; le nombre de portions détermine les valeurs d'une portion.

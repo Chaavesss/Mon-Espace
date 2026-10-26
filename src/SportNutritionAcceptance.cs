@@ -9,6 +9,16 @@ internal static class SportNutritionAcceptance {
  internal static void Check(bool yes,string message){if(!yes)throw new Exception(message);}
  internal static void Reject(Action action,string message){bool rejected=false;try{action();}catch(InvalidDataException){rejected=true;}Check(rejected,message);}
  internal static void Core(string folder){
+  var publicStore=new Store(Path.Combine(folder,"public-recipes"));var publicData=publicStore.Value.sportNutrition;
+  Check(PublicNutritionLibrary.Recipes.Length==32&&PublicNutritionLibrary.Sources.Length==19,"Public recipe selection / source coverage");
+  PublicNutritionLibrary.Import(publicData,PublicNutritionLibrary.Recipes.Select(r=>r.Recipe.id));Store.Validate(publicStore.Value);publicStore.Save();
+  Check(publicData.recipes.Count==35&&publicData.recipes.Where(r=>r.id.StartsWith("freebook:")).All(r=>SportNutrition.Allowed(publicData,r)&&SportNutrition.RecipeServing(publicData,r).calories>0&&r.instructions.Contains("CC BY-SA 4.0")&&r.instructions.Contains("oldid=")),"All public recipes: nutrition, lactose, source and license");
+  int recipeCount=publicData.recipes.Count,foodCount=publicData.foods.Count;var edited=publicData.recipes.First(r=>r.id=="freebook:chicken-tomato");edited.name="Mon poulet personnalisé";publicData.foods.First(f=>f.id=="chicken").per100.calories=123;
+  PublicNutritionLibrary.Import(publicData,PublicNutritionLibrary.Recipes.Select(r=>r.Recipe.id));Check(publicData.recipes.Count==recipeCount&&publicData.foods.Count==foodCount&&edited.name=="Mon poulet personnalisé"&&publicData.foods.First(f=>f.id=="chicken").per100.calories==123,"Repeated imports preserve user recipes and food values");
+  foreach(string pack in new[]{"Varié","Végétarien","Batch cooking"}){var proposal=PublicNutritionLibrary.Suggest(publicData,pack,new DateTime(2026,10,26),7);Check(proposal.Count==21&&proposal.All(m=>publicData.recipes.Any(r=>r.id==m.recipeId)),"Complete public menu: "+pack);if(pack=="Végétarien")Check(proposal.All(m=>PublicNutritionLibrary.Recipes.First(r=>r.Recipe.id==m.recipeId).Vegetarian),"Vegetarian menu excludes meat/fish recipes");}
+  Check(publicData.menu.Count==0&&publicData.diary.Count==0,"Menu previews do not change planning or diary");
+  var week=PublicNutritionLibrary.Suggest(publicData,"Batch cooking",new DateTime(2026,10,26),7);publicData.menu.AddRange(week);Check(SportNutrition.Groceries(publicData,new DateTime(2026,10,26),new DateTime(2026,11,1)).Count>0,"Public menus feed grocery quantities");publicStore.Save();
+  var checkReload=new Store(publicStore.Root).Value.sportNutrition;Check(checkReload.recipes.Count==35&&checkReload.menu.Count==21,"Public recipes and menus survive reload");
   Check(ExerciseCatalog.All.Count(e=>e.SourceId!="")==876&&ExerciseCatalog.All.Select(e=>e.Id).Distinct().Count()==ExerciseCatalog.All.Length,"Complete imported catalog and unique identifiers");
   Check(ExerciseCatalog.All.Sum(e=>e.Images.Length)==1746,"Complete image references");
   foreach(var picture in ExerciseCatalog.All.SelectMany(e=>e.Images))Check(ExerciseCatalog.Photos.GetEntry(picture)!=null,"Embedded image missing: "+picture);
@@ -124,6 +134,15 @@ internal sealed partial class ModernWorkspace {
   if(LogicalControls<Button>(this).Count(b=>Convert.ToString(b.Content)=="Voir la fiche")!=24)throw new Exception("Catalog pagination");
   LogicalControls<Button>(this).Single(b=>Convert.ToString(b.Content)=="Page suivante").RaiseEvent(new RoutedEventArgs(Button.ClickEvent));if(exercisePage!=1)throw new Exception("Next catalog page");
   PreviewSized(Path.Combine(folder,"Sport-catalogue-complet.png"),1280,1000);
+  int beforePublic=SN.recipes.Count;dialogProbe=delegate(Window w){ClickWizard(w,"Tout sélectionner");ClickWizard(w,"Importer la sélection");return true;};try{BrowsePublicRecipes();}finally{dialogProbe=null;}
+  if(SN.recipes.Count!=beforePublic+32)throw new Exception("Public recipe import UI");
+  dialogProbe=delegate(Window w){ClickWizard(w,"Enregistrer ce menu et ses recettes");return true;};
+  int menuBefore=SN.menu.Count;try{PreviewPublicMenu("Batch cooking");}finally{dialogProbe=null;}
+  if(SN.menu.Count!=menuBefore+21)throw new Exception("Public menu confirmation UI");
+  SportNutrition.Change(store,d=>d.menu.Add(new MenuEntry{date=menuStart.AddDays(20).ToString("yyyy-MM-dd"),recipeId=d.recipes[0].id,meal="Déjeuner"}));int diaryBefore=SN.diary.Count;
+  dialogProbe=delegate(Window w){LogicalControls<CheckBox>(w).Single(c=>Convert.ToString(c.Content)=="Remplacer les repas prévus sur cette période").IsChecked=true;ClickWizard(w,"Enregistrer ce menu et ses recettes");return true;};try{PreviewPublicMenu("Végétarien");}finally{dialogProbe=null;}
+  if(SN.menu.Count!=22||SN.diary.Count!=diaryBefore)throw new Exception("Explicit menu replacement preserves outside dates and diary");
+  sportTab="Menus";Refresh();PreviewSized(Path.Combine(folder,"Nutrition-menu-public.png"),1280,1000);
  }
 }
 internal sealed partial class MainForm {

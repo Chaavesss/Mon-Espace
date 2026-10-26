@@ -122,6 +122,8 @@ $nativeArgs += (Join-Path $nativeProject 'src/WorkspaceEnhancementsUi.cs')
 $nativeArgs += (Join-Path $nativeProject 'src/WorkspaceEnhancementsAcceptance.cs')
 $nativeArgs += (Join-Path $nativeProject 'src/RetiredCompanionData.cs')
 $nativeArgs += (Join-Path $nativeProject 'src/SportNutrition.cs')
+$nativeArgs += (Join-Path $nativeProject 'src/PublicNutritionLibrary.cs')
+$nativeArgs += ('/resource:' + (Join-Path $nativeProject 'assets/recipes/sources.json') + ',RecipeSources.json')
 $nativeArgs += (Join-Path $nativeProject 'src/ExerciseLibrary.cs')
 $nativeArgs += (Join-Path $nativeProject 'src/ExerciseCatalogImport.cs')
 & (Join-Path $nativeProject 'scripts/prepare-exercise-assets.ps1') -ProjectRoot $nativeProject

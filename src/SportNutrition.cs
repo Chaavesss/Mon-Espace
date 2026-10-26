@@ -104,6 +104,8 @@ internal static class SportNutrition {
      for(int k=0;k<4;k++){decimal norm=Math.Max(1,target[k]),w=weight[k]/(norm*norm);numerator+=w*v[k]*(target[k]-other[k]);denominator+=w*v[k]*v[k];}
      decimal mealEnergy=d.goals.calories*(slot==0?.25m:.375m);decimal lower=Math.Max(.1m,Math.Min(10m,.75m*mealEnergy/v[0])),upper=Math.Max(lower,Math.Min(10m,1.25m*mealEnergy/v[0]));decimal q=Math.Round(Math.Max(lower,Math.Min(upper,numerator/Math.Max(.00000001m,denominator))),2),score=0;
      for(int k=0;k<4;k++){decimal diff=(other[k]+q*v[k]-target[k])/Math.Max(1,target[k]);score+=weight[k]*diff*diff;}
+     // Prefer variety between batch blocks while retaining the nutrition score.
+     score+=.025m*result.Count(m=>m.recipeId==recipe.id&&m.meal==meals[slot]);
      if(score<best){best=score;bestQ=q;bestRecipe=recipe;}
     }chosen[slot]=bestRecipe;quantities[slot]=bestQ;
    }
