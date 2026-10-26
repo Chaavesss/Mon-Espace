@@ -3,7 +3,7 @@ $ErrorActionPreference = 'Stop'
 $exe = Join-Path $ProjectRoot 'release\MonEspace.exe'
 $testRoot = Join-Path $ProjectRoot ('test-results\' + [Guid]::NewGuid().ToString('N'))
 New-Item -ItemType Directory -Path $testRoot -Force | Out-Null
-foreach ($suite in @('self-test','ui-self-test','board-self-test','finance-self-test','music-self-test','widget-self-test','personal-self-test','focus-self-test','capture-self-test','templates-self-test','design-self-test','next-self-test')) {
+foreach ($suite in @('self-test','ui-self-test','board-self-test','finance-self-test','music-self-test','widget-self-test','personal-self-test','focus-self-test','capture-self-test','templates-self-test','design-self-test','next-self-test','sport-self-test')) {
  $folder = Join-Path $testRoot $suite
  $info = New-Object Diagnostics.ProcessStartInfo
  $info.FileName = $exe
@@ -20,14 +20,14 @@ foreach ($suite in @('self-test','ui-self-test','board-self-test','finance-self-
 
 if (!$SkipNativePdf) {
  $fingerprint = & (Join-Path $ProjectRoot 'scripts/source-fingerprint.ps1') -ProjectRoot $ProjectRoot
- $validation = [ordered]@{sourceSha256=$fingerprint;version=[Reflection.AssemblyName]::GetAssemblyName($exe).Version.ToString();nativePdf=$true;suites=12;verifiedAt=[DateTime]::UtcNow.ToString('o')}
+ $validation = [ordered]@{sourceSha256=$fingerprint;version=[Reflection.AssemblyName]::GetAssemblyName($exe).Version.ToString();nativePdf=$true;suites=13;verifiedAt=[DateTime]::UtcNow.ToString('o')}
  [IO.File]::WriteAllText((Join-Path $ProjectRoot 'desktop-validation.json'), ($validation | ConvertTo-Json), (New-Object Text.UTF8Encoding($false)))
  Write-Output 'Validation desktop complete enregistree.'
 }
 
 else {
  $fingerprint = & (Join-Path $ProjectRoot 'scripts/source-fingerprint.ps1') -ProjectRoot $ProjectRoot
- $validation = [ordered]@{sourceSha256=$fingerprint;version=[Reflection.AssemblyName]::GetAssemblyName($exe).Version.ToString();nativePdf=$false;suites=12;scope='windows-server-native-pdf-excluded';verifiedAt=[DateTime]::UtcNow.ToString('o')}
+ $validation = [ordered]@{sourceSha256=$fingerprint;version=[Reflection.AssemblyName]::GetAssemblyName($exe).Version.ToString();nativePdf=$false;suites=13;scope='windows-server-native-pdf-excluded';verifiedAt=[DateTime]::UtcNow.ToString('o')}
  [IO.File]::WriteAllText((Join-Path $ProjectRoot 'ci-validation.json'), ($validation | ConvertTo-Json), (New-Object Text.UTF8Encoding($false)))
- Write-Warning 'Validation CI enregistree : les 12 suites sont passees, le moteur PDF natif reste non reteste sur cette version.'
+ Write-Warning 'Validation CI enregistree : les 13 suites sont passees, le moteur PDF natif reste non reteste sur cette version.'
 }

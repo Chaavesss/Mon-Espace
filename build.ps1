@@ -1,4 +1,4 @@
-﻿param([string]$ProjectRoot = $PSScriptRoot)
+param([string]$ProjectRoot = $PSScriptRoot)
 $ErrorActionPreference = 'Stop'
 $nativeProject = $ProjectRoot
 $nativeCompiler = Join-Path $env:WINDIR 'Microsoft.NET\Framework64\v4.0.30319\csc.exe'
@@ -121,6 +121,16 @@ $nativeArgs += (Join-Path $nativeProject 'src/WorkspaceEnhancements.cs')
 $nativeArgs += (Join-Path $nativeProject 'src/WorkspaceEnhancementsUi.cs')
 $nativeArgs += (Join-Path $nativeProject 'src/WorkspaceEnhancementsAcceptance.cs')
 $nativeArgs += (Join-Path $nativeProject 'src/RetiredCompanionData.cs')
+$nativeArgs += (Join-Path $nativeProject 'src/SportNutrition.cs')
+$nativeArgs += (Join-Path $nativeProject 'src/ExerciseLibrary.cs')
+$nativeArgs += (Join-Path $nativeProject 'src/ExerciseCatalogImport.cs')
+& (Join-Path $nativeProject 'scripts/prepare-exercise-assets.ps1') -ProjectRoot $nativeProject
+$nativeArgs += ('/resource:' + (Join-Path $nativeProject 'assets/exercises/catalog.json') + ',ExerciseCatalog.json')
+$nativeArgs += ('/resource:' + (Join-Path $nativeProject 'assets/exercises/fr.json') + ',ExerciseFrench.json')
+$nativeArgs += ('/resource:' + (Join-Path $nativeProject 'release/exercise-photos.zip') + ',ExercisePhotos.zip')
+$nativeArgs += ('/resource:' + (Join-Path $nativeProject 'assets/exercises/LICENSE.txt') + ',ExerciseCatalogLicense.txt')
+$nativeArgs += (Join-Path $nativeProject 'src/SportNutritionWorkspace.cs')
+$nativeArgs += (Join-Path $nativeProject 'src/SportNutritionAcceptance.cs')
 $responseFile = Join-Path $nativeProject 'release\compilation.rsp'
 [System.IO.File]::WriteAllLines($responseFile, [string[]]($nativeArgs | ForEach-Object { '"' + $_ + '"' }), (New-Object System.Text.UTF8Encoding($false)))
 $processInfo = New-Object System.Diagnostics.ProcessStartInfo

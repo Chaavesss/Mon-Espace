@@ -10,10 +10,10 @@ if ($UseCiValidation) {
  $validationName = 'ci-validation.json'
 }
 $validationFile = Join-Path $ProjectRoot $validationName
-if (!(Test-Path -LiteralPath $validationFile)) { throw 'Executer les 12 suites sur Windows desktop puis ajouter desktop-validation.json au commit.' }
+if (!(Test-Path -LiteralPath $validationFile)) { throw 'Executer les 13 suites sur Windows desktop puis ajouter desktop-validation.json au commit.' }
 $validation = [IO.File]::ReadAllText($validationFile) | ConvertFrom-Json
 $fingerprint = & (Join-Path $ProjectRoot 'scripts/source-fingerprint.ps1') -ProjectRoot $ProjectRoot
-if ($validation.sourceSha256 -ne $fingerprint -or $validation.version -ne $version -or $validation.suites -ne 12) { throw 'Validation absente ou sources modifiees depuis les tests. Relancer les 12 suites pour ces sources.' }
+if ($validation.sourceSha256 -ne $fingerprint -or $validation.version -ne $version -or $validation.suites -ne 13) { throw 'Validation absente ou sources modifiees depuis les tests. Relancer les 13 suites pour ces sources.' }
 if ($UseCiValidation) {
  if ($validation.nativePdf -ne $false -or $validation.scope -ne 'windows-server-native-pdf-excluded') { throw 'Rapport CI incoherent.' }
  Write-Warning 'Publication avec validation Windows Server : PDF natif non reteste. Cette limite doit figurer dans les notes de version.'
@@ -33,7 +33,7 @@ try {
  Compress-Archive -Path (Join-Path $stage '*') -DestinationPath $zip -CompressionLevel Optimal
  $hash = (Get-FileHash -LiteralPath $zip -Algorithm SHA256).Hash.ToLowerInvariant()
  $notes = [IO.File]::ReadAllText((Join-Path $ProjectRoot 'RELEASE_NOTES.md'))
- if ($UseCiValidation -and $notes -notmatch 'PDF natif non retesté') { throw 'Les notes doivent mentionner : PDF natif non retesté.' }
+ if ($UseCiValidation -and $notes -notmatch 'PDF natif non retest') { throw 'Les notes doivent mentionner : PDF natif non retesté.' }
  if ($notes.Length -gt 10000) { throw 'Notes de version trop longues.' }
  $manifest = [ordered]@{version=$version; downloadUrl=('https://github.com/' + $Repository + '/releases/download/' + $tag + '/MonEspace.zip'); sha256=$hash; notes=$notes}
  [IO.File]::WriteAllText((Join-Path $out 'version.json'), ($manifest | ConvertTo-Json), (New-Object Text.UTF8Encoding($false)))

@@ -2,7 +2,7 @@
 
 Application Windows personnelle : accueil, tâches, notes, projets, planning, budget manuel, raccourcis, modes de lancement, musique et widget.
 
-**Windows 10/11 x64 · .NET Framework 4.8 · version 1.11.0.0**
+**Windows 10/11 x64 · .NET Framework 4.8 · version 1.13.0.0**
 
 ## Télécharger et installer
 
@@ -68,3 +68,7 @@ Planning hebdomadaire, rappels en une phrase, espaces indépendants, historique 
 ## Nouveautés 1.7
 
 Compagnon Dofus avec parcours Tougli à la demande, RSA / Sylvestre, progression locale par personnage, ressources et fenêtre compacte. [Guide d’utilisation](docs/COMPAGNON_DOFUS.md).
+
+## Sport & Nutrition
+
+Séances de musculation, progression, journal alimentaire, recettes, menus adaptés et courses cochables : [guide du module](docs/SPORT_NUTRITION.md).

@@ -21,7 +21,7 @@ jobs:
       - name: Compiler
         shell: powershell
         run: ./build.ps1
-      - name: Verifier les 12 suites
+      - name: Verifier les 13 suites
         shell: powershell
         run: ./scripts/test.ps1 -SkipNativePdf
       - name: Archiver les controles Windows

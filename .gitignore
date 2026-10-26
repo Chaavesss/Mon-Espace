@@ -21,3 +21,4 @@ token*.json
 /dist-compagnon/
 
 /ci-validation.json
+/assets/exercises/photos/
