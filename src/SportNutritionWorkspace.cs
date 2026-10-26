@@ -159,6 +159,7 @@ internal sealed partial class ModernWorkspace {
    if(choice.SelectedIndex<foods.Count){var f=foods[choice.SelectedIndex];l.name=f.name;l.total=SportNutrition.Scale(f.per100,q/100m);}else{var r=recipes[choice.SelectedIndex-foods.Count];l.name=r.name;l.total=SportNutrition.Scale(SportNutrition.RecipeServing(SN,r),q);}SportNutrition.Change(store,d=>d.diary.Add(l));});
  }
  void NutritionLibraryPage(StackPanel root){
+  root.Children.Add(Btn("Recettes gratuites · 32 idées",delegate{BrowsePublicRecipes();},true));
   var tools=new WrapPanel();tools.Children.Add(Btn("+ Recette",delegate{EditNutritionRecipe(null);},true));tools.Children.Add(Btn("+ Aliment",delegate{EditNutritionFood(null);},false,true));tools.Children.Add(Btn("Préférences",delegate{EditNutritionGoals();},false,true));root.Children.Add(tools);
   root.Children.Add(T("Valeurs indicatives à adapter aux emballages. Quantités par recette complète ; macros affichées par portion. La préférence sans lactose filtre les suggestions, les autres recettes restent consultables.",12,Muted,new Thickness(0,14,0,18)));
   foreach(var recipe in SN.recipes){var r=recipe;var b=new StackPanel();b.Children.Add(T(MacroText(SportNutrition.RecipeServing(SN,r))+" / portion",16));b.Children.Add(T(r.portions+" portions · "+(SportNutrition.Allowed(SN,r)?"Compatible avec vos préférences":"Contient un aliment déclaré avec lactose"),11,Muted,new Thickness(0,8,0,8)));
@@ -202,6 +203,7 @@ internal sealed partial class ModernWorkspace {
   SportDialogSave(w,body,actions,delegate{SportNutrition.Require(date.SelectedDate.HasValue,"Choisissez une date.");var m=new MenuEntry{date=date.SelectedDate.Value.ToString("yyyy-MM-dd"),recipeId=r.id,meal=Convert.ToString(meal.SelectedItem),servings=SportRead(portions)};SportNutrition.Change(store,d=>d.menu.Add(m));});
  }
  void NutritionMenuPage(StackPanel root){
+  root.Children.Add(Btn("Menus prêts à adapter",delegate{ChoosePublicMenu();},true));
   var tools=new WrapPanel();var start=new DatePicker{SelectedDate=menuStart,Width=150};tools.Children.Add(start);var days=Combo(new[]{"1","3","5","7","14"},menuDays.ToString());days.Width=85;tools.Children.Add(days);tools.Children.Add(Btn("Afficher",delegate{if(start.SelectedDate.HasValue){menuStart=start.SelectedDate.Value;menuDays=Int32.Parse(Convert.ToString(days.SelectedItem));Refresh();}},false,true));tools.Children.Add(Btn("Créer un menu adapté",delegate{SuggestNutritionMenu();},true));tools.Children.Add(Btn("Préférences",delegate{EditNutritionGoals();},false,true));root.Children.Add(tools);
   var end=menuStart.AddDays(menuDays-1);root.Children.Add(T("Du "+menuStart.ToString("dd/MM/yyyy")+" au "+end.ToString("dd/MM/yyyy")+" · "+menuDays+" jours · batch cooking sur "+SN.goals.batchDays+" jours",12,Muted,new Thickness(0,14,0,12)));
   var menus=SN.menu.Where(m=>Finance.Day(m.date)>=menuStart&&Finance.Day(m.date)<=end).OrderBy(m=>m.date).ToList();
