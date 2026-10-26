@@ -6,11 +6,13 @@ Accès : **Sport & Nutrition** dans la navigation de Mon Espace. Le module repre
 
 ### Bibliothèque d'exercices
 
-L'onglet **Exercices** propose 39 mouvements intégrés, consultables hors ligne. Recherchez un nom ou un muscle (avec ou sans accents), puis combinez les filtres muscle et matériel. Chaque fiche décrit les muscles principaux et secondaires et les consignes d'exécution.
+L'onglet **Exercices** importe les **876 exercices et 1 746 photos** de Free Exercise DB, en plus des éventuels mouvements français sans correspondance dans cette source. Les mouvements déjà traduits sont fusionnés avec leurs fiches source pour conserver leurs noms et consignes en français. Recherchez un nom anglais ou français disponible (avec ou sans accents), puis combinez les filtres muscle, matériel, niveau et catégorie. L'affichage est paginé par 24 résultats. Chaque fiche décrit les muscles principaux et secondaires, les consignes et les photos disponibles.
 
 Depuis une fiche, choisissez **Ajouter à une séance**. Depuis un modèle de séance, **+ Bibliothèque** utilise directement ce modèle. Les séries, répétitions, charge, repos et consignes restent modifiables avant enregistrement. Les valeurs préremplies sont des points de départ ; la charge initiale est zéro et doit être adaptée. L'historique reste indépendant des modifications. **+ Exercice personnel** permet de saisir un mouvement absent ; les mouvements personnels des séances sont aussi récapitulés dans la bibliothèque.
 
-Cette version comprend des fiches textuelles originales, sans images ni animations de démonstration.
+Les noms et consignes sont disponibles en français. Les nouvelles fiches utilisent une traduction automatique, signalée dans la fiche et non révisée individuellement ; le texte anglais d'origine reste consultable et recherchable. Les cinq fiches sans consignes dans la source le signalent explicitement. Les muscles, matériels, niveaux et catégories utilisent des libellés français contrôlés. Les photos montrent des positions : ce ne sont pas des vidéos ou animations. Les catégories comprennent aussi étirements et cardio ; les modèles de séances enregistrent actuellement des répétitions et charges, pas une durée ou distance par série.
+
+Le catalogue et toutes les photos sont embarqués dans l'exécutable : aucune connexion n'est nécessaire pendant l'utilisation. Le volume des photos augmente l'exécutable d'environ 99 Mo. La compilation récupère les photos manquantes depuis une révision précise du dépôt, vérifie chaque empreinte SHA-256 et prépare leur archive. Le dossier photo généré est exclu de Git ; son manifeste est versionné. Source et licence : [provenance](../assets/exercises/PROVENANCE.md).
 
 - Créer des modèles de séances et ajouter des exercices libres.
 - Définir les séries, répétitions, charges en kg, repos en secondes et consignes.

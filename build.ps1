@@ -123,6 +123,12 @@ $nativeArgs += (Join-Path $nativeProject 'src/WorkspaceEnhancementsAcceptance.cs
 $nativeArgs += (Join-Path $nativeProject 'src/RetiredCompanionData.cs')
 $nativeArgs += (Join-Path $nativeProject 'src/SportNutrition.cs')
 $nativeArgs += (Join-Path $nativeProject 'src/ExerciseLibrary.cs')
+$nativeArgs += (Join-Path $nativeProject 'src/ExerciseCatalogImport.cs')
+& (Join-Path $nativeProject 'scripts/prepare-exercise-assets.ps1') -ProjectRoot $nativeProject
+$nativeArgs += ('/resource:' + (Join-Path $nativeProject 'assets/exercises/catalog.json') + ',ExerciseCatalog.json')
+$nativeArgs += ('/resource:' + (Join-Path $nativeProject 'assets/exercises/fr.json') + ',ExerciseFrench.json')
+$nativeArgs += ('/resource:' + (Join-Path $nativeProject 'release/exercise-photos.zip') + ',ExercisePhotos.zip')
+$nativeArgs += ('/resource:' + (Join-Path $nativeProject 'assets/exercises/LICENSE.txt') + ',ExerciseCatalogLicense.txt')
 $nativeArgs += (Join-Path $nativeProject 'src/SportNutritionWorkspace.cs')
 $nativeArgs += (Join-Path $nativeProject 'src/SportNutritionAcceptance.cs')
 $responseFile = Join-Path $nativeProject 'release\compilation.rsp'

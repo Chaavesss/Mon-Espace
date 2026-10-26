@@ -9,9 +9,15 @@ internal static class SportNutritionAcceptance {
  internal static void Check(bool yes,string message){if(!yes)throw new Exception(message);}
  internal static void Reject(Action action,string message){bool rejected=false;try{action();}catch(InvalidDataException){rejected=true;}Check(rejected,message);}
  internal static void Core(string folder){
-  Check(ExerciseCatalog.All.Length>=35&&ExerciseCatalog.All.Select(e=>e.Id).Distinct().Count()==ExerciseCatalog.All.Length,"Catalog size and unique identifiers");
-  Check(ExerciseCatalog.Search("developpe couche","Pectoraux","Haltères").Single().Id=="db-bench","Accent-insensitive search and combined filters");
-  Check(!ExerciseCatalog.Search("squat","Dos","Machine").Any(),"No-match filters");
+  Check(ExerciseCatalog.All.Count(e=>e.SourceId!="")==876&&ExerciseCatalog.All.Select(e=>e.Id).Distinct().Count()==ExerciseCatalog.All.Length,"Complete imported catalog and unique identifiers");
+  Check(ExerciseCatalog.All.Sum(e=>e.Images.Length)==1746,"Complete image references");
+  foreach(var picture in ExerciseCatalog.All.SelectMany(e=>e.Images))Check(ExerciseCatalog.Photos.GetEntry(picture)!=null,"Embedded image missing: "+picture);
+  foreach(var picture in ExerciseCatalog.All.SelectMany(e=>e.Images).Where((p,i)=>i%300==0))Check(ExerciseCatalog.Photo(picture,240).PixelWidth>0,"JPEG decoding");
+  Check(ExerciseCatalog.All.Where(e=>e.SourceId!="").All(e=>e.Level!=""&&e.Category!=""&&e.Steps!=""),"Imported metadata preserved / missing instructions signalled");
+  Check(ExerciseCatalog.Search("developpe couche","Pectoraux","Haltères").Any(e=>e.Id=="db-bench"),"Accent-insensitive search and combined filters");
+  Check(ExerciseCatalog.Search("Dumbbell Bench Press","Pectoraux","Haltères").Any(e=>e.Id=="db-bench"),"English original-name search retained");
+  Check(ExerciseCatalog.All.All(e=>e.Name.Length<=160&&ExerciseCatalog.Notes(e).Length<=2000),"All imported entries fit workout editors");
+  Check(!ExerciseCatalog.Search("does-not-exist","Pectoraux","Machine").Any(),"No-match filters");
   Check(ExerciseCatalog.All.All(e=>!String.IsNullOrWhiteSpace(e.Steps)&&!String.IsNullOrWhiteSpace(e.Secondary)),"Every exercise has execution and muscle details");
   var libraryA=ExerciseCatalog.Create(ExerciseCatalog.All[0]);var libraryB=ExerciseCatalog.Create(ExerciseCatalog.All[0]);libraryA.sets[0].kg=25;
   Check(libraryA.id!=libraryB.id&&libraryB.sets[0].kg==0&&libraryA.sets.Count==3,"Independent editable library copies");
@@ -110,10 +116,14 @@ internal sealed partial class ModernWorkspace {
   if(!LogicalControls<Button>(this).Any(b=>Convert.ToString(b.Content)=="Voir la fiche"))throw new Exception("Filtered library UI");
   PreviewSized(Path.Combine(folder,"Sport-bibliotheque.png"),1280,1000);
   dialogProbe=delegate(Window w){ClickWizard(w,"Fermer");return true;};try{ShowExerciseDefinition(ExerciseCatalog.All[0],plan.id);}finally{dialogProbe=null;}
-  dialogProbe=delegate(Window w){var fields=LogicalControls<TextBox>(w).ToList();if(fields[0].Text!=ExerciseCatalog.All[0].Name||fields[5].Text!=ExerciseCatalog.All[0].Steps)throw new Exception("Library prefill");fields[3].Text="25";ClickWizard(w,"Enregistrer");return true;};
+  dialogProbe=delegate(Window w){var fields=LogicalControls<TextBox>(w).ToList();if(fields[0].Text!=ExerciseCatalog.All[0].Name||fields[5].Text!=ExerciseCatalog.Notes(ExerciseCatalog.All[0]))throw new Exception("Library prefill");fields[3].Text="25";ClickWizard(w,"Enregistrer");return true;};
   try{AddCatalogExercise(ExerciseCatalog.All[0],plan.id);}finally{dialogProbe=null;}
   if(SN.workouts.Single().exercises.Count!=2||SN.workouts.Single().exercises.Last().sets[0].kg!=25||SN.sessions.Single().exercises.Count!=1)throw new Exception("Library save / history isolation");
-  var persisted=new Store(store.Root).Value.sportNutrition.workouts.Single().exercises.Last();if(persisted.notes!=ExerciseCatalog.All[0].Steps)throw new Exception("Library instructions persistence");
+  var persisted=new Store(store.Root).Value.sportNutrition.workouts.Single().exercises.Last();if(persisted.notes!=ExerciseCatalog.Notes(ExerciseCatalog.All[0]))throw new Exception("Library instructions persistence");
+  exerciseQuery="";exerciseMuscle="Tous les muscles";exerciseEquipment="Tout le matériel";exerciseCategory="Toutes les catégories";exerciseLevel="Tous les niveaux";Refresh();
+  if(LogicalControls<Button>(this).Count(b=>Convert.ToString(b.Content)=="Voir la fiche")!=24)throw new Exception("Catalog pagination");
+  LogicalControls<Button>(this).Single(b=>Convert.ToString(b.Content)=="Page suivante").RaiseEvent(new RoutedEventArgs(Button.ClickEvent));if(exercisePage!=1)throw new Exception("Next catalog page");
+  PreviewSized(Path.Combine(folder,"Sport-catalogue-complet.png"),1280,1000);
  }
 }
 internal sealed partial class MainForm {

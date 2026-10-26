@@ -7,12 +7,15 @@ using System.Windows.Controls;
 
 internal sealed class ExerciseDefinition {
  internal string Id,Name,Muscle,Secondary,Equipment,Steps;
+ internal string OriginalName="",Level="",Category="",SourceId="",OriginalSteps="";
+ internal string[] Images=new string[0];
+ internal bool AutomaticTranslation;
  internal int Reps,Rest;
 }
-internal static class ExerciseCatalog {
+internal static partial class ExerciseCatalog {
  // Original text, no external images or network dependency. Defaults are editable starting points.
  static ExerciseDefinition E(string id,string name,string muscle,string secondary,string equipment,int reps,int rest,string steps){return new ExerciseDefinition{Id=id,Name=name,Muscle=muscle,Secondary=secondary,Equipment=equipment,Reps=reps,Rest=rest,Steps=steps};}
- internal static readonly ExerciseDefinition[] All={
+ internal static readonly ExerciseDefinition[] Curated={
  E("bench","Développé couché barre","Pectoraux","Triceps, épaules","Barre",10,120,"Allongez-vous sur le banc, pieds stables au sol. Gardez les omoplates rapprochées. Descendez la barre de façon contrôlée vers la poitrine, puis poussez sans décoller les fesses."),
  E("db-bench","Développé couché haltères","Pectoraux","Triceps, épaules","Haltères",10,120,"Installez les haltères au-dessus de la poitrine, pieds stables. Descendez les coudes dans une amplitude confortable. Remontez sans entrechoquer les haltères."),
  E("incline","Développé incliné haltères","Pectoraux","Épaules, triceps","Haltères",10,120,"Réglez le banc sur une inclinaison modérée. Gardez le haut du dos en appui. Descendez les haltères de chaque côté du haut de la poitrine puis poussez en contrôlant."),
@@ -53,15 +56,19 @@ internal static class ExerciseCatalog {
  E("reverse-crunch","Crunch inversé","Abdominaux","Hanches","Poids du corps",12,60,"Allongez-vous et fléchissez les jambes. Enroulez légèrement le bassin vers les côtes sans lancer les jambes. Reposez lentement le bassin."),
  E("ab-wheel","Roulette abdominale","Abdominaux","Épaules, dos","Roulette",8,90,"À genoux sur un support confortable, faites rouler la roue vers l'avant sur une courte distance maîtrisée. Gardez le tronc gainé sans creuser le bas du dos. Revenez sans élan.")
  };
- internal static IEnumerable<ExerciseDefinition> Search(string query,string muscle,string equipment){return All.Where(e=>(String.IsNullOrEmpty(muscle)||muscle=="Tous les muscles"||e.Muscle==muscle)&&(String.IsNullOrEmpty(equipment)||equipment=="Tout le matériel"||e.Equipment==equipment)&&(String.IsNullOrWhiteSpace(query)||CultureInfo.GetCultureInfo("fr-FR").CompareInfo.IndexOf(e.Name+" "+e.Muscle+" "+e.Secondary+" "+e.Equipment,query.Trim(),CompareOptions.IgnoreCase|CompareOptions.IgnoreNonSpace)>=0));}
- internal static WorkoutExercise Create(ExerciseDefinition e){return new WorkoutExercise{name=e.Name,notes=e.Steps,restSeconds=e.Rest,sets=Enumerable.Range(0,3).Select(i=>new WorkoutSet{reps=e.Reps}).ToList()};}
+ static ExerciseDefinition[] all;
+ internal static ExerciseDefinition[] All{get{return all??(all=Load());}}
+ internal static IEnumerable<ExerciseDefinition> Search(string query,string muscle,string equipment){return All.Where(e=>(String.IsNullOrEmpty(muscle)||muscle=="Tous les muscles"||(e.Muscle+", "+e.Secondary).Split(new[]{", "},StringSplitOptions.None).Contains(muscle))&&(String.IsNullOrEmpty(equipment)||equipment=="Tout le matériel"||e.Equipment==equipment)&&(String.IsNullOrWhiteSpace(query)||CultureInfo.GetCultureInfo("fr-FR").CompareInfo.IndexOf(e.Name+" "+e.OriginalName+" "+e.Muscle+" "+e.Secondary+" "+e.Equipment,query.Trim(),CompareOptions.IgnoreCase|CompareOptions.IgnoreNonSpace)>=0));}
+ internal static WorkoutExercise Create(ExerciseDefinition e){return new WorkoutExercise{name=e.Name,notes=Notes(e),restSeconds=e.Rest,sets=Enumerable.Range(0,3).Select(i=>new WorkoutSet{reps=e.Reps}).ToList()};}
 }
 
 internal sealed partial class ModernWorkspace {
  string exerciseQuery="",exerciseMuscle="Tous les muscles",exerciseEquipment="Tout le matériel";
+ string exerciseLevel="Tous les niveaux",exerciseCategory="Toutes les catégories";int exercisePage;
  void ExerciseLibraryPage(StackPanel root){
   root.Children.Add(T(ExerciseCatalog.All.Length+" exercices · fiches d'exécution · ajout à vos séances",16));
   root.Children.Add(T("Choisissez un mouvement, consultez ses consignes puis personnalisez vos séries, répétitions et repos. Les charges restent à renseigner.",12,Muted,new Thickness(0,8,0,14)));
+  root.Children.Add(T("Source : Free Exercise DB · photos hors connexion · fiches en français, avec traduction automatique signalée et texte anglais consultable.",11,Muted,new Thickness(0,0,0,12)));
   var results=new StackPanel();root.Children.Add(ExerciseLibraryFilters(results,null));root.Children.Add(results);
   RenderExerciseResults(results,null);
   var personal=SN.workouts.SelectMany(p=>p.exercises).Where(e=>!ExerciseCatalog.All.Any(c=>c.Name.Equals(e.name,StringComparison.OrdinalIgnoreCase))).GroupBy(e=>e.name,StringComparer.OrdinalIgnoreCase).ToList();
@@ -70,16 +77,19 @@ internal sealed partial class ModernWorkspace {
  UIElement ExerciseLibraryFilters(StackPanel results,string planId){
   var filters=new WrapPanel{Margin=new Thickness(0,0,0,16)};
   var search=SportText(exerciseQuery);search.Width=240;search.ToolTip="Rechercher un exercice ou un muscle";System.Windows.Automation.AutomationProperties.SetName(search,"Rechercher un exercice");filters.Children.Add(search);
-  var muscles=Combo(new[]{"Tous les muscles"}.Concat(ExerciseCatalog.All.Select(e=>e.Muscle).Distinct().OrderBy(x=>x)).ToArray(),exerciseMuscle);muscles.Width=170;filters.Children.Add(muscles);
+  var muscles=Combo(new[]{"Tous les muscles"}.Concat(ExerciseCatalog.All.SelectMany(e=>(e.Muscle+", "+e.Secondary).Split(new[]{", "},StringSplitOptions.None)).Where(x=>x!="Non renseignés").Distinct().OrderBy(x=>x)).ToArray(),exerciseMuscle);muscles.Width=170;filters.Children.Add(muscles);
   var equipment=Combo(new[]{"Tout le matériel"}.Concat(ExerciseCatalog.All.Select(e=>e.Equipment).Distinct().OrderBy(x=>x)).ToArray(),exerciseEquipment);equipment.Width=180;filters.Children.Add(equipment);
-  Action filter=delegate{exerciseQuery=search.Text;exerciseMuscle=Convert.ToString(muscles.SelectedItem);exerciseEquipment=Convert.ToString(equipment.SelectedItem);RenderExerciseResults(results,planId);};
-  search.TextChanged+=delegate{filter();};muscles.SelectionChanged+=delegate{filter();};equipment.SelectionChanged+=delegate{filter();};
+  var level=Combo(new[]{"Tous les niveaux"}.Concat(ExerciseCatalog.All.Select(e=>e.Level).Where(x=>x!="").Distinct().OrderBy(x=>x)).ToArray(),exerciseLevel);level.Width=170;filters.Children.Add(level);
+  var category=Combo(new[]{"Toutes les catégories"}.Concat(ExerciseCatalog.All.Select(e=>e.Category).Where(x=>x!="").Distinct().OrderBy(x=>x)).ToArray(),exerciseCategory);category.Width=210;filters.Children.Add(category);
+  Action filter=delegate{exerciseQuery=search.Text;exerciseMuscle=Convert.ToString(muscles.SelectedItem);exerciseEquipment=Convert.ToString(equipment.SelectedItem);exerciseLevel=Convert.ToString(level.SelectedItem);exerciseCategory=Convert.ToString(category.SelectedItem);exercisePage=0;RenderExerciseResults(results,planId);};
+  search.TextChanged+=delegate{filter();};muscles.SelectionChanged+=delegate{filter();};equipment.SelectionChanged+=delegate{filter();};level.SelectionChanged+=delegate{filter();};category.SelectionChanged+=delegate{filter();};
   return filters;
  }
  void RenderExerciseResults(StackPanel results,string planId){
-  results.Children.Clear();var found=ExerciseCatalog.Search(exerciseQuery,exerciseMuscle,exerciseEquipment).ToList();results.Children.Add(T(found.Count+" résultat(s)",12,Muted,new Thickness(0,0,0,12)));
+  results.Children.Clear();var found=ExerciseCatalog.Search(exerciseQuery,exerciseMuscle,exerciseEquipment).Where(e=>(exerciseLevel=="Tous les niveaux"||e.Level==exerciseLevel)&&(exerciseCategory=="Toutes les catégories"||e.Category==exerciseCategory)).ToList();int pages=Math.Max(1,(found.Count+23)/24);exercisePage=Math.Max(0,Math.Min(exercisePage,pages-1));results.Children.Add(T(found.Count+" résultat(s) · page "+(exercisePage+1)+" / "+pages,12,Muted,new Thickness(0,0,0,12)));
   if(found.Count==0)results.Children.Add(T("Aucun exercice ne correspond. Essayez un autre muscle, matériel ou mot-clé. Vous pouvez aussi créer un exercice personnel dans une séance.",13,Muted));
-  foreach(var definition in found){var e=definition;var b=new StackPanel();b.Children.Add(T(e.Muscle+" · "+e.Equipment,13,Accent));b.Children.Add(T("Aussi sollicités : "+e.Secondary,12,Muted,new Thickness(0,6,0,6)));var actions=new WrapPanel();actions.Children.Add(Btn("Voir la fiche",delegate{ShowExerciseDefinition(e,planId);},false,true));actions.Children.Add(Btn("Ajouter à une séance",delegate{AddCatalogExercise(e,planId);},true));b.Children.Add(actions);var card=Card(e.Name,b);card.Margin=new Thickness(0,0,0,12);results.Children.Add(card);}
+  foreach(var definition in found.Skip(exercisePage*24).Take(24)){var e=definition;var b=new StackPanel();if(e.Images.Length>0)b.Children.Add(ExercisePhoto(e.Images[0],110));b.Children.Add(T(e.Muscle+" · "+e.Equipment,13,Accent));b.Children.Add(T(e.Level+" · "+e.Category,11,Muted));b.Children.Add(T("Aussi sollicités : "+e.Secondary,12,Muted,new Thickness(0,6,0,6)));var actions=new WrapPanel();actions.Children.Add(Btn("Voir la fiche",delegate{ShowExerciseDefinition(e,planId);},false,true));actions.Children.Add(Btn("Ajouter à une séance",delegate{AddCatalogExercise(e,planId);},true));b.Children.Add(actions);var card=Card(e.Name,b);card.Margin=new Thickness(0,0,0,12);results.Children.Add(card);}
+  if(pages>1){var nav=new WrapPanel();var previous=Btn("Page précédente",delegate{exercisePage--;RenderExerciseResults(results,planId);},false,true);previous.IsEnabled=exercisePage>0;nav.Children.Add(previous);var next=Btn("Page suivante",delegate{exercisePage++;RenderExerciseResults(results,planId);},false,true);next.IsEnabled=exercisePage<pages-1;nav.Children.Add(next);results.Children.Add(nav);}
  }
  void ChooseLibraryExercise(string planId){
   StackPanel body,actions;var w=Dialog("Bibliothèque d'exercices",out body,out actions,800);w.Width=740;
@@ -89,7 +99,12 @@ internal sealed partial class ModernWorkspace {
  void ShowExerciseDefinition(ExerciseDefinition e,string planId){
   StackPanel body,actions;var w=Dialog(e.Name,out body,out actions,620);
   body.Children.Add(T(e.Muscle+" · "+e.Equipment,17,Accent));body.Children.Add(T("Muscles secondaires : "+e.Secondary,13,Muted,new Thickness(0,10,0,15)));
+  if(e.Images.Length>0){var photos=new WrapPanel();foreach(var path in e.Images)photos.Children.Add(ExercisePhoto(path,190));body.Children.Add(photos);}
+  body.Children.Add(T(e.Level+" · "+e.Category,12,Muted));
   body.Children.Add(T("Exécution",20));body.Children.Add(T(e.Steps,14,Ink,new Thickness(0,12,0,15)));
+  if(e.AutomaticTranslation)body.Children.Add(T("Traduction automatique depuis l'anglais · formulation non révisée individuellement.",11,Muted));
+  if(e.OriginalSteps!=""&&e.OriginalSteps!=e.Steps){var original=new Expander{Header="Consignes d'origine (anglais)",Content=T(e.OriginalSteps,13,Muted)};body.Children.Add(original);}
+  if(e.SourceId!="")body.Children.Add(T("Free Exercise DB · Unlicense · "+e.OriginalName,11,Muted,new Thickness(0,10,0,10)));
   body.Children.Add(T("Point de départ modifiable : 3 séries de "+e.Reps+" répétitions · repos "+e.Rest+" s. Choisissez une charge adaptée à votre maîtrise du mouvement.",12,Muted));
   actions.Children.Add(Btn("Fermer",delegate{FinishFinanceDialog(w);},false,true));actions.Children.Add(Btn("Ajouter à une séance",delegate{AddCatalogExercise(e,planId);},true));ShowWindow(w);
  }
