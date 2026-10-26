@@ -4,6 +4,14 @@ Accès : **Sport & Nutrition** dans la navigation de Mon Espace. Le module repre
 
 ## Musculation
 
+### Bibliothèque d'exercices
+
+L'onglet **Exercices** propose 39 mouvements intégrés, consultables hors ligne. Recherchez un nom ou un muscle (avec ou sans accents), puis combinez les filtres muscle et matériel. Chaque fiche décrit les muscles principaux et secondaires et les consignes d'exécution.
+
+Depuis une fiche, choisissez **Ajouter à une séance**. Depuis un modèle de séance, **+ Bibliothèque** utilise directement ce modèle. Les séries, répétitions, charge, repos et consignes restent modifiables avant enregistrement. Les valeurs préremplies sont des points de départ ; la charge initiale est zéro et doit être adaptée. L'historique reste indépendant des modifications. **+ Exercice personnel** permet de saisir un mouvement absent ; les mouvements personnels des séances sont aussi récapitulés dans la bibliothèque.
+
+Cette version comprend des fiches textuelles originales, sans images ni animations de démonstration.
+
 - Créer des modèles de séances et ajouter des exercices libres.
 - Définir les séries, répétitions, charges en kg, repos en secondes et consignes.
 - Lancer une séance ; ajuster et cocher chaque série individuellement.

@@ -9,6 +9,12 @@ internal static class SportNutritionAcceptance {
  internal static void Check(bool yes,string message){if(!yes)throw new Exception(message);}
  internal static void Reject(Action action,string message){bool rejected=false;try{action();}catch(InvalidDataException){rejected=true;}Check(rejected,message);}
  internal static void Core(string folder){
+  Check(ExerciseCatalog.All.Length>=35&&ExerciseCatalog.All.Select(e=>e.Id).Distinct().Count()==ExerciseCatalog.All.Length,"Catalog size and unique identifiers");
+  Check(ExerciseCatalog.Search("developpe couche","Pectoraux","Haltères").Single().Id=="db-bench","Accent-insensitive search and combined filters");
+  Check(!ExerciseCatalog.Search("squat","Dos","Machine").Any(),"No-match filters");
+  Check(ExerciseCatalog.All.All(e=>!String.IsNullOrWhiteSpace(e.Steps)&&!String.IsNullOrWhiteSpace(e.Secondary)),"Every exercise has execution and muscle details");
+  var libraryA=ExerciseCatalog.Create(ExerciseCatalog.All[0]);var libraryB=ExerciseCatalog.Create(ExerciseCatalog.All[0]);libraryA.sets[0].kg=25;
+  Check(libraryA.id!=libraryB.id&&libraryB.sets[0].kg==0&&libraryA.sets.Count==3,"Independent editable library copies");
   var store=new Store(Path.Combine(folder,"core"));var d=store.Value.sportNutrition;var day=new DateTime(2026,10,26);
   Check(d.goals.lactoseFree&&d.goals.batchDays==3&&d.recipes.Count==3,"Defaults and lactose preference");
   var curry=d.recipes.First(r=>r.id=="curry");var serving=SportNutrition.RecipeServing(d,curry);
@@ -100,6 +106,14 @@ internal sealed partial class ModernWorkspace {
   if(SN.diary.Count!=count)throw new Exception("Duplicate log rollback");
   store.Value.settings.enhancements.session=new SavedWorkspaceSession{page="Sport & Nutrition",tabs=new List<SavedWorkspaceTab>{new SavedWorkspaceTab{page="Sport & Nutrition"}}};store.Save();selected="Aujourd’hui";RestoreWorkspaceSession(true,true);if(selected!="Sport & Nutrition"||new Store(store.Root).Value.settings.enhancements.session.page!="Sport & Nutrition")throw new Exception("Session tab restore");
   sportTab="Courses";Refresh();PreviewSized(Path.Combine(folder,"Nutrition-courses.png"),1280,1000);
+  exerciseQuery="developpe";exerciseMuscle="Pectoraux";exerciseEquipment="Haltères";sportTab="Exercices";Refresh();
+  if(!LogicalControls<Button>(this).Any(b=>Convert.ToString(b.Content)=="Voir la fiche"))throw new Exception("Filtered library UI");
+  PreviewSized(Path.Combine(folder,"Sport-bibliotheque.png"),1280,1000);
+  dialogProbe=delegate(Window w){ClickWizard(w,"Fermer");return true;};try{ShowExerciseDefinition(ExerciseCatalog.All[0],plan.id);}finally{dialogProbe=null;}
+  dialogProbe=delegate(Window w){var fields=LogicalControls<TextBox>(w).ToList();if(fields[0].Text!=ExerciseCatalog.All[0].Name||fields[5].Text!=ExerciseCatalog.All[0].Steps)throw new Exception("Library prefill");fields[3].Text="25";ClickWizard(w,"Enregistrer");return true;};
+  try{AddCatalogExercise(ExerciseCatalog.All[0],plan.id);}finally{dialogProbe=null;}
+  if(SN.workouts.Single().exercises.Count!=2||SN.workouts.Single().exercises.Last().sets[0].kg!=25||SN.sessions.Single().exercises.Count!=1)throw new Exception("Library save / history isolation");
+  var persisted=new Store(store.Root).Value.sportNutrition.workouts.Single().exercises.Last();if(persisted.notes!=ExerciseCatalog.All[0].Steps)throw new Exception("Library instructions persistence");
  }
 }
 internal sealed partial class MainForm {

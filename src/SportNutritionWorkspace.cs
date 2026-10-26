@@ -27,9 +27,10 @@ internal sealed partial class ModernWorkspace {
  }
  void SportNutritionPage(StackPanel root){
   var tabs=new WrapPanel{Margin=new Thickness(0,0,0,20)};
-  foreach(string name in new[]{"Musculation","Progression","Alimentation","Recettes & aliments","Menus","Courses"}){var tab=name;tabs.Children.Add(Btn(tab,delegate{sportTab=tab;Refresh();},sportTab==tab,sportTab!=tab));}
+  foreach(string name in new[]{"Musculation","Exercices","Progression","Alimentation","Recettes & aliments","Menus","Courses"}){var tab=name;tabs.Children.Add(Btn(tab,delegate{sportTab=tab;Refresh();},sportTab==tab,sportTab!=tab));}
   root.Children.Add(tabs);
   if(sportTab=="Musculation")WorkoutsPage(root);
+  else if(sportTab=="Exercices")ExerciseLibraryPage(root);
   else if(sportTab=="Progression")WorkoutProgressPage(root);
   else if(sportTab=="Alimentation")NutritionDiaryPage(root);
   else if(sportTab=="Recettes & aliments")NutritionLibraryPage(root);
@@ -39,6 +40,7 @@ internal sealed partial class ModernWorkspace {
   var active=SN.sessions.FirstOrDefault(s=>!s.finished);
   if(active!=null){var body=new StackPanel();body.Children.Add(T(active.name+" · "+Finance.Day(active.date).ToString("dd/MM/yyyy"),16));var actions=new WrapPanel();actions.Children.Add(Btn("Reprendre la séance",delegate{RunWorkout(active.id);},true));actions.Children.Add(Btn("Abandonner",delegate{if(MessageBox.Show("Supprimer la séance en cours et ses séries ?","Abandonner",MessageBoxButton.YesNo)==MessageBoxResult.Yes)SportChange(d=>d.sessions.RemoveAll(s=>s.id==active.id));},false,true));body.Children.Add(actions);root.Children.Add(Card("Séance en cours",body));}
   root.Children.Add(Btn("+ Nouvelle séance",delegate{EditWorkout(null);},true));
+  root.Children.Add(Btn("Parcourir les exercices",delegate{sportTab="Exercices";Refresh();},false,true));
   if(SN.workouts.Count==0)root.Children.Add(Card("Votre programme commence ici",T("Créez une séance, ajoutez vos exercices, puis lancez-la pour noter les séries réalisées.",13,Muted)));
   foreach(var plan in SN.workouts){
    var p=plan;var body=new StackPanel();
@@ -46,7 +48,7 @@ internal sealed partial class ModernWorkspace {
    if(p.exercises.Count==0)body.Children.Add(T("Ajoutez votre premier exercice.",12,Muted));
    var actions=new WrapPanel{Margin=new Thickness(0,12,0,0)};
    var start=Btn("Lancer la séance",delegate{string id="";try{SportNutrition.Change(store,d=>id=SportNutrition.Start(d,d.workouts.First(x=>x.id==p.id),DateTime.Today).id);RunWorkout(id);}catch(Exception ex){MessageBox.Show(ex.Message);Refresh();}},true);
-   start.IsEnabled=active==null&&p.exercises.Count>0;actions.Children.Add(start);actions.Children.Add(Btn("+ Exercice",delegate{EditWorkoutExercise(p.id,null);},false,true));actions.Children.Add(Btn("Renommer",delegate{EditWorkout(p);},false,true));actions.Children.Add(Btn("Supprimer",delegate{if(MessageBox.Show("Supprimer ce modèle ? Les séances réalisées seront conservées.","Supprimer",MessageBoxButton.YesNo)==MessageBoxResult.Yes)SportChange(d=>d.workouts.RemoveAll(x=>x.id==p.id));},false,true));body.Children.Add(actions);
+   start.IsEnabled=active==null&&p.exercises.Count>0;actions.Children.Add(start);actions.Children.Add(Btn("+ Bibliothèque",delegate{ChooseLibraryExercise(p.id);},false,true));actions.Children.Add(Btn("+ Exercice personnel",delegate{EditWorkoutExercise(p.id,null);},false,true));actions.Children.Add(Btn("Renommer",delegate{EditWorkout(p);},false,true));actions.Children.Add(Btn("Supprimer",delegate{if(MessageBox.Show("Supprimer ce modèle ? Les séances réalisées seront conservées.","Supprimer",MessageBoxButton.YesNo)==MessageBoxResult.Yes)SportChange(d=>d.workouts.RemoveAll(x=>x.id==p.id));},false,true));body.Children.Add(actions);
    foreach(var exercise in p.exercises){var e=exercise;var row=new WrapPanel();row.Children.Add(Btn("Modifier "+e.name,delegate{EditWorkoutExercise(p.id,e);},false,true));row.Children.Add(Btn("Retirer",delegate{SportChange(d=>d.workouts.First(x=>x.id==p.id).exercises.RemoveAll(x=>x.id==e.id));},false,true));body.Children.Add(row);}
    var card=Card(p.name,body);card.Margin=new Thickness(0,16,0,0);root.Children.Add(card);
   }
@@ -56,7 +58,8 @@ internal sealed partial class ModernWorkspace {
   var name=SportText(existing==null?"":existing.name);Field(body,"Nom · par exemple Haut du corps",name);
   SportDialogSave(w,body,actions,delegate{var title=SportName(name);SportNutrition.Change(store,d=>{if(existing==null)d.workouts.Add(new WorkoutPlan{name=title});else d.workouts.First(x=>x.id==existing.id).name=title;});});
  }
- void EditWorkoutExercise(string planId,WorkoutExercise existing){
+ void EditWorkoutExercise(string planId,WorkoutExercise existing,ExerciseDefinition definition=null){
+  if(existing==null&&definition!=null)existing=ExerciseCatalog.Create(definition);
   StackPanel body,actions;var w=Dialog(existing==null?"Ajouter un exercice":"Modifier l’exercice",out body,out actions,740);
   var name=SportText(existing==null?"":existing.name);Field(body,"Exercice · nom libre",name);
   var sets=SportNumber(existing==null?3:existing.sets.Count);Field(body,"Nombre de séries",sets);
