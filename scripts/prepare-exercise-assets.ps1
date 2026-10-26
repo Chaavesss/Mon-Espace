@@ -1,5 +1,6 @@
 param([string]$ProjectRoot = (Split-Path $PSScriptRoot -Parent))
 $ErrorActionPreference = 'Stop'
+$ProgressPreference = 'SilentlyContinue'
 $assetRoot = Join-Path $ProjectRoot 'assets/exercises'
 $photoRoot = Join-Path $assetRoot 'photos'
 $manifestFile = Join-Path $assetRoot 'photos-manifest.json'
@@ -17,7 +18,8 @@ if ($missing.Count -gt 0) {
  $archivePath = Join-Path $releaseRoot 'exercise-source.zip'
  if (!(Test-Path -LiteralPath $archivePath)) {
   [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-  Invoke-WebRequest -UseBasicParsing -Uri ('https://codeload.github.com/yuhonas/free-exercise-db/zip/' + $pin) -OutFile ($archivePath + '.tmp')
+  Write-Output 'Telechargement de la revision source des photos...'
+  Invoke-WebRequest -UseBasicParsing -TimeoutSec 180 -Uri ('https://codeload.github.com/yuhonas/free-exercise-db/zip/' + $pin) -OutFile ($archivePath + '.tmp')
   Move-Item -LiteralPath ($archivePath + '.tmp') -Destination $archivePath -Force
  }
  $sourceArchive = [IO.Compression.ZipFile]::OpenRead($archivePath)
