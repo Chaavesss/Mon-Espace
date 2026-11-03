@@ -16,7 +16,7 @@ internal static class DestinationRoute {
  internal static string Role(string instruction){
  var roles=new List<string>();
  foreach(var pair in new[]{new[]{@"départ\s+de\s+(?:la\s+)?quête","Départ de quête"},new[]{@"objectif\s*:","Objectif"},new[]{@"PNJ\s*:","PNJ"},new[]{@"combat\s*:","Combat"},new[]{@"destination\s+intermédiaire\s*:","Destination intermédiaire"},new[]{@"fin\s+de\s+(?:la\s+)?quête","Fin de quête"}})
- if(Regex.IsMatch(instruction,pair[0],RegexOptions.IgnoreCase))roles.Add(pair[1]);
+ if(Regex.IsMatch(instruction,@"^\s*(?:[•–-]\s*)?"+pair[0],RegexOptions.IgnoreCase))roles.Add(pair[1]);
  return roles.Count==1?roles[0]:"Rôle non précisé";
  }
  internal static List<RouteDestination> Build(string source,string fallback=""){

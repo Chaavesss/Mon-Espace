@@ -13,6 +13,16 @@ internal static class DestinationRouteTests {
  var restart=new Store(store.Root);if(!restart.Value.instructions.compact||!restart.Value.instructions.autoCopy||DestinationRoute.Selected(restart.Value.instructions,key,route)!=2||restart.Value.completedQuests.Count!=0||restart.Value.dofus.progress.Count!=0)throw new Exception("Préférences perdues ou validation accidentelle");
  store.Value.dofus.active="other";if(DestinationRoute.CursorKey(store.Value,"step")==key)throw new Exception("Itinéraire partagé entre personnages");
  bool failed=false;try{DestinationRoute.Select(restart,key,route[3],true,s=>{throw new System.Runtime.InteropServices.ExternalException();});}catch(System.Runtime.InteropServices.ExternalException){failed=true;}if(!failed||DestinationRoute.Selected(new Store(store.Root).Value.instructions,key,route)!=3)throw new Exception("Presse-papiers : destination perdue");
+ Ui(folder);
  File.WriteAllText(Path.Combine(folder,"DESTINATION_ROUTE_PASS.txt"),"PASS: six explicit roles; ambiguous roles unknown; coordinates, repeated destinations and missing coordinates; opt-in copy; persisted compact mode and route cursor; clipboard failure; per-character isolation; navigation never completes quests.");
+ }
+
+ static void Ui(string folder){
+ var store=new Store(Path.Combine(folder,"route-ui"));var c=new DofusCharacter{id="route-ui",name="Route",guide="ganymede-99"};store.Value.dofus.characters.Add(c);store.Value.dofus.active=c.id;store.Save();
+ string raw=Store.Json.Serialize(new{ganymedeGuide=new{id=99,name="Route test",author="Fixture",description="Fixture",steps=new[]{new{id=1,name="Itinéraire",order=1,map="",pos_x=0,pos_y=0,text="<p>Départ de quête : [0,-1]</p><p>Objectif : [2,3]</p>"}}}});TougliReader.Cache(store,c.guide,raw);
+ var window=new CompanionWindow(store,true);window.Render(Path.Combine(folder,"overlay-route-detailed.png"));
+ var next=StandaloneTests.Find<System.Windows.Controls.Button>(window.Content as System.Windows.DependencyObject).First(b=>Equals(b.Content,"Destination →"));next.RaiseEvent(new System.Windows.RoutedEventArgs(System.Windows.Controls.Button.ClickEvent));
+ window.Render(Path.Combine(folder,"overlay-route-next.png"));if(!StandaloneTests.Find<System.Windows.Controls.TextBlock>(window.Content as System.Windows.DependencyObject).Any(t=>t.Text=="Objectif")||store.Value.completedQuests.Count!=0||store.Value.dofus.progress.Any(p=>p.done.Count>0))throw new Exception("Bouton destination valide une quête ou ne navigue pas");
+ StandaloneTests.Find<System.Windows.Controls.Button>(window.Content as System.Windows.DependencyObject).First(b=>Equals(b.Content,"Compact")).RaiseEvent(new System.Windows.RoutedEventArgs(System.Windows.Controls.Button.ClickEvent));window.Render(Path.Combine(folder,"overlay-route-compact.png"));if(!new Store(store.Root).Value.instructions.compact||StandaloneTests.Find<System.Windows.Controls.Expander>(window.Content as System.Windows.DependencyObject).Any(e=>Equals(e.Header,"Toutes les destinations")))throw new Exception("Mode compact réel ou sauvegarde");window.Close();
  }
 }
