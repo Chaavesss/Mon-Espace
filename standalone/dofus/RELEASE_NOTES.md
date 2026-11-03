@@ -1,10 +1,8 @@
-# Compagnon Dofus 1.10.0 — Bibliothèque et consignes unifiées
+# Compagnon Dofus 1.10.1 — Identité dans le bandeau
 
-- Accueil en grille : icône puis titre du parcours, ordre du catalogue Tougli conservé, recherche sur tous les parcours et pagination de 12 tuiles.
-- Tous les parcours Tougli restent disponibles et gardent leur ordre, leurs choix de personnage, leurs ressources et leur progression.
-- Les références Ganymède se préparent automatiquement en arrière-plan et enrichissent les quêtes par nom normalisé exact. Les identifiants contradictoires connus sont exclus.
-- Plus de choix Tougli/Ganymède ni de sélection de source dans les consignes. Les crédits et liens restent disponibles dans « Références et crédits ».
-- Fusion des consignes communes avec suppression des doublons, ordre entre étapes communes, conservation des visites répétées et signalement des ordres contradictoires.
-- Reprise des anciennes sous-consignes lorsque leur correspondance est disponible. Les anciennes sessions directes restent accessibles sans suppression de progression.
-- Chargement non bloquant, préparation automatique, réutilisation des caches et navigation sans validation conservés.
-- Tests : noms exacts, homonymes avec identifiants contradictoires, doublons, ordre, retours, contradictions, anciens curseurs, conservation des parcours, grille, pagination et recherche.
+- Le skin, le nom du personnage et le Dofus en cours sont regroupés à droite de « Compagnon ».
+- Le nom du parcours apparaît sous le pseudo, avec le texte complet au survol lorsque la fenêtre est étroite.
+- La ligne répétée sous les onglets et le bloc d’identité en bas des consignes sont retirés ; la progression reste disponible.
+- Les réglages d’affichage du portrait et du Dofus sont conservés. Le skin complet est affiché sans déformation ; une initiale sert de repli si aucun portrait n’est configuré.
+- Bandeau déplaçable et boutons réduire/fermer maintenus.
+- Tests du positionnement à 360, 430 et 640 px, des noms longs, du vrai portrait, des réglages masqués et de l’absence de doublons.
