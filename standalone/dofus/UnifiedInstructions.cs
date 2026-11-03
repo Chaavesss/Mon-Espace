@@ -6,7 +6,7 @@ using System.Collections.Generic;
 internal sealed class UnifiedQuestInstructions {
  internal readonly List<QuestInstruction> Items=new List<QuestInstruction>();
  internal readonly Dictionary<string,List<QuestInstruction>> References=new Dictionary<string,List<QuestInstruction>>();
- internal bool ConflictingOrder;
+ internal bool ConflictingOrder,UncertainOrder;
  internal static string TextKey(string value){return Regex.Replace((value??"").Trim(),@"\s+"," ");}
  internal static UnifiedQuestInstructions Build(List<QuestInstruction> matches,string questIdentity=""){
  var result=new UnifiedQuestInstructions();var nodes=new Dictionary<string,QuestInstruction>();var rank=new Dictionary<string,int>();var edges=new Dictionary<string,HashSet<string>>();var degree=new Dictionary<string,int>();
@@ -20,7 +20,7 @@ internal sealed class UnifiedQuestInstructions {
  }
  }
  var ready=new SortedSet<int>(rank.Where(p=>degree[p.Key]==0).Select(p=>p.Value));var keys=rank.OrderBy(p=>p.Value).Select(p=>p.Key).ToArray();
- while(ready.Count>0){int first=ready.Min;ready.Remove(first);string key=keys[first];result.Items.Add(nodes[key]);foreach(var next in edges[key])if(--degree[next]==0)ready.Add(rank[next]);}
+ while(ready.Count>0){if(ready.Count>1)result.UncertainOrder=true;int first=ready.Min;ready.Remove(first);string key=keys[first];result.Items.Add(nodes[key]);foreach(var next in edges[key])if(--degree[next]==0)ready.Add(rank[next]);}
  if(result.Items.Count<nodes.Count){result.ConflictingOrder=true;var added=new HashSet<string>(result.Items.Select(x=>x.Key));foreach(string key in keys)if(added.Add(key))result.Items.Add(nodes[key]);}
  return result;
  }

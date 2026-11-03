@@ -15,8 +15,8 @@ internal sealed partial class CompanionWindow {
  Dispatcher.BeginInvoke(new Action(()=>{if(!closing&&libraryNotice!=null)libraryNotice.Text="Consignes : "+progress.Ready+" / "+progress.Total+" références disponibles.";}));
  },token));
  if(closing)return;InvalidateInstructionIndex();await ReadyInstructionIndex();nextInstructionRetry=result.Failed>0?DateTime.UtcNow.AddMinutes(5):DateTime.MinValue;
- message=result.Failed==0?"Consignes réunies automatiquement dans vos parcours.":"Les consignes disponibles sont réunies. "+result.Failed+" références restent indisponibles ; une nouvelle tentative sera possible.";if(libraryNotice!=null)libraryNotice.Text=message;RefreshView();
+ message=result.Failed==0?"Consignes réunies automatiquement dans vos parcours.":"Les consignes disponibles sont réunies. "+result.Failed+" références restent indisponibles ; une nouvelle tentative sera possible.";if(libraryNotice!=null)libraryNotice.Text=message;
  }catch(OperationCanceledException){}catch(Exception ex){nextInstructionRetry=DateTime.UtcNow.AddMinutes(5);if(!closing){message="Les parcours restent disponibles. Certaines consignes n’ont pas pu être préparées : "+ex.Message;if(libraryNotice!=null)libraryNotice.Text=message;}}
- finally{preparingInstructions=false;instructionPreparationCancel.Dispose();instructionPreparationCancel=null;if(!closing)StartInstructionPreparation();}
+ finally{preparingInstructions=false;instructionPreparationCancel.Dispose();instructionPreparationCancel=null;if(!closing){RefreshView();StartInstructionPreparation();}}
  }
 }
