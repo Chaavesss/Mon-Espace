@@ -20,10 +20,11 @@ internal static class DestinationRoute {
  return roles.Count==1?roles[0]:"Rôle non précisé";
  }
  internal static List<RouteDestination> Build(string source,string fallback=""){
- var result=new List<RouteDestination>();source=source??"";
+ var result=new List<RouteDestination>();source=source??"";string sourceKey=WorkspaceNext.Hash(Encoding.UTF8.GetBytes(source));string prefix="";
  foreach(string block in source.Replace("\r","").Split('\n')){
- var matches=Coordinates.Matches(block);
- foreach(Match m in matches){string pos=Int32.Parse(m.Groups[1].Value.Replace('−','-'))+","+Int32.Parse(m.Groups[2].Value.Replace('−','-'));result.Add(new RouteDestination{Coordinates=pos,Role=matches.Count==1?Role(block):"Rôle non précisé",Instruction=block.Trim(),Key=WorkspaceNext.Hash(Encoding.UTF8.GetBytes(source+"/"+result.Count))});}
+ var matches=Coordinates.Matches(block);if(matches.Count==0){if(result.Count==0)prefix+=block+"\n";else result[result.Count-1].Instruction+="\n"+block;continue;}
+ foreach(Match m in matches){string pos=Int32.Parse(m.Groups[1].Value.Replace('−','-'))+","+Int32.Parse(m.Groups[2].Value.Replace('−','-'));result.Add(new RouteDestination{Coordinates=pos,Role=matches.Count==1?Role(block):"Rôle non précisé",Instruction=(prefix+block).Trim(),Key=WorkspaceNext.Hash(Encoding.UTF8.GetBytes(sourceKey+"/"+result.Count))});}
+ prefix="";
  }
  if(result.Count==0&&!String.IsNullOrWhiteSpace(fallback)){
  var match=Coordinates.Match("["+fallback+"]");if(match.Success&&match.Length==fallback.Length+2)result.Add(new RouteDestination{Coordinates=Int32.Parse(match.Groups[1].Value.Replace('−','-'))+","+Int32.Parse(match.Groups[2].Value.Replace('−','-')),Role="Rôle non précisé",Instruction="Coordonnée de la page source ; rôle non précisé.",Key=WorkspaceNext.Hash(Encoding.UTF8.GetBytes("fallback/"+fallback))});
