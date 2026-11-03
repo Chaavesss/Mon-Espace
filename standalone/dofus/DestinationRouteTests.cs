@@ -1,0 +1,18 @@
+using System;
+using System.IO;
+using System.Linq;
+internal static class DestinationRouteTests {
+ internal static void Run(string folder){
+ var route=DestinationRoute.Build("Départ de quête : [0,-1]\nObjectif : [+2,−3]\nPNJ : [2,4]\nCombat : [4,5]\nDestination intermédiaire : [6,7]\nFin de quête : [0,-1]");
+ if(route.Count!=6||route.Select(d=>d.Role).Distinct().Count()!=6||route[1].Command!="/travel 2,-3"||route[0].Key==route[5].Key)throw new Exception("Itinéraire : rôles, signes ou retour sur une position");
+ if(DestinationRoute.Build("Va en [1,2] puis [3,4].").Any(d=>d.Role!="Rôle non précisé")||DestinationRoute.Build("PNJ : [1,2] puis combat : [3,4]").Any(d=>d.Role!="Rôle non précisé"))throw new Exception("Rôle ambigu inventé");
+ if(DestinationRoute.Build("Aucune position","0,-2").Single().Role!="Rôle non précisé"||DestinationRoute.Build("[1000,2]").Count!=0||DestinationRoute.Build(null).Count!=0)throw new Exception("Position absente ou invalide");
+ var store=new Store(Path.Combine(folder,"route-data"));store.Value.dofus.characters.Add(new DofusCharacter{id="route-a",guide="example"});store.Value.dofus.active="route-a";string key=DestinationRoute.CursorKey(store.Value,"step");string copied="";
+ DestinationRoute.Select(store,key,route[1],true,s=>copied=s);if(copied!="")throw new Exception("Copie active par défaut");
+ PersonalWorkflows.Change(store,()=>{store.Value.instructions.autoCopy=true;store.Value.instructions.compact=true;});DestinationRoute.Select(store,key,route[2],true,s=>copied=s);if(copied!="/travel 2,4")throw new Exception("Copie automatique");
+ var restart=new Store(store.Root);if(!restart.Value.instructions.compact||!restart.Value.instructions.autoCopy||DestinationRoute.Selected(restart.Value.instructions,key,route)!=2||restart.Value.completedQuests.Count!=0||restart.Value.dofus.progress.Count!=0)throw new Exception("Préférences perdues ou validation accidentelle");
+ store.Value.dofus.active="other";if(DestinationRoute.CursorKey(store.Value,"step")==key)throw new Exception("Itinéraire partagé entre personnages");
+ bool failed=false;try{DestinationRoute.Select(restart,key,route[3],true,s=>{throw new System.Runtime.InteropServices.ExternalException();});}catch(System.Runtime.InteropServices.ExternalException){failed=true;}if(!failed||DestinationRoute.Selected(new Store(store.Root).Value.instructions,key,route)!=3)throw new Exception("Presse-papiers : destination perdue");
+ File.WriteAllText(Path.Combine(folder,"DESTINATION_ROUTE_PASS.txt"),"PASS: six explicit roles; ambiguous roles unknown; coordinates, repeated destinations and missing coordinates; opt-in copy; persisted compact mode and route cursor; clipboard failure; per-character isolation; navigation never completes quests.");
+ }
+}
