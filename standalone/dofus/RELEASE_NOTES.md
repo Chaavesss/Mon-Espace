@@ -1,9 +1,7 @@
-# Compagnon Dofus 1.9.0 — Itinéraire et lisibilité
+# Compagnon Dofus 1.9.1 — Overlay plus discret
 
-- Overlay noir et or : consignes en 17 px et coordonnées en 24 px dans une carte de destination.
-- Modes compact et détaillé sauvegardés ; le mode compact masque le récapitulatif et affiche la consigne de la destination sélectionnée.
-- Itinéraire avec précédent, suivant et sélection directe, indépendant de toute validation de quête.
-- Six rôles reconnus uniquement sur libellé explicite et non ambigu du guide : départ, objectif, PNJ, combat, destination intermédiaire, fin. Sinon « Rôle non précisé ».
-- Copie automatique de /travel facultative, désactivée par défaut et sauvegardée. Une erreur du presse-papiers conserve la destination sélectionnée.
-- Position et taille de fenêtre conservées, ainsi que les fonctionnalités de quêtes, ressources, personnages, chasses et Songes.
-- Tests automatisés supplémentaires : rôles et ambiguïtés, coordonnées, retours sur une position, navigation sans validation, sauvegarde, isolation par personnage et presse-papiers indisponible.
+- Consignes en 13 px en mode compact et 14 px en mode détaillé, avec un interligne plus serré.
+- Titres réduits à 18/20 px et coordonnées à 16/18 px.
+- Cartes, marges et espacement supérieur allégés pour afficher davantage de consignes.
+- Fenêtre redimensionnable jusqu’à 360 × 480 ; taille initiale de 400 × 600 pour les nouvelles installations. Les dimensions déjà sauvegardées sont conservées.
+- Navigation fixe, validation séparée, préférences, copie facultative et fonctionnalités existantes conservées.

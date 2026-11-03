@@ -36,16 +36,18 @@ internal static class DestinationRoute {
 }
 internal sealed partial class CompanionWindow {
  StackPanel destinationNavigation;
+ double InstructionFontSize {get{return compactInstructions?13:14;}}
+ TextBlock InstructionText(string value){var text=PositionText(value,InstructionFontSize);text.LineHeight=InstructionFontSize*1.35;text.Margin=new Thickness(0,2,0,3);return text;}
  RouteDestination displayedDestination;
  void CopyChangedDestination(RouteDestination before){if(testing||!autoCopyDestination||displayedDestination==null||before!=null&&before.Key==displayedDestination.Key)return;try{Clipboard.SetText(displayedDestination.Command);}catch(System.Runtime.InteropServices.ExternalException){message="Destination enregistrée. Presse-papiers occupé : utilisez Copier /travel.";RefreshView();}}
  internal void DestinationPanel(Panel parent,string source,string context,string fallback=""){
  var route=DestinationRoute.Build(source,fallback);if(route.Count==0)return;
  string cursor=DestinationRoute.CursorKey(store.Value,context);int selected=DestinationRoute.Selected(store.Value.instructions,cursor,route);var current=route[selected];displayedDestination=current;
- var panel=new StackPanel();panel.Children.Add(CompanionTheme.Label("ITINÉRAIRE · DESTINATION "+(selected+1)+" / "+route.Count));panel.Children.Add(CompanionTheme.Pair(Text(current.Role,14),PositionText("["+current.Coordinates+"]",24)));panel.Children.Add(PositionText(store.Value.instructions.companion?CompanionInstructions.Rewrite(current.Instruction):current.Instruction,17));
+ var panel=new StackPanel();panel.Children.Add(CompanionTheme.Label("ITINÉRAIRE · DESTINATION "+(selected+1)+" / "+route.Count));panel.Children.Add(CompanionTheme.Pair(Text(current.Role,12),PositionText("["+current.Coordinates+"]",compactInstructions?16:18)));panel.Children.Add(InstructionText(store.Value.instructions.companion?CompanionInstructions.Rewrite(current.Instruction):current.Instruction));
  var navigation=new WrapPanel();Action<int> move=index=>{try{DestinationRoute.Select(store,cursor,route[index],!testing,value=>Clipboard.SetText(value));message="";}catch(System.Runtime.InteropServices.ExternalException){message="Destination enregistrée. Presse-papiers occupé : utilisez Copier /travel.";}catch(Exception ex){message="Destination non enregistrée : "+ex.Message;}RefreshView();};
  var previous=Button("← Destination",()=>move(selected-1));previous.IsEnabled=selected>0;navigation.Children.Add(previous);var next=Button("Destination →",()=>move(selected+1),true);next.IsEnabled=selected+1<route.Count;navigation.Children.Add(next);navigation.Children.Add(Button("Copier /travel",()=>Clipboard.SetText(current.Command)));if(destinationNavigation!=null){destinationNavigation.Children.Clear();destinationNavigation.Children.Add(Text("ITINÉRAIRE · SANS VALIDATION",10,true));destinationNavigation.Children.Add(navigation);}else panel.Children.Add(navigation);
- var auto=new CheckBox{Content="Copier /travel au changement de destination",IsChecked=autoCopyDestination,Margin=new Thickness(0,8,0,8),Foreground=Ink};auto.Click+=delegate{Safe(()=>PersonalWorkflows.Change(store,()=>store.Value.instructions.autoCopy=auto.IsChecked==true));};panel.Children.Add(auto);
+ var auto=new CheckBox{Content="Copier /travel au changement de destination",IsChecked=autoCopyDestination,Margin=new Thickness(0,4,0,4),Foreground=Ink};auto.Click+=delegate{Safe(()=>PersonalWorkflows.Change(store,()=>store.Value.instructions.autoCopy=auto.IsChecked==true));};panel.Children.Add(auto);
  if(!compactInstructions){var list=new StackPanel();for(int i=0;i<route.Count;i++){int target=i;list.Children.Add(Button((i==selected?"● ":"")+(i+1)+" · "+route[i].Role+" ["+route[i].Coordinates+"]",()=>move(target)));}panel.Children.Add(CompanionTheme.Fold("Toutes les destinations",list));}
- panel.Children.Add(Text("Naviguer ici ne valide aucune quête.",11,true));parent.Children.Add(CompanionTheme.Card(panel,14));
+ parent.Children.Add(CompanionTheme.Card(panel,9));
  }
 }
