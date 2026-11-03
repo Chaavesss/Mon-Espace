@@ -27,7 +27,7 @@ internal static class DestinationRoute {
  prefix="";
  }
  if(result.Count==0&&!String.IsNullOrWhiteSpace(fallback)){
- var match=Coordinates.Match("["+fallback+"]");if(match.Success&&match.Length==fallback.Length+2)result.Add(new RouteDestination{Coordinates=Int32.Parse(match.Groups[1].Value.Replace('−','-'))+","+Int32.Parse(match.Groups[2].Value.Replace('−','-')),Role="Rôle non précisé",Instruction="Coordonnée de la page source ; rôle non précisé.",Key=WorkspaceNext.Hash(Encoding.UTF8.GetBytes("fallback/"+fallback))});
+ var match=Coordinates.Match("["+fallback+"]");if(match.Success&&match.Length==fallback.Length+2)result.Add(new RouteDestination{Coordinates=Int32.Parse(match.Groups[1].Value.Replace('−','-'))+","+Int32.Parse(match.Groups[2].Value.Replace('−','-')),Role="Rôle non précisé",Instruction=(String.IsNullOrWhiteSpace(source)?"":source+"\n")+"Coordonnée de la page source ; rôle non précisé.",Key=WorkspaceNext.Hash(Encoding.UTF8.GetBytes("fallback/"+fallback))});
  }return result;
  }
  internal static string CursorKey(Data data,string context){var c=DofusCompanion.Character(data);return WorkspaceNext.Hash(Encoding.UTF8.GetBytes((c==null?"":c.id+"/"+c.guide)+"/"+context));}
@@ -38,7 +38,7 @@ internal sealed partial class CompanionWindow {
  internal void DestinationPanel(Panel parent,string source,string context,string fallback=""){
  var route=DestinationRoute.Build(source,fallback);if(route.Count==0)return;
  string cursor=DestinationRoute.CursorKey(store.Value,context);int selected=DestinationRoute.Selected(store.Value.instructions,cursor,route);var current=route[selected];
- var panel=new StackPanel();panel.Children.Add(CompanionTheme.Label("ITINÉRAIRE · DESTINATION "+(selected+1)+" / "+route.Count));panel.Children.Add(Text(current.Role,14));panel.Children.Add(PositionText("["+current.Coordinates+"]",24));panel.Children.Add(PositionText(current.Instruction,17));
+ var panel=new StackPanel();panel.Children.Add(CompanionTheme.Label("ITINÉRAIRE · DESTINATION "+(selected+1)+" / "+route.Count));panel.Children.Add(Text(current.Role,14));panel.Children.Add(PositionText("["+current.Coordinates+"]",24));panel.Children.Add(PositionText(store.Value.instructions.companion?CompanionInstructions.Rewrite(current.Instruction):current.Instruction,17));
  var navigation=new WrapPanel();Action<int> move=index=>{try{DestinationRoute.Select(store,cursor,route[index],!testing,value=>Clipboard.SetText(value));message="";}catch(System.Runtime.InteropServices.ExternalException){message="Destination enregistrée. Presse-papiers occupé : utilisez Copier /travel.";}catch(Exception ex){message="Destination non enregistrée : "+ex.Message;}RefreshView();};
  var previous=Button("← Destination",()=>move(selected-1));previous.IsEnabled=selected>0;navigation.Children.Add(previous);var next=Button("Destination →",()=>move(selected+1));next.IsEnabled=selected+1<route.Count;navigation.Children.Add(next);navigation.Children.Add(Button("Copier /travel",()=>Clipboard.SetText(current.Command)));panel.Children.Add(navigation);
  var auto=new CheckBox{Content="Copier /travel au changement de destination",IsChecked=autoCopyDestination,Margin=new Thickness(0,8,0,8),Foreground=Ink};auto.Click+=delegate{Safe(()=>PersonalWorkflows.Change(store,()=>store.Value.instructions.autoCopy=auto.IsChecked==true));};panel.Children.Add(auto);
