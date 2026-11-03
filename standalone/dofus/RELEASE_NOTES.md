@@ -1,6 +1,6 @@
 # Compagnon Dofus 1.10.0 — Bibliothèque et consignes unifiées
 
-- Accueil en grille : icône puis titre du parcours, ordre du catalogue Tougli conservé, recherche sur tous les parcours et pagination de 24 tuiles.
+- Accueil en grille : icône puis titre du parcours, ordre du catalogue Tougli conservé, recherche sur tous les parcours et pagination de 12 tuiles.
 - Tous les parcours Tougli restent disponibles et gardent leur ordre, leurs choix de personnage, leurs ressources et leur progression.
 - Les références Ganymède se préparent automatiquement en arrière-plan et enrichissent les quêtes par nom normalisé exact. Les identifiants contradictoires connus sont exclus.
 - Plus de choix Tougli/Ganymède ni de sélection de source dans les consignes. Les crédits et liens restent disponibles dans « Références et crédits ».
