@@ -31,7 +31,7 @@ internal static class DestinationRoute {
  }
  internal static string CursorKey(Data data,string context){var c=DofusCompanion.Character(data);return WorkspaceNext.Hash(Encoding.UTF8.GetBytes((c==null?"":c.id+"/"+c.guide)+"/"+context));}
  internal static int Selected(InstructionData data,string key,List<RouteDestination> route){string saved;return data.destinations.TryGetValue(key,out saved)?Math.Max(0,route.FindIndex(d=>d.Key==saved)):0;}
- internal static void Select(Store store,string key,RouteDestination destination,bool copy,Action<string> clipboard){PersonalWorkflows.Change(store,()=>{var values=store.Value.instructions.destinations;if(!values.ContainsKey(key)&&values.Count>=5000)values.Remove(values.Keys.First());values[key]=destination.Key;});if(copy&&store.Value.instructions.autoCopy)clipboard(destination.Command);}
+ internal static void Select(Store store,string key,RouteDestination destination,bool copy,Action<string> clipboard){string previous;bool changed=!store.Value.instructions.destinations.TryGetValue(key,out previous)||previous!=destination.Key;PersonalWorkflows.Change(store,()=>{var values=store.Value.instructions.destinations;if(!values.ContainsKey(key)&&values.Count>=5000)values.Remove(values.Keys.First());values[key]=destination.Key;});if(changed&&copy&&store.Value.instructions.autoCopy)clipboard(destination.Command);}
 }
 internal sealed partial class CompanionWindow {
  internal void DestinationPanel(Panel parent,string source,string context,string fallback=""){

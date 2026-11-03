@@ -10,7 +10,7 @@ permissions:
   contents: read
 concurrency:
   group: release-compagnon-dofus-${{ github.ref }}
-  cancel-in-progress: false
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 jobs:
   standalone:
     runs-on: windows-2025
@@ -86,7 +86,7 @@ jobs:
           $existing = gh release list --repo $env:GITHUB_REPOSITORY --limit 100 --json tagName | ConvertFrom-Json
           if ($LASTEXITCODE -ne 0) { throw 'Cannot inspect releases' }
           if ($existing | Where-Object tagName -eq $tag) { throw 'Companion version already exists; increment before publishing' }
-          gh release create $tag $zip dist-compagnon/SHA256.txt test-results/compagnon/character-creation.png test-results/compagnon/guide-picker.png test-results/compagnon/overlay.png test-results/compagnon/treasure-hunt.png test-results/compagnon/songes-25-etages.png --repo $env:GITHUB_REPOSITORY --target $env:GITHUB_SHA --title 'Compagnon Dofus indépendant 1.9.0' --notes-file standalone/dofus/RELEASE_NOTES.md --draft
+          gh release create $tag $zip dist-compagnon/SHA256.txt test-results/compagnon/character-creation.png test-results/compagnon/guide-picker.png test-results/compagnon/overlay.png test-results/compagnon/overlay-route-detailed.png test-results/compagnon/overlay-route-compact.png test-results/compagnon/treasure-hunt.png test-results/compagnon/songes-25-etages.png --repo $env:GITHUB_REPOSITORY --target $env:GITHUB_SHA --title 'Compagnon Dofus indépendant 1.9.0' --notes-file standalone/dofus/RELEASE_NOTES.md --draft
           if ($LASTEXITCODE -ne 0) { throw 'Cannot create companion release' }
           gh release edit $tag --repo $env:GITHUB_REPOSITORY --draft=false --latest=false
           if ($LASTEXITCODE -ne 0) { throw 'Cannot publish companion release' }
