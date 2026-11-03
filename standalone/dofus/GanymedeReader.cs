@@ -8,7 +8,8 @@ using System.Collections.Generic;
 using System.Web.Script.Serialization;
 internal static class GanymedeReader {
  internal const string Site="https://ganymede-app.com";
- static readonly JavaScriptSerializer Json=new JavaScriptSerializer{MaxJsonLength=TougliReader.MaxBytes,RecursionLimit=64};
+ [ThreadStatic] static JavaScriptSerializer jsonSerializer;
+ static JavaScriptSerializer Json {get{return jsonSerializer??(jsonSerializer=new JavaScriptSerializer{MaxJsonLength=TougliReader.MaxBytes,RecursionLimit=64});}}
  internal static bool IsGuide(string slug){return Regex.IsMatch(slug??"",@"^ganymede-[1-9][0-9]{0,8}$");}
  internal static string GuideSlug(string value){var m=Regex.Match((value??"").Trim(),@"^(?:https://ganymede-app\.com/guides/)?([1-9][0-9]{0,8})/?(?:\?[^#\s]*)?(?:#[^\s]*)?$");if(!m.Success)throw new InvalidDataException("Indiquez un numéro de guide ou un lien https://ganymede-app.com/guides/123.");return "ganymede-"+m.Groups[1].Value;}
  internal static string Url(string slug){if(!IsGuide(slug))throw new InvalidDataException("Guide Ganymède invalide.");return Site+"/guides/"+slug.Substring(9);}

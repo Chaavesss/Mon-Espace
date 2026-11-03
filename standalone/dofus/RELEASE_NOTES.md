@@ -1,7 +1,9 @@
-# Compagnon Dofus 1.9.1 — Overlay plus discret
+# Compagnon Dofus 1.9.2 — Fluidité de l’overlay
 
-- Consignes en 13 px en mode compact et 14 px en mode détaillé, avec un interligne plus serré.
-- Titres réduits à 18/20 px et coordonnées à 16/18 px.
-- Cartes, marges et espacement supérieur allégés pour afficher davantage de consignes.
-- Fenêtre redimensionnable jusqu’à 360 × 480 ; taille initiale de 400 × 600 pour les nouvelles installations. Les dimensions déjà sauvegardées sont conservées.
-- Navigation fixe, validation séparée, préférences, copie facultative et fonctionnalités existantes conservées.
+- Navigation entre destinations : mise à jour de la carte et des boutons sans reconstruction du reste de la fenêtre.
+- Liste complète des destinations construite seulement à son ouverture.
+- Chargement des instructions des guides en arrière-plan, avec une seule lecture simultanée et rejet des résultats devenus obsolètes.
+- Correspondance des quêtes par index en mémoire, au lieu de reparcourir et normaliser tous les extraits à chaque affichage.
+- Réutilisation de l’itinéraire analysé et des portraits décodés ; invalidation du portrait si son fichier change.
+- Texte et dimensions de la 1.9.1 conservés.
+- Tests de performance : 20 000 extraits, chargement volontairement bloqué avec vérification de réponse WPF, et 20 clics réels sur un itinéraire de 300 destinations.

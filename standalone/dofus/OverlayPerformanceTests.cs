@@ -1,0 +1,23 @@
+using System;
+using System.IO;
+using System.Linq;
+using System.Diagnostics;
+using System.Threading;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Threading;
+internal static class OverlayPerformanceTests {
+ static void Check(bool success,string message){if(!success)throw new Exception(message);}
+ static void PumpUntil(Func<bool> ready){var timer=new DispatcherTimer{Interval=TimeSpan.FromMilliseconds(5)};var frame=new DispatcherFrame();var watch=Stopwatch.StartNew();timer.Tick+=delegate{if(ready()||watch.ElapsedMilliseconds>5000)frame.Continue=false;};timer.Start();Dispatcher.PushFrame(frame);timer.Stop();Check(ready(),"Background index completion timed out");}
+ internal static void Run(string folder){
+ var index=new QuestInstructionIndex();for(int i=0;i<20000;i++)index.Items.Add(new QuestInstruction{QuestName="Quête synthétique "+i,GameQuestId=i.ToString(),GuideTitle="Guide",Order=i});var step=new TougliStep{QuestId="12345",Title="Quête synthétique 12345"};Check(index.Match(step).Count==1,"Indexed exact matching");
+ var baseline=Stopwatch.StartNew();for(int i=0;i<30;i++){string key=QuestInstructionIndex.NameKey(step.Title);Check(index.Items.Count(x=>QuestInstructionIndex.NameKey(x.QuestName)==key&&x.GameQuestId==step.QuestId)==1,"Baseline identity");}baseline.Stop();var lookup=Stopwatch.StartNew();for(int i=0;i<30;i++)Check(index.Match(step).Count==1,"Repeated lookup");lookup.Stop();Check(lookup.ElapsedMilliseconds<1000&&lookup.ElapsedTicks<baseline.ElapsedTicks,"Indexed queries slower than full scans");
+ // A deliberately blocked loader must not block WPF; invalidation must discard its result.
+ var empty=new Store(Path.Combine(folder,"async-index"));var gate=new ManualResetEventSlim(false);int loads=0;var owner=new CompanionWindow(empty,true,()=>{int n=Interlocked.Increment(ref loads);gate.Wait(5000);var result=new QuestInstructionIndex();result.Items.Add(new QuestInstruction{QuestName="Loaded "+n});return result;});
+ var request=Stopwatch.StartNew();Check(owner.InstructionIndex.Items.Count==0,"Pending load should be empty");request.Stop();Check(request.ElapsedMilliseconds<500,"Index load blocked UI");owner.InvalidateInstructionIndex();Check(owner.InstructionIndex.Items.Count==0&&loads<=1,"Concurrent duplicate index load");bool heartbeat=false;owner.Dispatcher.BeginInvoke(new Action(()=>heartbeat=true));PumpUntil(()=>heartbeat);gate.Set();PumpUntil(()=>owner.PendingInstructionIndex==null&&owner.InstructionIndex.Items.Any(x=>x.QuestName=="Loaded 2"));Check(loads==2,"Stale index or duplicate loads");owner.Close();gate.Dispose();
+ // Repeated real navigation on a long guide must keep the existing window tree alive.
+ var store=new Store(Path.Combine(folder,"large-overlay"));var c=new DofusCharacter{id="performance",name="Performance",guide="ganymede-99"};store.Value.dofus.characters.Add(c);store.Value.dofus.active=c.id;store.Value.instructions.compact=true;store.Save();string details=String.Join("",Enumerable.Range(0,300).Select(i=>"<p>Objectif : ["+i+",0] — Parlez au personnage de test.</p>"));TougliReader.Cache(store,c.guide,Store.Json.Serialize(new{ganymedeGuide=new{id=99,name="Long guide fixture",author="Test",description="Test",steps=new[]{new{id=1,name="Navigation performance",order=1,map="",pos_x=0,pos_y=0,text=details}}}}));
+ var window=new CompanionWindow(store,true);window.Render(Path.Combine(folder,"overlay-performance.png"));var root=window.Content;var timerNav=Stopwatch.StartNew();for(int i=0;i<20;i++){StandaloneTests.Find<Button>(window.Content as DependencyObject).First(b=>Equals(b.Content,"Destination →")).RaiseEvent(new RoutedEventArgs(Button.ClickEvent));((FrameworkElement)window.Content).UpdateLayout();Check(Object.ReferenceEquals(root,window.Content),"Destination navigation rebuilt the whole overlay");}timerNav.Stop();Check(timerNav.ElapsedMilliseconds<5000,"20 destination clicks exceeded 5 seconds");Check(store.Value.completedQuests.Count==0&&!store.Value.dofus.progress.Any(p=>p.done.Count>0),"Performance navigation completed a quest");window.Close();
+ File.WriteAllText(Path.Combine(folder,"OVERLAY_PERFORMANCE_PASS.txt"),"PASS: 20,000 quest entries, 30 queries: full scan "+baseline.Elapsed.TotalMilliseconds.ToString("F2")+" ms; indexed "+lookup.Elapsed.TotalMilliseconds.ToString("F2")+" ms. Background load returned in "+request.Elapsed.TotalMilliseconds.ToString("F2")+" ms, WPF heartbeat during blocked load, stale generation discarded, one concurrent loader. 300 destinations, 20 real button clicks and layouts: "+timerNav.Elapsed.TotalMilliseconds.ToString("F2")+" ms; same root window tree; zero quest completion.");
+ }
+}
